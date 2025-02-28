@@ -1,0 +1,32 @@
+#pragma once
+using namespace std;
+#include <vector>
+
+class Ant
+{
+public:
+	Ant() {};
+	Ant(int type, float max_HP, int smell_Rad, float defense, float max_Saturation);
+
+protected:
+
+	bool isAlive();
+	void Eat();
+	void Move(int pos_X, int pos_Y, int smell_Rad);
+
+	float HP;
+	float max_HP;
+	int action;
+	int pos_X;
+	int pos_Y;
+	int smell_Rad;
+	vector<pair<int, int>> aim;
+	vector<pair<int, int>> nearest_En;
+	int ground_Lvl;
+	float saturation;
+	float max_Saturation;
+	float attack;
+	float defense;
+	int type;
+};
+
