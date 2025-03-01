@@ -25,6 +25,9 @@
     <Filter Include="Рисовальщик">
       <UniqueIdentifier>{ecc0fb0d-c39d-42c3-80cc-245386796a5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Пространство данных">
+      <UniqueIdentifier>{af682127-864e-488e-ac42-17ca305489cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="myfont.cpp">
       <Filter>Рисовальщик</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoSpace.cpp">
+      <Filter>Пространство данных</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="myfont.h">
       <Filter>Рисовальщик</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoSpace.h">
+      <Filter>Пространство данных</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

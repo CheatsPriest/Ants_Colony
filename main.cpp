@@ -3,20 +3,21 @@
 
 
 
+
 int main() {
-	
-	Window* mainWindow = new Window(standart_wide, standart_hight);
+	InfoSpace* ultimateData = new InfoSpace;
+	Window* mainWindow = new Window(standart_wide, standart_hight, ultimateData);
 
 	cout << "New project" << endl;
 
-	while (0) {
+	while (ultimateData->mainLoop) {
 		mainWindow->NewFrame();
 
 		mainWindow->EndFrame();
 	}
 
-
-	mainWindow->Cleanup();
+	
+	delete mainWindow;
 
 	return 0;
 }

@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="Ant.cpp" />
     <ClCompile Include="ImGuiTail.cpp" />
+    <ClCompile Include="InfoSpace.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="myfont.cpp" />
     <ClCompile Include="Queen.cpp" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ant.h" />
+    <ClInclude Include="InfoSpace.h" />
     <ClInclude Include="myfont.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="ImGuiTail.h" />

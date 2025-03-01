@@ -4,7 +4,7 @@
 #include "imgui_impl_win32.h"
 #include <d3d9.h>
 #include <tchar.h>
-
+#include "InfoSpace.h"
 
 
 class Window {
@@ -15,13 +15,14 @@ public:
     void NewFrame();
     void EndFrame();
 
-    Window(const int& p_wide, const int& p_hight);
+    Window(const int& p_wide, const int& p_hight, InfoSpace* data);
 
     void Cleanup();
 private:
     WNDCLASSEXW wc;
     HWND hwnd;
     int wide, hight;
+    InfoSpace* ultimateData;
     ImGuiIO& Create();
 
 
