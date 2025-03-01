@@ -13,15 +13,117 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Энтити">
+      <UniqueIdentifier>{e394969f-97d7-4183-aa8c-72e6da9bb8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Муравьи">
+      <UniqueIdentifier>{645ce3c6-cc1c-4000-8235-b800d37071bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{40d7ff05-0f58-4e17-9dc8-0bcd404e4f3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Рисовальщик">
+      <UniqueIdentifier>{ecc0fb0d-c39d-42c3-80cc-245386796a5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Ant.cpp">
+      <Filter>Муравьи</Filter>
+    </ClCompile>
+    <ClCompile Include="Queen.cpp">
+      <Filter>Муравьи</Filter>
+    </ClCompile>
+    <ClCompile Include="Scout.cpp">
+      <Filter>Муравьи</Filter>
+    </ClCompile>
+    <ClCompile Include="Soldier.cpp">
+      <Filter>Муравьи</Filter>
+    </ClCompile>
+    <ClCompile Include="Worker.cpp">
+      <Filter>Муравьи</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGui\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGui\backends\imgui_impl_dx9.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGui\backends\imgui_impl_win32.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiTail.cpp">
+      <Filter>Рисовальщик</Filter>
+    </ClCompile>
+    <ClCompile Include="myfont.cpp">
+      <Filter>Рисовальщик</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Энтити</Filter>
+    </ClInclude>
+    <ClInclude Include="Ant.h">
+      <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="Queen.h">
+      <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="Scout.h">
+      <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="Soldier.h">
+      <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="Worker.h">
+      <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\backends\imgui_impl_dx9.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\backends\imgui_impl_win32.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiTail.h">
+      <Filter>Рисовальщик</Filter>
+    </ClInclude>
+    <ClInclude Include="myfont.h">
+      <Filter>Рисовальщик</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
