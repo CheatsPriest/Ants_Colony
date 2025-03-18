@@ -5,8 +5,9 @@
 #include "Queen.h";
 #include "Soldier.h"
 #include "unordered_map"
+#include <thread>
 
-int main() {
+void processingEntities() {
 	unordered_map<int, Entity*> entityList;
 	Ant* ant = new Ant();
 	Food* food = new Food();
@@ -19,7 +20,7 @@ int main() {
 	entityList.insert({ 1, entity1 });
 	entityList.insert({ 2, entity2 });
 	entityList.insert({ 3, entity3 });
-	
+
 	for (auto el : entityList) {
 		Entity* curr = el.second;
 		if (curr->getType() == Entities::ANT) {
@@ -31,8 +32,9 @@ int main() {
 			currFood->info();
 		}
 	}
+}
 
-
+void draw() {
 	InfoSpace* ultimateData = new InfoSpace;
 	Window* mainWindow = new Window(standart_wide, standart_hight, ultimateData);
 
@@ -44,8 +46,18 @@ int main() {
 		mainWindow->EndFrame();
 	}
 
-	
-	delete mainWindow;
 
+	delete mainWindow;
+}
+int main() {
+	//поток обработки Entity
+	thread ProcessingEntity(processingEntities);
+	//поток отрисовки
+	thread Drow(draw);
+
+
+
+	ProcessingEntity.join();
+	Drow.join();
 	return 0;
 }
