@@ -78,13 +78,19 @@
     <ClCompile Include="InfoSpace.cpp">
       <Filter>Пространство данных</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Food.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Insect.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes.h">
       <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Энтити</Filter>
     </ClInclude>
     <ClInclude Include="Ant.h">
       <Filter>Муравьи</Filter>
@@ -133,6 +139,15 @@
     </ClInclude>
     <ClInclude Include="InfoSpace.h">
       <Filter>Пространство данных</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Insect.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

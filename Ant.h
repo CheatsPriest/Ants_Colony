@@ -1,13 +1,15 @@
 #pragma once
+#include <iostream>
 using namespace std;
 #include <vector>
-
 class Ant
 {
 public:
 	Ant() {};
 	Ant(int type, float max_HP, int smell_Rad, float defense, float max_Saturation);
-
+	void info() {
+		cout << "I AM ANT\n";
+	}
 protected:
 
 	bool isAlive();

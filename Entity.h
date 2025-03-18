@@ -1,1 +1,28 @@
 #pragma once
+#include "Entity.h"
+#include "Ant.h"
+#include "Food.h"
+#include "Insect.h"
+
+enum Entities {
+	ANT = 0,
+	FOOD = 1,
+	INSECT = 2
+};
+class Entity {
+private:
+	Entities type;
+	void* ptr;
+
+public:
+	Entity(void* ptr, Entities type) {
+		this->type = type;
+		this->ptr = ptr;
+	}
+	Entities getType() {
+		return type;
+	}
+	void* getPtr() {
+		return this->ptr;
+	}
+};

@@ -136,8 +136,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ant.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Food.cpp" />
     <ClCompile Include="ImGuiTail.cpp" />
     <ClCompile Include="InfoSpace.cpp" />
+    <ClCompile Include="Insect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="myfont.cpp" />
     <ClCompile Include="Queen.cpp" />
@@ -154,9 +157,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ant.h" />
-    <ClInclude Include="InfoSpace.h" />
-    <ClInclude Include="myfont.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Food.h" />
+    <ClInclude Include="InfoSpace.h" />
+    <ClInclude Include="Insect.h" />
+    <ClInclude Include="myfont.h" />
     <ClInclude Include="ImGuiTail.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Queen.h" />
