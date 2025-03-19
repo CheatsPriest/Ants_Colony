@@ -1,10 +1,15 @@
 #include "ImGuiTail.h"
 #include "myfont.h"
-Window::Window(const int& p_wide, const int& p_hight, InfoSpace* data) {
-    wide = p_wide;
-    hight = p_hight;
+Window::Window(InfoSpace* data_p) {
+    data = data_p;
+
+    field = data->field;
+    
+    
+    wide = data->main_window_wide;
+    hight = data->main_window_hight;
     isValid = true;
-    ultimateData = data;
+    
     Create();
 }
 ImGuiIO& Window::Create() {
@@ -15,7 +20,7 @@ ImGuiIO& Window::Create() {
     {
         CleanupDeviceD3D();
         ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
-        ultimateData->mainLoop = false;
+        data->mainLoop = false;
         isValid = false;
         
     }
@@ -51,7 +56,7 @@ void Window::NewFrame() {
         ::TranslateMessage(&msg);
         ::DispatchMessage(&msg);
         if (msg.message == WM_QUIT) {
-            ultimateData->mainLoop = false;
+            data->mainLoop = false;
             isValid = false;
         }
 
@@ -85,6 +90,10 @@ void Window::NewFrame() {
     ImGui_ImplDX9_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+
+
+
+    DrawMainScene();
 }
 
 void Window::EndFrame() {
@@ -105,7 +114,7 @@ void Window::EndFrame() {
         g_DeviceLost = true;
     }
     if (!isValid) {
-        ultimateData->mainLoop = false;
+        data->mainLoop = false;
         Cleanup();
         //delete this;
         //exit(0);

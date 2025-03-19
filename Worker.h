@@ -3,7 +3,7 @@
 class Worker : public Ant
 {
 public:
-	Worker();
+	Worker(int x, int y, int z);
 protected:
 	void haul();
 

@@ -3,7 +3,7 @@
 class Queen : public Ant
 {
 public:
-	Queen();
+	Queen(int x, int y, int z);
 protected:
 	void createNewAnt();
 

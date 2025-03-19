@@ -18,6 +18,7 @@ public:
 	Entity(void* ptr, Entities type) {
 		this->type = type;
 		this->ptr = ptr;
+
 	}
 	Entities getType() {
 		return type;

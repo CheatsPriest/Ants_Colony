@@ -3,7 +3,7 @@
 class Scout : public Ant
 {
 public:
-	Scout();
+	Scout(int x, int y, int z);
 protected:
 	void lookFood();
 	void lookEnemies();

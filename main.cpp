@@ -1,27 +1,32 @@
 #include "includes.h"
 #include "ImGuiTail.h"
 #include "Entity.h";
-#include "Ant.h";
-#include "Queen.h";
-#include "Soldier.h"
+#include "Collector.h"
 #include "unordered_map"
 #include <thread>
 
-void processingEntities() {
-	unordered_map<int, Entity*> entityList;
-	Ant* ant = new Ant();
-	Food* food = new Food();
-	Soldier* soldier = new Soldier();
+InfoSpace* ultimateData = new InfoSpace;
 
-	Entity* entity1 = new Entity(ant, Entities::ANT);
-	Entity* entity2 = new Entity(food, Entities::FOOD);
+void processingEntities() {
+	
+	Ant* scout = new Scout(4, 5, 0);
+	
+	Ant* soldier = new Soldier(12,14, 0);
+
+	Entity* entity1 = new Entity(scout, Entities::ANT);
+	
 	Entity* entity3 = new Entity(soldier, Entities::ANT);
 
-	entityList.insert({ 1, entity1 });
-	entityList.insert({ 2, entity2 });
-	entityList.insert({ 3, entity3 });
 
-	for (auto el : entityList) {
+
+	
+
+	ultimateData->entityList.insert({ 1, entity1 });
+	ultimateData->field->field[scout->pos_x][scout->pos_y][scout->pos_z].IDs[0]=1;
+	
+	//ultimateData->entityList.insert({ 3, entity3 });
+
+	for (auto el : ultimateData->entityList) {
 		Entity* curr = el.second;
 		if (curr->getType() == Entities::ANT) {
 			Ant* currAnt = (Ant*)(curr->getPtr());
@@ -35,8 +40,8 @@ void processingEntities() {
 }
 
 void draw() {
-	InfoSpace* ultimateData = new InfoSpace;
-	Window* mainWindow = new Window(standart_wide, standart_hight, ultimateData);
+	
+	Window* mainWindow = new Window(ultimateData);
 
 	cout << "New project" << endl;
 
@@ -50,6 +55,7 @@ void draw() {
 	delete mainWindow;
 }
 int main() {
+	
 	//поток обработки Entity
 	thread ProcessingEntity(processingEntities);
 	//поток отрисовки

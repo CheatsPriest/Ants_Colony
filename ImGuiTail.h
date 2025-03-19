@@ -5,7 +5,7 @@
 #include <d3d9.h>
 #include <tchar.h>
 #include "InfoSpace.h"
-
+#include "DrawField.h"
 
 class Window {
 public:
@@ -15,16 +15,19 @@ public:
     void NewFrame();
     void EndFrame();
 
-    Window(const int& p_wide, const int& p_hight, InfoSpace* data);
+    Window(InfoSpace* data_p);
 
     void Cleanup();
 private:
     WNDCLASSEXW wc;
     HWND hwnd;
     int wide, hight;
-    InfoSpace* ultimateData;
+    InfoSpace* data;
     ImGuiIO& Create();
+    void DrawMainScene();
 
+    Field* field;
+    
 
 };
 
@@ -34,8 +37,7 @@ static ImColor debug_text_color = (0.9, 0.9, 0.9);
 static int text_size = 15;
 
 
-static int standart_wide = 800;
-static int standart_hight = 600;
+
 
 
 

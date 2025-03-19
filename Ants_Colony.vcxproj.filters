@@ -28,6 +28,9 @@
     <Filter Include="Пространство данных">
       <UniqueIdentifier>{af682127-864e-488e-ac42-17ca305489cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Поле">
+      <UniqueIdentifier>{2dd42cab-40e8-4d58-805e-79b073019cac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="Insect.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Field.cpp">
+      <Filter>Поле</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Поле</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawField.cpp">
+      <Filter>Рисовальщик</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +160,18 @@
     </ClInclude>
     <ClInclude Include="Insect.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>Поле</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Поле</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawField.h">
+      <Filter>Рисовальщик</Filter>
+    </ClInclude>
+    <ClInclude Include="Collector.h">
+      <Filter>Муравьи</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

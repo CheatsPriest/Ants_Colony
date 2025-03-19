@@ -1,8 +1,8 @@
 #include "Scout.h"
 
-Scout::Scout() : Ant(), costToBorn(20), speed(2), coefOfScout(0.3)
+Scout::Scout(int x, int y, int z) : Ant(), costToBorn(20), speed(2), coefOfScout(0.3)
 {
-	Ant(1, 90, 7, 0.1, 50);
+	Ant(x, y, z, 1, 90, 7, 0.1, 50);
 	attack = max_HP * coefOfScout;
 }
 
