@@ -15,7 +15,7 @@ Window::Window(InfoSpace* data_p) {
 ImGuiIO& Window::Create() {
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Alexander's and Maxim's compressor", WS_OVERLAPPEDWINDOW, 100, 100, wide, hight, nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Ants colony", WS_OVERLAPPEDWINDOW, 100, 100, wide, hight, nullptr, nullptr, wc.hInstance, nullptr);
     if (!CreateDeviceD3D(hwnd))
     {
         CleanupDeviceD3D();

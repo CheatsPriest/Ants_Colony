@@ -4,25 +4,17 @@
 #include "Collector.h"
 #include "unordered_map"
 #include <thread>
+#include <conio.h>
+#include <Windows.h>
+
 
 InfoSpace* ultimateData = new InfoSpace;
 
 void processingEntities() {
 	
-	Ant* scout = new Scout(4, 5, 0);
-	
-	Ant* soldier = new Soldier(12,14, 0);
-
-	Entity* entity1 = new Entity(scout, Entities::ANT);
-	
-	Entity* entity3 = new Entity(soldier, Entities::ANT);
-
-
-
-	
-
-	ultimateData->entityList.insert({ 1, entity1 });
-	ultimateData->field->field[scout->pos_x][scout->pos_y][scout->pos_z].IDs[0]=1;
+	ultimateData->CreateEntity(10, 2, 0, 0, 1);
+	ultimateData->CreateEntity(3, 5, 0, 0, 2);
+	ultimateData->CreateEntity(12, 6, 0, 0, 3);
 	
 	//ultimateData->entityList.insert({ 3, entity3 });
 
@@ -30,6 +22,8 @@ void processingEntities() {
 		Entity* curr = el.second;
 		if (curr->getType() == Entities::ANT) {
 			Ant* currAnt = (Ant*)(curr->getPtr());
+			currAnt->aim.push_back({ 10, 10 });
+			currAnt->aim.push_back({ 1, 100 });
 			currAnt->info();
 		}
 		else if (curr->getType() == Entities::FOOD) {
@@ -43,9 +37,27 @@ void draw() {
 	
 	Window* mainWindow = new Window(ultimateData);
 
-	cout << "New project" << endl;
+	
+
+
+	
 
 	while (ultimateData->mainLoop) {
+
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
+		{
+			ultimateData->MoveCam(-1, 0);
+		}
+		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
+			ultimateData->MoveCam(1, 0);
+		}
+		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
+			ultimateData->MoveCam(0, -1);
+		}
+		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
+			ultimateData->MoveCam(0, 1);
+		}
+		
 		mainWindow->NewFrame();
 
 		mainWindow->EndFrame();

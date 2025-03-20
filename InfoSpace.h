@@ -3,10 +3,12 @@
 #include <map>
 #include "Field.h"
 #include "Entity.h"
+#include "Collector.h"
 
 class InfoSpace
 {
 public:
+
 	bool mainLoop = true;
 
 	int x_cam, y_cam, z_cam;
@@ -19,8 +21,13 @@ public:
 	int field_size_y;
 	int cell_size;
 
+	unsigned int free_key;
+
 	Field* field;
 	map<unsigned int, Entity*> entityList;
+
+	bool draw_debug_move_lines;
+
 	InfoSpace() {
 		x_cam = 0;
 		y_cam = 0;
@@ -35,9 +42,17 @@ public:
 		field_size_x = size_x;
 		field_size_y = size_y;
 
+		free_key = 1;
+
 		field = new Field;
 
+		draw_debug_move_lines = true;
 	}
+
+	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
+	bool CreateEntity(int x, int y, int z, int type, int under_class);
+	void MoveCam(int x, int y);
+
 	~InfoSpace() {
 		delete field;
 	}

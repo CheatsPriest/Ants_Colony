@@ -4,11 +4,14 @@ int c_x;
 int c_y;
 int max_x, max_y;
 int cell_size;
+int draw_x, draw_y;
 
 
 ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
 ImColor Brown = ImColor(0.8f, 0.4f, 0.1f);
 ImColor Black = ImColor(0.f, 0.f, 0.f);
+ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
+
 Entity* cur;
 
 void DrawAnt() {
@@ -32,35 +35,53 @@ void Window::DrawMainScene() {
     
     if (ImGui::Begin("Main Scene", 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
     {
-        
-        for (int x = c_x; x < max_x; x++) {
-            for (int y = c_y; y < max_y; y++) {
-                ImGui::GetBackgroundDrawList()->AddRect(ImVec2(x*cell_size, y* cell_size), ImVec2(x * cell_size+cell_size, y * cell_size + cell_size), Green, 0.1f,0,1.0f);
+        for (int x = 0; x < data->field_size_x; x++) {
+            for (int y = 0; y < data->field_size_y; y++){
+        //for (int x = c_x; x < max_x; x++) {
+            //for (int y = c_y; y < max_y; y++) {
+                draw_x = (x - c_x) * cell_size;
+                draw_y = (y - c_y) * cell_size;
+
+                ImGui::GetBackgroundDrawList()->AddRect(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0, 1.0f);
+                //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0);
+                
                 if (field->field[x][y][data->z_cam].IDs[0] != 0) {
 
                     cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
 
-                    if (cur->getType() == Entities::ANT) {
+                    if (cur!=NULL and cur->getType() == Entities::ANT) {
                         Ant* curAnt = (Ant*)(cur->getPtr());
-                        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x * cell_size+1.f, y * cell_size + 1.f), ImVec2(x * cell_size + cell_size-1.0f, y * cell_size + cell_size-1.0f), Brown, 0.1f, 0);
+                        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
+
+                        if (data->draw_debug_move_lines) {
+                            for (int i = 0; i < curAnt->aim.size(); i++) {
+                                ImGui::GetBackgroundDrawList()->AddLine(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), ImVec2((curAnt->aim[i].first - c_x) * cell_size+cell_size/2, (curAnt->aim[i].second - c_y) * cell_size+cell_size/2), Red, 1.f);
+                                ImGui::GetBackgroundDrawList()->AddCircleFilled(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), 3.f, Red);
+                            }
+                            
+                        }
 
                         if (curAnt->type == 1) {
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(x * cell_size + 1.f, y * cell_size + 1.f), Black, "S");
+                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "S");
                         }
                         else if (curAnt->type == 2) {
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(x * cell_size + 1.f, y * cell_size + 1.f), Black, "W");
+                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "W");
                         }
                         else if (curAnt->type == 3) {
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(x * cell_size + 1.f, y * cell_size + 1.f), Black, "S");
+                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "F");
                         }
                         else if (curAnt->type == 0) {
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(x * cell_size + 1.f, y * cell_size + 1.f), Black, "Q");
+                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "Q");
                         }
+                        ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
+                        
                     }
-
-
+                    
+                   
                 }
+
             }
+
         }
         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(100, 100), ImVec2(200, 200), Green, 0.f, 0);
     }ImGui::End();

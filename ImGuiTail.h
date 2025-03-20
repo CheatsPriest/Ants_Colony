@@ -6,6 +6,8 @@
 #include <tchar.h>
 #include "InfoSpace.h"
 #include "DrawField.h"
+#include <string>
+using namespace std;
 
 class Window {
 public:
