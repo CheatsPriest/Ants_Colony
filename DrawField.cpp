@@ -36,7 +36,7 @@ void Window::DrawMainScene() {
     if (ImGui::Begin("Main Scene", 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
     {
         for (int x = 0; x < data->field_size_x; x++) {
-            for (int y = 0; y < data->field_size_y; y++){
+            for (int y = 0; y < data->field_size_y; y++){//Неоптимизированно
         //for (int x = c_x; x < max_x; x++) {
             //for (int y = c_y; y < max_y; y++) {
                 draw_x = (x - c_x) * cell_size;
