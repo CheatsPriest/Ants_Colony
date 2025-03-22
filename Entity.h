@@ -26,4 +26,7 @@ public:
 	void* getPtr() {
 		return this->ptr;
 	}
+	int pos_x;
+	int pos_y;
+	int pos_z;
 };

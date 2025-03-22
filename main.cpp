@@ -12,9 +12,9 @@ InfoSpace* ultimateData = new InfoSpace;
 
 void processingEntities() {
 	
-	ultimateData->CreateEntity(10, 2, 0, 0, 1);
-	ultimateData->CreateEntity(3, 5, 0, 0, 2);
-	ultimateData->CreateEntity(12, 6, 0, 0, 3);
+	ultimateData->CreateEntityAnt(10, 2, 0, 0, 1);
+	ultimateData->CreateEntityAnt(3, 5, 0, 0, 2);
+	ultimateData->CreateEntityAnt(12, 6, 0, 0, 3);
 	
 	//ultimateData->entityList.insert({ 3, entity3 });
 
