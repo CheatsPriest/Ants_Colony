@@ -10,7 +10,7 @@ public:
 	Ant() {};
 	Ant(int x, int y, int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation);
 	void info() {
-		cout << "I AM ANT\n";
+		//cout << "I AM ANT\n";
 	}
 	bool isAlive();
 	void Eat();

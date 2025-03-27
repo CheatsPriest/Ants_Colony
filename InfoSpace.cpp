@@ -116,6 +116,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			for (double j = -2; j <= 2; j++) {
 				if (ant->pos_x + i >= 0 && ant->pos_y + j >= 0) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
+						if (ant->pos_x + i < 0 or ant->pos_x + i >= field_size_x or ant->pos_y + j < 0 or ant->pos_y + j >= field_size_y) continue;
 						Ant* smth = (Ant*)entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]]->getPtr();
 						if (smth->type == 4) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
@@ -138,7 +139,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		for (double i = -1; i <= 1; i++) {
 			for (double j = -1; j <= 1; j++) {
 				if (ant->pos_x + i >= 0 && ant->pos_y + j >= 0) {
+					if (ant->pos_x + i < 0 or ant->pos_x + i >= field_size_x or ant->pos_y + j < 0 or ant->pos_y + j >= field_size_y) continue;
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
+
 						Ant* smth = (Ant*)entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]]->getPtr();
 						if (smth->type == 4) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };

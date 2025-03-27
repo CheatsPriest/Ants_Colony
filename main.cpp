@@ -117,7 +117,7 @@ void draw() {
 		mainWindow->EndFrame();
 	}
 
-
+	mainWindow->Cleanup();
 	delete mainWindow;
 }
 int main() {

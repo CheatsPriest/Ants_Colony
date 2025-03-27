@@ -115,7 +115,7 @@ void Window::EndFrame() {
     }
     if (!isValid) {
         data->mainLoop = false;
-        Cleanup();
+        
         //delete this;
         //exit(0);
         //Твой код выхода
