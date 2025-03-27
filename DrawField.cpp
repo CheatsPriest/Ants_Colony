@@ -73,6 +73,12 @@ void Window::DrawMainScene() {
                         else if (curAnt->type == 0) {
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "Q");
                         }
+                        else if (curAnt->type == 4) {
+                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "F");
+                        }
+                        else if (curAnt->type == 5) {
+                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "E");
+                        }
                         ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
                         
                     }

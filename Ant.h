@@ -10,7 +10,7 @@ public:
 	Ant() {};
 	Ant(int x, int y, int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation);
 	void info() {
-		//cout << "I AM ANT\n";
+		cout << "I AM A SURGEON\n";
 	}
 	bool isAlive();
 	void Eat();
@@ -18,7 +18,7 @@ public:
 
 	float HP;
 	float max_HP;
-	int action;
+	int action = 0;
 
 	int pos_x;
 	int pos_y;
@@ -28,7 +28,7 @@ public:
 	int smell_Rad;
 	pair<int, int> aim = {pos_x,pos_y};
 	pair<int, int> nearest_En = { pos_x,pos_y };
-	pair<int, int> nearest_Fd = { 1000,1000 };
+	pair<int, int> nearest_Fd;
 	int ground_Lvl;
 	float saturation;
 	float max_Saturation;

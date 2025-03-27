@@ -27,10 +27,10 @@ void processingEntities() {
 	}
 
 	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(rand()% 30 + 20, rand() % 30+20, 0, 0, 4);
+		ultimateData->CreateEntity(rand()% 30 + 20, rand() % 30+20, 4);
 	}
 	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(rand() % 30 + 20, rand() % 30 + 20, 0, 0, 5);
+		ultimateData->CreateEntity(rand() % 30 + 20, rand() % 30 + 20,5);
 	}
 
 
