@@ -3,6 +3,7 @@
 using namespace std;
 #include <vector>
 
+
 class Ant
 {
 public:
@@ -13,7 +14,7 @@ public:
 	}
 	bool isAlive();
 	void Eat();
-	void Move(int pos_X, int pos_Y, int smell_Rad);
+	
 
 	float HP;
 	float max_HP;
@@ -25,8 +26,9 @@ public:
 
 	int level;//Пока что 1
 	int smell_Rad;
-	vector<pair<int, int>> aim;
-	vector<pair<int, int>> nearest_En;
+	pair<int, int> aim = {pos_x,pos_y};
+	pair<int, int> nearest_En = { pos_x,pos_y };
+	pair<int, int> nearest_Fd = { 1000,1000 };
 	int ground_Lvl;
 	float saturation;
 	float max_Saturation;

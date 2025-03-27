@@ -6,15 +6,34 @@
 #include <thread>
 #include <conio.h>
 #include <Windows.h>
+#include <random>
 
 
 InfoSpace* ultimateData = new InfoSpace;
 
+
 void processingEntities() {
-	
-	ultimateData->CreateEntityAnt(10, 2, 0, 0, 1);
-	ultimateData->CreateEntityAnt(3, 5, 0, 0, 2);
-	ultimateData->CreateEntityAnt(12, 6, 0, 0, 3);
+	Window* mainWindow = new Window(ultimateData);
+	srand(time(0));
+
+	for (int i = 0; i < 15; i++) {
+		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
+	}
+	for (int i = 0; i < 15; i++) {
+		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
+	}
+	for (int i = 0; i < 10; i++) {
+		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
+	}
+
+	for (int i = 0; i < 10; i++) {
+		ultimateData->CreateEntityAnt(rand()% 30 + 20, rand() % 30+20, 0, 0, 4);
+	}
+	for (int i = 0; i < 10; i++) {
+		ultimateData->CreateEntityAnt(rand() % 30 + 20, rand() % 30 + 20, 0, 0, 5);
+	}
+
+
 	
 	//ultimateData->entityList.insert({ 3, entity3 });
 
@@ -22,15 +41,50 @@ void processingEntities() {
 		Entity* curr = el.second;
 		if (curr->getType() == Entities::ANT) {
 			Ant* currAnt = (Ant*)(curr->getPtr());
-			currAnt->aim.push_back({ 10, 10 });
-			currAnt->aim.push_back({ 1, 100 });
 			currAnt->info();
+			
+			
+			
+			
 		}
 		else if (curr->getType() == Entities::FOOD) {
 			Food* currFood = (Food*)(curr->getPtr());
 			currFood->info();
 		}
 	}
+	while (ultimateData->mainLoop) {
+		for (auto ent : ultimateData->entityList) {
+			Entity* curr = ent.second;
+			if(curr->getType() == Entities::ANT) {
+				
+				ultimateData->MoveEntity(ent.first);
+
+
+			}
+		}
+
+
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
+		{
+			ultimateData->MoveCam(-1, 0);
+		}
+		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
+			ultimateData->MoveCam(1, 0);
+		}
+		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
+			ultimateData->MoveCam(0, -1);
+		}
+		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
+			ultimateData->MoveCam(0, 1);
+		}
+
+		mainWindow->NewFrame();
+
+		mainWindow->EndFrame();
+
+
+	}
+	delete mainWindow;
 }
 
 void draw() {
@@ -43,7 +97,7 @@ void draw() {
 	
 
 	while (ultimateData->mainLoop) {
-
+		
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
 		{
 			ultimateData->MoveCam(-1, 0);
@@ -71,11 +125,11 @@ int main() {
 	//поток обработки Entity
 	thread ProcessingEntity(processingEntities);
 	//поток отрисовки
-	thread Drow(draw);
-
+	//thread Drow(draw);
+	
 
 
 	ProcessingEntity.join();
-	Drow.join();
+	//Drow.join();
 	return 0;
 }

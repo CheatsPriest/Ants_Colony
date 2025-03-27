@@ -51,8 +51,12 @@ public:
 
 	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
 	bool CreateEntityAnt(int x, int y, int z, int type, int under_class);
+
+	bool CreateEntity(int x, int y, int t); // костыль дениса
+
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
+	void MoveEntity(unsigned int id);
 
 	~InfoSpace() {
 		delete field;

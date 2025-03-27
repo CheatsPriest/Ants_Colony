@@ -1,4 +1,6 @@
 #include "Ant.h"
+#include <algorithm>
+
 
 Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation) : Ant() 
 {
@@ -21,7 +23,4 @@ void Ant::Eat()
 {
 }
 
-void Ant::Move(int pos_X, int pos_Y, int smell_Rad)
-{
-}
 
