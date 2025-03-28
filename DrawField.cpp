@@ -48,8 +48,8 @@ void Window::DrawMainScene() {
                 if (field->field[x][y][data->z_cam].IDs[0] != 0) {
 
                     cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
-
-                    if (cur!=NULL and cur->getType() == Entities::ANT) {
+                    if (cur == NULL) continue;
+                    if (cur->getType() == Entities::ANT) {
                         Ant* curAnt = (Ant*)(cur->getPtr());
                         ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
 
@@ -73,16 +73,21 @@ void Window::DrawMainScene() {
                         else if (curAnt->type == 0) {
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "Q");
                         }
-                        else if (curAnt->type == 4) {
+                        else if (curAnt->type == 4) {//костыль
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "F");
                         }
-                        else if (curAnt->type == 5) {
+                        else if (curAnt->type == 5) {//костыль
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "E");
                         }
                         ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
                         
                     }
-                    
+                    else if (cur->getType() == Entities::FOOD) {
+                        Food* curFood = (Food*)(cur->getPtr());
+                        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Green, 0.1f, 0);
+                        ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
+
+                    }
                    
                 }
 

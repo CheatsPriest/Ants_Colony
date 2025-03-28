@@ -16,6 +16,8 @@ void processingEntities() {
 	Window* mainWindow = new Window(ultimateData);
 	srand(time(0));
 
+	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
+
 	for (int i = 0; i < 15; i++) {
 		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
 	}
@@ -33,7 +35,7 @@ void processingEntities() {
 		ultimateData->CreateEntity(rand() % 30 + 20, rand() % 30 + 20,5);
 	}
 
-
+	
 	
 	//ultimateData->entityList.insert({ 3, entity3 });
 
