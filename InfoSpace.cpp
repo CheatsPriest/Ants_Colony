@@ -139,6 +139,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 						Ant* smth = (Ant*)obj->getPtr();
+						if (smth == NULL)continue;
 						if (obj->getType() == Entities::FOOD) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
