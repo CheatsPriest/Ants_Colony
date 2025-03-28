@@ -28,7 +28,7 @@ public:
 	int smell_Rad;
 	pair<int, int> aim = {pos_x,pos_y};
 	pair<int, int> nearest_En = { pos_x,pos_y };
-	pair<int, int> nearest_Fd;
+	pair<int, int> nearest_Fd = { pos_x,pos_y };
 	int ground_Lvl;
 	float saturation;
 	float max_Saturation;

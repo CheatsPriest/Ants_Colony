@@ -21,10 +21,10 @@ void processingEntities() {
 	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
 	}
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 50; i++) {
 		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
 	}
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 30; i++) {
 		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
 	}
 

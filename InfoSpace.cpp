@@ -152,16 +152,13 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		
 						}
 						
-						if ((smth->type == 2 or smth->type == 3) && ant->action == 1 && smth->action == 0) {
+						if ((smth->type == 2 or smth->type == 3) && ant->action == 1 ) {
 							smth->nearest_En = ant->nearest_En;
 							smth->nearest_Fd = ant->nearest_Fd;
 							smth->aim = ant->nearest_Fd;
 							smth->action = 1;
 						}
-						if (smth->type == 3 && ant->action == 1 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
-							smth->nearest_En = ant->nearest_En;
-							smth->action = 1;
-						}
+						
 					}
 				}
 			}
@@ -179,6 +176,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						if (obj->getType() == Entities::FOOD && ant->type == 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+							this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+							ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 };
 							ant->action = 1;
 						}
 						if (smth->type == 5 && ant->type == 3) {
@@ -186,15 +185,16 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 							ant->action = 1;
 						}
-						if (smth->type == 2 && ant->action == 1&& (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
+						if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 							smth->nearest_En = ant->nearest_En;
 							smth->nearest_Fd = ant->nearest_Fd;
 							smth->aim = ant->nearest_Fd;
 							smth->action = 1;
 						}
-						if (smth->type == 3 && ant->action == 1 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
+						if (smth->type == 3 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
 							smth->nearest_En = ant->nearest_En;
 							smth->action = 1;
+							
 						}
 					}
 				}
