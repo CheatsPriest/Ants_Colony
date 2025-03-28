@@ -14,6 +14,7 @@ public:
 	Food(int x, int y, int z, int type, float food_value, int weight) {
 		this->pos_x = x;
 		this->pos_y = y;
+		this->pos_z = z;
 		this->type = type;
 		this->food_value = food_value;
 		this->weight = weight;
