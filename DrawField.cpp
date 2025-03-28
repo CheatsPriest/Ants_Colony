@@ -51,6 +51,7 @@ void Window::DrawMainScene() {
                     if (cur == NULL) continue;
                     if (cur->getType() == Entities::ANT) {
                         Ant* curAnt = (Ant*)(cur->getPtr());
+                        
                         ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
 
                         if (data->draw_debug_move_lines) {

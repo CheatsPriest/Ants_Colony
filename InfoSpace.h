@@ -33,11 +33,11 @@ public:
 		y_cam = 0;
 		z_cam = 0;
 
-		cam_speed = 20;
+		cam_speed = 5;
 		cell_size = cam_speed;
 
-		main_window_wide = 800;
-		main_window_hight = 800;
+		main_window_wide = 1000;
+		main_window_hight = 1000;
 
 		field_size_x = size_x;
 		field_size_y = size_y;
@@ -46,7 +46,7 @@ public:
 
 		field = new Field;
 
-		draw_debug_move_lines = true;
+		draw_debug_move_lines = false;
 	}
 
 	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen

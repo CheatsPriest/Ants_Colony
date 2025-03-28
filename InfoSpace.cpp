@@ -44,7 +44,7 @@ bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value
 	field->field[food->pos_x][food->pos_y][food->pos_z].IDs[0] = free_key;
 
 	food->entity_id = free_key;
-	cout << free_key;
+
 	free_key++;
 	return true;
 }
@@ -59,7 +59,7 @@ bool InfoSpace::CreateEntity(int x, int y, int t)
 
 	entityList.insert({ free_key, new_ent });
 	field->field[new_ant->pos_x][new_ant->pos_y][new_ant->pos_z].IDs[0] = free_key;
-	cout << free_key;
+	
 	free_key++;
 	return true;
 
@@ -117,15 +117,15 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		}
 	}
 	if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
-		 ant->aim = { rand() % 50+1,  rand() % 50+1 }; 
+		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
 	if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
-		ant->aim = { rand() % 10 + 1,  rand() % 10 + 1 }; // коорды базы
+		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
 
 	if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
-		ant->nearest_En = { rand() % 10 + 1,  rand() % 10 + 1 }; // коорды базы
+		ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
 
@@ -137,23 +137,29 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			for (double j = -3; j <= 3; j++) {
 				if (!(ant->pos_x + i < 0 or ant->pos_x + i >= field_size_x or ant->pos_y + j < 0 or ant->pos_y + j >= field_size_y)) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
-						Ant* smth = (Ant*)entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]]->getPtr();
-						if (smth->type == 4) {
+						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
+						Ant* smth = (Ant*)obj->getPtr();
+						if (obj->getType() == Entities::FOOD) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 							ant->action = 1;
 							
 						}
 						if (smth->type == 5) {
 							ant->nearest_En = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 							ant->action = 1;
-							cout << ant->action;
+		
 						}
 						
-						if ((smth->type == 2 or smth->type == 3) && ant->action == 1) {
-							
+						if ((smth->type == 2 or smth->type == 3) && ant->action == 1 && smth->action == 0) {
 							smth->nearest_En = ant->nearest_En;
 							smth->nearest_Fd = ant->nearest_Fd;
 							smth->aim = ant->nearest_Fd;
+							smth->action = 1;
+						}
+						if (smth->type == 3 && ant->action == 1 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
+							smth->nearest_En = ant->nearest_En;
 							smth->action = 1;
 						}
 					}
@@ -168,20 +174,26 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			for (double j = -1; j <= 1; j++) {
 				if (!(ant->pos_x + i < 0 or ant->pos_x + i >= field_size_x or ant->pos_y + j < 0 or ant->pos_y + j >= field_size_y)) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
-
-						Ant* smth = (Ant*)entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]]->getPtr();
-						if (smth->type == 4 && ant->type == 2) {
+						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
+						Ant* smth = (Ant*)obj->getPtr();
+						if (obj->getType() == Entities::FOOD && ant->type == 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 							ant->action = 1;
 						}
 						if (smth->type == 5 && ant->type == 3) {
-							ant->nearest_En = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+							ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
+							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 							ant->action = 1;
 						}
 						if (smth->type == 2 && ant->action == 1&& (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 							smth->nearest_En = ant->nearest_En;
 							smth->nearest_Fd = ant->nearest_Fd;
 							smth->aim = ant->nearest_Fd;
+							smth->action = 1;
+						}
+						if (smth->type == 3 && ant->action == 1 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
+							smth->nearest_En = ant->nearest_En;
 							smth->action = 1;
 						}
 					}
