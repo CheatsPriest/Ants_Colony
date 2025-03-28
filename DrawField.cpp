@@ -8,8 +8,11 @@ int draw_x, draw_y;
 
 
 ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
+ImColor Blue = ImColor(0.2f, 0.2f, 0.8f);
+
 ImColor Brown = ImColor(0.8f, 0.4f, 0.1f);
 ImColor Black = ImColor(0.f, 0.f, 0.f);
+ImColor White = ImColor(0.8f, 0.8f, 0.8f);
 ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
 
 Entity* cur;
@@ -63,12 +66,15 @@ void Window::DrawMainScene() {
                         }
 
                         if (curAnt->type == 1) {
+                            ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Blue, 0.1f, 0);
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "R");
                         }
                         else if (curAnt->type == 2) {
+                            ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), White, 0.1f, 0);
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "W");
                         }
                         else if (curAnt->type == 3) {
+                            ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Red, 0.1f, 0);
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "S");
                         }
                         else if (curAnt->type == 0) {
