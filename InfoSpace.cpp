@@ -36,7 +36,15 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class) 
 	
 	return false;
 }
-
+bool InfoSpace::CreateEntity(int x, int y, int z, int type, float food_value, int weight) {
+	Food* food = new Food(x, y, z, type, food_value, weight);
+	Entity* new_ent = new Entity(food, Entities::FOOD);
+	entityList.insert({ free_key, new_ent });
+	food->entity_id = free_key;
+	cout << free_key;
+	free_key++;
+	return true;
+}
 bool InfoSpace::CreateEntity(int x, int y, int t)
 {
 	if (field->field[x][y][0].IDs[0] != 0)return false;
