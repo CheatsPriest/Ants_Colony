@@ -53,7 +53,7 @@ public:
 	bool CreateEntityAnt(int x, int y, int z, int type, int under_class);
 
 	bool CreateEntity(int x, int y, int t); // костыль дениса
-
+	bool CreateEntity(int x, int y, int z, int type, float food_value, int weight);
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
 	void MoveEntity(unsigned int id);

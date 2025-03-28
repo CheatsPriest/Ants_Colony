@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 #include <vector>
-
-
+#include "Food.h"
+#include "InfoSpace.h"
 class Ant
 {
 public:
@@ -12,6 +12,7 @@ public:
 	void info() {
 		cout << "I AM A SURGEON\n";
 	}
+	void eat(int);
 	bool isAlive();
 	void Eat();
 	
@@ -35,7 +36,6 @@ public:
 	float attack;
 	float defense;
 	int type;
-
 
 	
 };

@@ -3,7 +3,6 @@
 #include "Ant.h"
 #include "Food.h"
 #include "Insect.h"
-
 enum Entities {
 	ANT = 0,
 	FOOD = 1,

@@ -3,6 +3,7 @@
 
 
 //type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
+
 bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class) {
 	
 	if (field->field[x][y][z].IDs[0] != 0)return false;
@@ -36,6 +37,15 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class) 
 	
 	return false;
 }
+bool InfoSpace::CreateEntity(int x, int y, int z, int type, float food_value, int weight){
+	Food* food = new Food(x, y, z, type, food_value, weight);
+	Entity* new_ent = new Entity(food, Entities::FOOD);
+	entityList.insert({ free_key, new_ent });
+	food->entity_id = free_key;
+	cout << free_key;
+	free_key++;
+	return true;
+}
 
 bool InfoSpace::CreateEntity(int x, int y, int t)
 {
@@ -43,7 +53,7 @@ bool InfoSpace::CreateEntity(int x, int y, int t)
 	Ant* new_ant;
 	new_ant = new Ant(x, y, 0, t,1,1,1,1);
 	Entity* new_ent = new Entity(new_ant, Entities::ANT);
-
+	
 
 
 	entityList.insert({ free_key, new_ent });

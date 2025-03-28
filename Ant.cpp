@@ -14,6 +14,24 @@ Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defens
     this->max_Saturation = max_Saturation;
 }
 
+void Ant::eat(int id_food_in_entity)
+{
+ /*   Food* food = (Food*)InfoSpace::entityList[id_food_in_entity];
+    float remains = max_Saturation - saturation;
+    if (food->food_value >= remains) {
+        saturation = max_Saturation;
+        food->food_value -= remains;
+    }
+    else {
+        saturation += food->food_value;
+       food->food_value = 0;
+    }
+    if (food->food_value <= 0) {
+        InfoSpace::entityList.erase(food->entity_id);
+    }*/
+
+}
+
 bool Ant::isAlive()
 {
     return false;
