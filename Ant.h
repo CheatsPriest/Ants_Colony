@@ -13,7 +13,7 @@ public:
 		cout << "I AM A SURGEON\n";
 	}
 	bool isAlive();
-	void Eat();
+	void Eat(int id_food_in_entity);
 	
 
 	float HP;
