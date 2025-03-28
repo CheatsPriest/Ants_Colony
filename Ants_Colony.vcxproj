@@ -149,6 +149,7 @@
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Scout.cpp" />
     <ClCompile Include="Soldier.cpp" />
+    <ClCompile Include="Stockpile.cpp" />
     <ClCompile Include="vendor\ImGui\backends\imgui_impl_dx9.cpp" />
     <ClCompile Include="vendor\ImGui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="vendor\ImGui\imgui.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Scout.h" />
     <ClInclude Include="Soldier.h" />
+    <ClInclude Include="Stockpile.h" />
     <ClInclude Include="vendor\ImGui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="vendor\ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="vendor\ImGui\imconfig.h" />

@@ -31,6 +31,9 @@
     <Filter Include="Поле">
       <UniqueIdentifier>{2dd42cab-40e8-4d58-805e-79b073019cac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Зоны">
+      <UniqueIdentifier>{b1456765-8134-4740-904b-ac1426eeb5eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="DrawField.cpp">
       <Filter>Рисовальщик</Filter>
+    </ClCompile>
+    <ClCompile Include="Stockpile.cpp">
+      <Filter>Зоны</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Collector.h">
       <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="Stockpile.h">
+      <Filter>Зоны</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

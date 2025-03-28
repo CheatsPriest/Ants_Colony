@@ -95,6 +95,14 @@ void Window::DrawMainScene() {
 
         }
         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(100, 100), ImVec2(200, 200), Green, 0.f, 0);
+
+        Stockpile* curStock;
+        for (auto el : data->stockpileList) {
+            curStock = el.second;
+            cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
+            ImGui::GetBackgroundDrawList()->AddRect(ImVec2(curStock->pos_x* cell_size, curStock->pos_y* cell_size), ImVec2((curStock->pos_x + curStock->size_x)* cell_size, (curStock->pos_y + curStock->size_y)* cell_size), Red, 0.1f, 0, 2.0f);
+        }
+
     }ImGui::End();
 
     ImGui::PopStyleColor();

@@ -65,6 +65,23 @@ bool InfoSpace::CreateEntity(int x, int y, int t)
 
 	
 }
+bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight) {
+
+	for (int i = x; i < x + wide; i++) {
+		for (int j = y; j < y + hight; j++) {
+			if (!field->field[i][j]->isFree)return false;
+		}
+	}
+	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight);
+
+	stockpileList.insert({ free_stockpile_key, new_stock });
+
+
+	free_stockpile_key++;
+
+	return true;
+
+}
 
 
 
