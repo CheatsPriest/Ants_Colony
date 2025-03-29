@@ -6,19 +6,30 @@ int max_x, max_y;
 int cell_size;
 int draw_x, draw_y;
 
+unsigned int work_id;
 
-ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
-ImColor Blue = ImColor(0.4f, 0.4f, 0.9f);
-
-ImColor Brown = ImColor(0.8f, 0.4f, 0.1f);
-ImColor Black = ImColor(0.f, 0.f, 0.f);
-ImColor White = ImColor(0.8f, 0.8f, 0.8f);
-ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
 
 Entity* cur;
 
-void DrawAnt() {
-
+void Window::DrawScout(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Blue, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "R");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
+void Window::DrawWorker(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), White, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "W");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
+void Window::DrawSoldier(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Red, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "S");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
+void Window::DrawFood(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Green, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "F");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
 
 void Window::DrawMainScene() {
@@ -55,7 +66,7 @@ void Window::DrawMainScene() {
                     if (cur->getType() == Entities::ANT) {
                         Ant* curAnt = (Ant*)(cur->getPtr());
                         
-                        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
+                        //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
 
                         if (data->draw_debug_move_lines) {
                    
@@ -66,16 +77,13 @@ void Window::DrawMainScene() {
                         }
 
                         if (curAnt->type == 1) {
-                            ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Blue, 0.1f, 0);
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "R");
+                            DrawScout(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
                         }
                         else if (curAnt->type == 2) {
-                            ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), White, 0.1f, 0);
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "W");
+                            DrawWorker(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
                         }
                         else if (curAnt->type == 3) {
-                            ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Red, 0.1f, 0);
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "S");
+                            DrawSoldier(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
                         }
                         else if (curAnt->type == 0) {
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "Q");
@@ -86,7 +94,7 @@ void Window::DrawMainScene() {
                         else if (curAnt->type == 5) {//костыль
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "E");
                         }
-                        ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
+                        //ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
                         
                     }
                     else if (cur->getType() == Entities::FOOD) {
@@ -107,8 +115,22 @@ void Window::DrawMainScene() {
         for (auto el : data->stockpileList) {
             curStock = el.second;
             //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
-            ImGui::GetBackgroundDrawList()->AddRect(ImVec2(curStock->pos_x* cell_size, curStock->pos_y* cell_size), ImVec2((curStock->pos_x + curStock->size_x)* cell_size, (curStock->pos_y + curStock->size_y)* cell_size), Red, 0.1f, 0, 2.0f);
-            ImGui::GetBackgroundDrawList()->AddText(ImVec2(curStock->pos_x * cell_size, curStock->pos_y * cell_size), Black, std::to_string((int)curStock->food_collected).c_str());
+            ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x)* cell_size - data->x_cam, (curStock->pos_y)* cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x)* cell_size - data->x_cam, (curStock->pos_y + curStock->size_y)* cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
+            ImGui::GetBackgroundDrawList()->AddText(ImVec2((curStock->pos_x ) * cell_size - data->x_cam, (curStock->pos_y ) * cell_size - data->y_cam), Black, std::to_string((int)curStock->food_collected).c_str());
+            for (int i = 0; i < curStock->size_y; i++) {
+                for (int j = 0; j < curStock->size_x; j++) {
+                    
+                    work_id = curStock->stuff[i][j];
+                    if (work_id != 0) {
+                        cur = data->entityList[work_id];
+                        Food* curFood = (Food*)(cur->getPtr());
+
+                        draw_x = (curFood->pos_x - c_x) * cell_size;
+                        draw_y = (curFood->pos_y - c_y) * cell_size;
+                        DrawFood(draw_x, draw_y, work_id);
+                    }
+                }
+            }
         }
 
     }ImGui::End();

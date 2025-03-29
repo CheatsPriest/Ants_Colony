@@ -9,6 +9,15 @@
 #include <string>
 using namespace std;
 
+
+static ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
+static ImColor Blue = ImColor(0.4f, 0.4f, 0.9f);
+
+static ImColor Brown = ImColor(0.8f, 0.4f, 0.1f);
+static ImColor Black = ImColor(0.f, 0.f, 0.f);
+static ImColor White = ImColor(0.8f, 0.8f, 0.8f);
+static ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
+
 class Window {
 public:
 
@@ -18,7 +27,7 @@ public:
     void EndFrame();
 
     Window(InfoSpace* data_p);
-
+    
     void Cleanup();
 private:
     WNDCLASSEXW wc;
@@ -28,7 +37,13 @@ private:
     ImGuiIO& Create();
     void DrawMainScene();
 
+    void DrawScout(int x, int y, unsigned int id);
+    void DrawWorker(int x, int y, unsigned int id);
+    void DrawSoldier(int x, int y, unsigned int id);
+    void DrawFood(int x, int y, unsigned int id);
+
     Field* field;
+    
     
 
 };

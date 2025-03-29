@@ -45,6 +45,18 @@ bool Ant::Take(unsigned int taked_id) {
     inventary = taked_id;
     return true;
 }
+//Копировать позицию в текущего
+void Ant::CopyPosition(Ant* source) {
+    pos_x = source->pos_x;
+    pos_y = source->pos_y;
+    pos_z = source->pos_z;
+}
+//Копировать позицию из текущего
+void Ant::GivePosition(Ant* input) {
+    input->pos_x = pos_x;
+    input->pos_y = pos_y;
+    input->pos_z = pos_z;
+}
 unsigned int Ant::Put() {
     unsigned int out = 0;
     out = inventary;

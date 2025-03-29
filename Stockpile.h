@@ -10,7 +10,7 @@ public:
 	int size_x;
 	int size_y;
 	int food_collected;
-	vector<vector<Entity*>> stuff;
+	vector<vector<unsigned int>> stuff;
 	Stockpile(int x, int y, int z, int wide, int hight) {
 		pos_x = x;
 		pos_y = y;
@@ -28,6 +28,6 @@ public:
 		}
 	}
 
-	bool TryToPut(Ant* ant);
+	bool TryToPut(Ant* ant, map<unsigned int, Entity*>* entityList);
 
 };

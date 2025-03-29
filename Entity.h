@@ -1,10 +1,11 @@
 #pragma once
-#include "Entity.h"
+#include <map>
 #include "Ant.h"
 #include "Food.h"
 #include "Insect.h"
 
-static map<unsigned int, Entity*> LocalEntityList;
+using namespace std;
+
 
 enum Entities {
 	ANT = 0,
@@ -32,3 +33,4 @@ public:
 	int pos_y;
 	int pos_z;
 };
+

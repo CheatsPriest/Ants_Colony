@@ -164,6 +164,7 @@
     <ClInclude Include="Cell.h" />
     <ClInclude Include="Collector.h" />
     <ClInclude Include="DrawField.h" />
+    <ClInclude Include="DrawAnts.cpp" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Food.h" />

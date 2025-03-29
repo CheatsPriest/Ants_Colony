@@ -26,7 +26,9 @@ public:
 	unsigned int free_stockpile_key;
 
 	Field* field;
-	map<unsigned int, Entity*>* entityList;
+
+	map<unsigned int, Entity*> entityList;
+
 	map<unsigned int, Stockpile*> stockpileList;
 
 
@@ -34,7 +36,7 @@ public:
 
 	InfoSpace() {
 
-		entityList = &LocalEntityList;
+		
 
 		x_cam = 0;
 		y_cam = 0;

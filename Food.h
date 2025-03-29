@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Ant.h"
 
 class Food
 {
@@ -22,6 +23,8 @@ public:
 	void info() {
 		std::cout << "I AM FOOD\n";
 	}
+
+	void CopyPosition(Ant* hauler);
 
 };
 

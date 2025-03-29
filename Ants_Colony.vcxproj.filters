@@ -34,6 +34,9 @@
     <Filter Include="Зоны">
       <UniqueIdentifier>{b1456765-8134-4740-904b-ac1426eeb5eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Еда">
+      <UniqueIdentifier>{f47b1ce6-4fdc-4b62-bb55-03e569ad392c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -87,9 +90,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Food.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Insect.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -104,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="Stockpile.cpp">
       <Filter>Зоны</Filter>
+    </ClCompile>
+    <ClCompile Include="Food.cpp">
+      <Filter>Еда</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +164,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Food.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Insect.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -181,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="Stockpile.h">
       <Filter>Зоны</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.h">
+      <Filter>Еда</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawAnts.cpp">
+      <Filter>Рисовальщик</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,6 +16,8 @@ public:
 	void Eat(int id_food_in_entity);
 	bool Take(unsigned int taked_id);
 	unsigned int Put();
+	void CopyPosition(Ant* source);
+	void GivePosition(Ant* input);
 
 	float HP;
 	float max_HP;
