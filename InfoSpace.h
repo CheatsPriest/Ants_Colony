@@ -4,6 +4,7 @@
 #include "Field.h"
 #include "Entity.h"
 #include "Collector.h"
+#include "Stockpile.h"
 
 class InfoSpace
 {
@@ -22,9 +23,12 @@ public:
 	int cell_size;
 
 	unsigned int free_key;
+	unsigned int free_stockpile_key;
 
 	Field* field;
 	map<unsigned int, Entity*> entityList;
+	map<unsigned int, Stockpile*> stockpileList;
+
 
 	bool draw_debug_move_lines;
 
@@ -43,6 +47,7 @@ public:
 		field_size_y = size_y;
 
 		free_key = 1;
+		free_stockpile_key = 1;
 
 		field = new Field;
 
@@ -53,6 +58,8 @@ public:
 	bool CreateEntityAnt(int x, int y, int z, int type, int under_class);
 	bool CreateEntityFood(int x, int y, int z, int type, float food_value, int weight);
 	bool CreateEntity(int x, int y, int t); // костыль дениса
+	bool CreateStockpile(int x, int y, int z, int wide, int hight);
+
 
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
