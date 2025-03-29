@@ -4,6 +4,8 @@
 #include "Food.h"
 #include "Insect.h"
 
+static map<unsigned int, Entity*> LocalEntityList;
+
 enum Entities {
 	ANT = 0,
 	FOOD = 1,

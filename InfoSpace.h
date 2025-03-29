@@ -26,13 +26,16 @@ public:
 	unsigned int free_stockpile_key;
 
 	Field* field;
-	map<unsigned int, Entity*> entityList;
+	map<unsigned int, Entity*>* entityList;
 	map<unsigned int, Stockpile*> stockpileList;
 
 
 	bool draw_debug_move_lines;
 
 	InfoSpace() {
+
+		entityList = &LocalEntityList;
+
 		x_cam = 0;
 		y_cam = 0;
 		z_cam = 0;
