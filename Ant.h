@@ -14,7 +14,8 @@ public:
 	}
 	bool isAlive();
 	void Eat(int id_food_in_entity);
-	
+	bool Take(unsigned int taked_id);
+	unsigned int Put();
 
 	float HP;
 	float max_HP;
@@ -36,7 +37,7 @@ public:
 	float defense;
 	int type;
 
-
+	unsigned int inventary;
 	
 };
 

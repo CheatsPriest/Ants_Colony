@@ -94,7 +94,11 @@ double dist(int p1, int p2, int p3, int p4) {
 // MOVE
 void InfoSpace::MoveEntity(unsigned int id) {
 	Entity* curEnt = entityList[id];
+
+
 	Ant* ant = (Ant *)curEnt->getPtr();
+
+
 	if (ant->type > 3) { return; }
 	vector<vector<double>> dt;
 	vector<vector<double>> de;
@@ -193,14 +197,28 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						Ant* smth = (Ant*)obj->getPtr();
 						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action != 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+
+							if (ant->inventary == 0 or true) {//убери true когда сделаешь выгрузку на скалад
+								//положить с помощью Put() из Ant.h
+								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+								cout << "I picked food nomber " << ant->inventary << endl;//подбор еды
+							}
+							
+
+
+
 							this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 };
 							ant->action = 2;
 						}
 						if (smth->type == 5 && ant->type == 3) {
 							ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
+
+							
 							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+
+							
+
 							ant->action = 1;
 						}
 						if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {

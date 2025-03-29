@@ -8,7 +8,7 @@ int draw_x, draw_y;
 
 
 ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
-ImColor Blue = ImColor(0.2f, 0.2f, 0.8f);
+ImColor Blue = ImColor(0.4f, 0.4f, 0.9f);
 
 ImColor Brown = ImColor(0.8f, 0.4f, 0.1f);
 ImColor Black = ImColor(0.f, 0.f, 0.f);
@@ -106,8 +106,9 @@ void Window::DrawMainScene() {
         Stockpile* curStock;
         for (auto el : data->stockpileList) {
             curStock = el.second;
-            cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
+            //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
             ImGui::GetBackgroundDrawList()->AddRect(ImVec2(curStock->pos_x* cell_size, curStock->pos_y* cell_size), ImVec2((curStock->pos_x + curStock->size_x)* cell_size, (curStock->pos_y + curStock->size_y)* cell_size), Red, 0.1f, 0, 2.0f);
+            ImGui::GetBackgroundDrawList()->AddText(ImVec2(curStock->pos_x * cell_size, curStock->pos_y * cell_size), Black, std::to_string((int)curStock->food_collected).c_str());
         }
 
     }ImGui::End();

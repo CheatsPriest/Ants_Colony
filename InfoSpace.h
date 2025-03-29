@@ -64,6 +64,7 @@ public:
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
 	void MoveEntity(unsigned int id);
+	void ProcessAnt(Ant* curAnt);
 
 	~InfoSpace() {
 		delete field;

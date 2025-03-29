@@ -15,6 +15,7 @@ Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defens
     this->aim = { this->pos_x,this->pos_y };
     nearest_En = { this->pos_x,this->pos_y };
     nearest_Fd = { this->pos_x,this->pos_y };
+    inventary = 0;
 }
 
 bool Ant::isAlive()
@@ -38,5 +39,28 @@ void Ant::Eat(int id_food_in_entity)
 //    InfoSpace::entityList.erase(food->entity_id);
 //}
 }
+bool Ant::Take(unsigned int taked_id) {
 
+    if (inventary != 0)return false;
+    inventary = taked_id;
+    return true;
+}
+unsigned int Ant::Put() {
+    unsigned int out = 0;
+    out = inventary;
+    inventary = 0;
+    return out;
+}
+void InfoSpace::ProcessAnt(Ant* curAnt) {
+    if (curAnt->type == 1) {//scout
 
+    }
+    else if (curAnt->type == 2) {//worker
+        if (curAnt->action == 1) {
+
+        }
+    }
+    else if (curAnt->type == 3) {//soldier
+
+    }
+}
