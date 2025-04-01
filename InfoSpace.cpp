@@ -179,12 +179,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->action = 1;
 							
 						}
-						if (smth->type == 5) {
+						/*if (smth->type == 5) {
 							ant->nearest_En = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 							ant->action = 1;
 		
-						}
+						}*/
 						
 						if ((smth->type == 2 or smth->type == 3) && ant->action == 1  && smth->action != 2) {
 							smth->nearest_En = ant->nearest_En;

@@ -32,9 +32,9 @@ void processingEntities() {
 	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 	}
-	for (int i = 0; i < 100; i++) {
+	/*for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntity(rand() % 100 + 50, rand() % 100 + 50,5);
-	}
+	}*/
 
 	
 	
