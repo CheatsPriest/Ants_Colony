@@ -4,9 +4,9 @@
 //ћуравей пытаетс€ положить на €чейку — Ћјƒј предмет или муравь€ и возвращает true если все успешно
 bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pair<int,int> where) {
 	int x, y;
-	x = where.first- size_x;
-	y = where.second - size_y;
-	if (x<0 or y<0 or x>=size_x or y>=size_y or stuff[x][y]!=0) return false;
+	x = where.first- pos_x;
+	y = where.second - pos_y;
+	if (x < 0 or y < 0 or x > size_x or y > size_y or stuff[x][y] != 0) x = (x) % size_x; y=y+(x);
 
 	stuff[x][y] = curAnt->Put();
 	unsigned int carry_id = stuff[x][y];
