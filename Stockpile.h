@@ -28,6 +28,6 @@ public:
 		}
 	}
 
-	bool TryToPut(Ant* ant, map<unsigned int, Entity*>* entityList);
+	bool TryToPut(Ant* ant, map<unsigned int, Entity*>* entityList, pair<int,int>where);
 
 };

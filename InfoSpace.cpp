@@ -141,6 +141,18 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
 	if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+		if (ant->inventary != 0) {
+			for (auto stock : stockpileList) {
+				Stockpile* stash = stock.second;
+				cout << 2;
+				if (stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x+stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+					stash->TryToPut(ant, &entityList, ant->aim);
+					cout << 2;
+				}
+			}
+			
+				
+		}
 		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
@@ -198,17 +210,20 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action != 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
-							if (ant->inventary == 0 or true) {//убери true когда сделаешь выгрузку на скалад
+							if (ant->inventary == 0) {//убери true когда сделаешь выгрузку на скалад
 								//положить с помощью Put() из Ant.h
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-								cout << "I picked food nomber " << ant->inventary << endl;//подбор еды
+								cout << "I picked food number " << ant->inventary << endl;//подбор еды
+
 							}
-							
-
-
-
+							pair<int, int> na;
+							for (auto stock : stockpileList) {
+								if (stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
+								}
+							}
 							this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
-							ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 };
+							ant->aim = na;
 							ant->action = 2;
 						}
 						if (smth->type == 5 && ant->type == 3) {

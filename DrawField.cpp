@@ -28,8 +28,8 @@ void Window::DrawSoldier(int x, int y, unsigned int id) {
 }
 void Window::DrawFood(int x, int y, unsigned int id) {
     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Green, 0.1f, 0);
-    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "F");
-    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+   // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "F");
+   // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
 
 void Window::DrawMainScene() {
@@ -100,8 +100,7 @@ void Window::DrawMainScene() {
                     else if (cur->getType() == Entities::FOOD) {
                         Food* curFood = (Food*)(cur->getPtr());
                         ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Green, 0.1f, 0);
-                        ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
-
+                       
                     }
                    
                 }
@@ -116,7 +115,7 @@ void Window::DrawMainScene() {
             curStock = el.second;
             //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
             ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x)* cell_size - data->x_cam, (curStock->pos_y)* cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x)* cell_size - data->x_cam, (curStock->pos_y + curStock->size_y)* cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
-            ImGui::GetBackgroundDrawList()->AddText(ImVec2((curStock->pos_x ) * cell_size - data->x_cam, (curStock->pos_y ) * cell_size - data->y_cam), Black, std::to_string((int)curStock->food_collected).c_str());
+           
             for (int i = 0; i < curStock->size_y; i++) {
                 for (int j = 0; j < curStock->size_x; j++) {
                     
