@@ -7,8 +7,43 @@ int cell_size;
 int draw_x, draw_y;
 
 unsigned int work_id;
+/*
+// Загрузка текстуры
+ImTextureID antTexture = NULL;
+bool LoadAntTexture() {
+    int width, height, channels;
+    unsigned char* data = stbi_load("X://antTest.jpg", &width, &height, &channels, 4);
+
+    if (data) {
+        GLuint textureID;
+        glGenTextures(1, &textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        stbi_image_free(data);
+        antTexture = reinterpret_cast<ImTextureID>(textureID);
+        return true;
+    }
+    return false;
+}
+
+void Window::DrawScout(int x, int y, unsigned int id) {
+    if (antTexture) {
+        ImGui::GetBackgroundDrawList()->AddImage(
+            antTexture,
+            ImVec2(x + 1.f, y + 1.f),
+            ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f)
+        );
+    }
+    else // если текстура не подгрузилась(
+        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Blue, 0.1f, 0);
 
 
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());;
+}
+
+*/
 Entity* cur;
 
 void Window::DrawScout(int x, int y, unsigned int id) {
