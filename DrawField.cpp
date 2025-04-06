@@ -1,7 +1,8 @@
 #include "ImGuiTail.h"
 #include "imgui.h"
 #include "myfont.h"
-//
+
+/*
 #define GL_SILENCE_DEPRECATION
 #define STB_IMAGE_IMPLEMENTATION
 #include "glfw3.h"
@@ -9,9 +10,8 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include "stb_image.h"
-//
+*/
 
-//
 
 int c_x;
 int c_y;
@@ -24,7 +24,7 @@ int draw_x, draw_y;
 unsigned int work_id;
 
 Entity* cur;
-
+/*
 GLuint LoadTexture(const char* path) {
     int width, height, channels;
     unsigned char* data = stbi_load(path, &width, &height, &channels, 4);
@@ -47,10 +47,10 @@ GLuint scout_texture = LoadTexture("X:\\antTest.png");
 GLuint worker_texture;
 GLuint soldier_texture;
 GLuint queen_texture;
-
+*/ // Трэш просто...
 void Window::DrawScout(int x, int y, unsigned int id) {
-    //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Blue, 0.1f, 0);
-    ImVec2 start_pos(x + 1.f, y + 1.f);
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Blue, 0.1f, 0);
+    /*ImVec2 start_pos(x + 1.f, y + 1.f);
     ImVec2 end_pos(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f);
 
     // Рисуем текстуру
@@ -61,7 +61,7 @@ void Window::DrawScout(int x, int y, unsigned int id) {
         ImVec2(0, 0),
         ImVec2(1, 1),
         IM_COL32_WHITE
-    );
+    );*/ // Дай боже я к тебе не вернусь
     ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "R");
     ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }   
