@@ -247,8 +247,6 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
 							}
-							//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
-
 							ant->aim = na;
 							ant->action = 2;
 						}
