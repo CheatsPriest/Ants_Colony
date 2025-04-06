@@ -169,10 +169,10 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			ant->action = 0;
 		}
 	}
-	else if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
+	if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
-	else if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+	if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 		if (ant->inventary != 0) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
@@ -188,7 +188,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->action = 0;
 	}
 
-	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
+	 if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
 		ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
