@@ -64,12 +64,13 @@ public:
 	bool CreateEntityFood(int x, int y, int z, int type, float food_value, int weight);
 	bool CreateEntity(int x, int y, int t); // костыль дениса
 	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type);
-
+	
 
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
 	void MoveEntity(unsigned int id);
 	void ProcessAnt(Ant* curAnt);
+
 
 	~InfoSpace() {
 		delete field;

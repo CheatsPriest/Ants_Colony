@@ -228,7 +228,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
 							}
-							this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+							//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							ant->aim = na;
 							ant->action = 2;
 						}
@@ -264,9 +264,23 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 
 bool InfoSpace::DeleteEntity(unsigned int id) {
+	if (id == 0) {
+		return false;
+	}
 	Entity* curEnt = entityList[id];
 	entityList.erase(id);
-	if(curEnt->getType() == 1) {//еда
+	if(curEnt->getType() == FOOD) {//еда
+
+		Food* curFood = (Food*)(curEnt->getPtr());
+
+
+		delete curFood;
+	}
+	else if (curEnt->getType() == ANT) {//еда
+		Ant* curAnt = (Ant*)(curEnt->getPtr());
+
+
+		delete curAnt;
 		
 	}
 	return false;

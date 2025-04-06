@@ -2,6 +2,40 @@
 #include "InfoSpace.h"
 
 //ћуравей пытаетс€ положить на €чейку — Ћјƒј предмет или муравь€ и возвращает true если все успешно
+unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* entityList) {
+
+	unsigned int food_ind;
+	int x, y;
+	x = food_collected % size_x;
+	y = food_collected / size_x;
+
+	if (stuff[x][y] != 0) {
+		Entity* targEnt = (*entityList)[stuff[x][y]];
+
+		food_ind = stuff[x][y];
+
+		if (targEnt->getType() == Entities::FOOD) {
+
+			Food* curFood = (Food*)(targEnt->getPtr());
+			float need = curAnt->max_Saturation - curAnt->saturation;
+			float itog = min(need, curFood->food_value);
+			curAnt->saturation += itog;
+			curFood->food_value -= itog;
+
+			if (curFood->food_value<=0) {
+				food_collected--;
+				stuff[x][y] = 0;
+				return food_ind;
+			}
+
+		}
+	}
+	else if(x>0 and y>0) {
+		food_collected--;
+	}
+	return 0;
+
+}
 bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pair<int, int> where) {
 	if (food_collected == size_x * size_y) { return false; }
 	int x, y;

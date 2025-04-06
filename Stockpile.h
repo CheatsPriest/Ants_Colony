@@ -12,6 +12,7 @@ public:
 	int type;//0 - еда, 1 - стройматериалы, 2 - 
 	int food_collected;
 	vector<vector<unsigned int>> stuff;
+	
 	Stockpile(int x, int y, int z, int wide, int hight, int cur_type) {
 		pos_x = x;
 		pos_y = y;
@@ -31,5 +32,5 @@ public:
 	}
 
 	bool TryToPut(Ant* ant, map<unsigned int, Entity*>* entityList, pair<int,int>where);
-
+	unsigned int AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* entityList);
 };
