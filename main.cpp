@@ -30,7 +30,7 @@ void processingEntities() {
 		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
 	}
 
-	for (int i = 0; i < 800; i++) {
+	for (int i = 0; i < 250; i++) {
 		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 	}
 	/*for (int i = 0; i < 100; i++) {
@@ -71,6 +71,9 @@ void processingEntities() {
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
 		{
 			ultimateData->MoveCam(-1, 0);
+			for (int i = 0; i < 25; i++) {
+				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
+			}
 		}
 		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
 			ultimateData->MoveCam(1, 0);

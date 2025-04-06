@@ -21,7 +21,7 @@ public:
 		size_x = wide;
 		size_y = hight;
 		type = cur_type;
-		food_collected = 0;
+		food_collected = -1;
 		id = cr_id;
 		stuff.resize(size_y);
 		for (int i = 0; i < size_y; i++) {
