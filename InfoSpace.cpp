@@ -145,7 +145,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->action = 3;
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
-			if (stash->type == 0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+			if (stash->type == 0 && stash->food_collected!=0) {
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
 				if (ant->type == 3) {
@@ -247,10 +247,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
 							}
-<<<<<<< Updated upstream
+
 							//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
-=======
->>>>>>> Stashed changes
 							ant->aim = na;
 							ant->action = 2;
 						}
