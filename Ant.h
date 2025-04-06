@@ -27,7 +27,7 @@ public:
 	int pos_y;
 	int pos_z;
 
-	int stashid;
+	unsigned int stashid;
 
 	int level;//Пока что 1
 	int smell_Rad;

@@ -145,10 +145,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->action = 3;
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
-			ant->stashid = stash->id;
-			if (stash->type == 0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+			
+			if (stash->type == 0 and stash->food_collected!=0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
+				ant->stashid = stash->id;
+				cout << stash->id;
 				if (ant->type == 3) {
 					ant->nearest_En = { aim_x,aim_y };
 					ant->aim = { aim_x,aim_y };
