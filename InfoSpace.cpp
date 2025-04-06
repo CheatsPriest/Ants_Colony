@@ -147,7 +147,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
 			
-			if (stash->type == 0 and stash->food_collected!=0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+			if (stash->type == 0 and stash->food_collected>=1 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 				ant->action = 3;
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
@@ -257,7 +257,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							for (auto stock : stockpileList) {
 								if (stock.second->type == 0 && stock.second->food_collected!= stock.second->size_x* stock.second->size_y) {
 									cout << "Illbeback" << endl;
-									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
+									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
 								}
 							}
 							ant->aim = na;
