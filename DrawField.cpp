@@ -49,14 +49,14 @@ void Window::DrawMainScene() {
     
     if (ImGui::Begin("Main Scene", 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
     {
-        for (int x = 0; x < data->field_size_x; x++) {
-            for (int y = 0; y < data->field_size_y; y++){//Неоптимизированно
-        //for (int x = c_x; x < max_x; x++) {
-            //for (int y = c_y; y < max_y; y++) {
+        //for (int x = 0; x < data->field_size_x; x++) {
+        //    for (int y = 0; y < data->field_size_y; y++){//Неоптимизированно
+        for (int x = c_x; x < max_x; x++) {
+            for (int y = c_y; y < max_y; y++) {
                 draw_x = (x - c_x) * cell_size;
                 draw_y = (y - c_y) * cell_size;
 
-                ImGui::GetBackgroundDrawList()->AddRect(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0, 1.0f);
+                //ImGui::GetBackgroundDrawList()->AddRect(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0, 1.0f);
                 //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0);
                 
                 if (field->field[x][y][data->z_cam].IDs[0] != 0) {
