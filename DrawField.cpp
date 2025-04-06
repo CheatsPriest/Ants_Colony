@@ -12,6 +12,36 @@
 #include "stb_image.h"
 */
 
+//#include "d3d9.h"
+//#include "d3dx9.h"
+#include "d3dx9tex.h"
+#pragma comment(lib, "d3dx9")
+
+bool LoadTextureFromFile(const char* filename, PDIRECT3DTEXTURE9* out_texture, int* out_width, int* out_height)
+{
+    PDIRECT3DTEXTURE9 texture;
+    HRESULT hr = D3DXCreateTextureFromFileA(g_pd3dDevice, filename, &texture);
+    if (hr != S_OK)
+        return false;
+
+    D3DSURFACE_DESC my_image_desc;
+    texture->GetLevelDesc(0, &my_image_desc);
+    *out_texture = texture;
+    *out_width = (int)my_image_desc.Width;
+    *out_height = (int)my_image_desc.Height;
+    return true;
+}
+
+int my_image_width = 0;
+int my_image_height = 0;
+PDIRECT3DTEXTURE9 my_texture = NULL; 
+
+bool InitResources()
+{
+    bool ret = LoadTextureFromFile("X:\\antText.png", &my_texture, &my_image_width, &my_image_height);
+    IM_ASSERT(ret);
+    return ret;
+}
 
 int c_x;
 int c_y;
@@ -49,7 +79,8 @@ GLuint soldier_texture;
 GLuint queen_texture;
 */ // Трэш просто...
 void Window::DrawScout(int x, int y, unsigned int id) {
-    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Blue, 0.1f, 0);
+    ImGui::Image((ImTextureID)(intptr_t)my_texture, ImVec2(my_image_width, my_image_height));
+    //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Blue, 0.1f, 0);
     /*ImVec2 start_pos(x + 1.f, y + 1.f);
     ImVec2 end_pos(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f);
 
