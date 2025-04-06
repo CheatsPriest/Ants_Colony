@@ -146,8 +146,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		if (ant->inventary != 0) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
-				cout << 2;
-				if (stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x+stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+				
+				if (stash->type==0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x+stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 					stash->TryToPut(ant, &entityList, ant->aim);
 					cout << 2;
 				}
@@ -216,15 +216,15 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action != 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
-							if (ant->inventary == 0) {//убери true когда сделаешь выгрузку на скалад
-								//положить с помощью Put() из Ant.h
+							if (ant->inventary == 0) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 								cout << "I picked food number " << ant->inventary << endl;//подбор еды
 
 							}
-							pair<int, int> na;
+							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
 							for (auto stock : stockpileList) {
 								if (stock.second->type == 0) {
+									cout << "Illbeback" << endl;
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
 							}
@@ -236,12 +236,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth->type == 5 && ant->type == 3) {
 								ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
-
-
 								this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-
-
-
 								ant->action = 1;
 							}
 							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
