@@ -22,7 +22,7 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 			curAnt->saturation += itog;
 			curFood->food_value -= itog;
 
-			if (curFood->food_value<=0) {
+			if (curFood->food_value<=0 && food_collected > 0) {
 				food_collected--;
 				stuff[x][y] = 0;
 				return food_ind;

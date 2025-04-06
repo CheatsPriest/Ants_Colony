@@ -140,7 +140,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
 		}
 	}
-	ant->saturation -= 0.2;
+	ant->saturation -= 0.5;
 
 	if (ant->saturation<=ant->max_Saturation*0.3 && ant->action!=3) {
 		
