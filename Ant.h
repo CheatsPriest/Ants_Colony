@@ -27,6 +27,8 @@ public:
 	int pos_y;
 	int pos_z;
 
+	int stashid;
+
 	int level;//Пока что 1
 	int smell_Rad;
 	pair<int, int> aim = {pos_x,pos_y};
