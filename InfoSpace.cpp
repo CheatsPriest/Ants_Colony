@@ -124,7 +124,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->pos_y += dt[wh][3];
 		this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
 	}
-	ant->saturation -= 0.1;
+	ant->saturation -= 0.2;
 	if (ant->saturation < 0) {
 		cout << "dead" << ant->type<< endl;
 	}

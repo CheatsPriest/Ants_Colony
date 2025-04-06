@@ -42,7 +42,7 @@ public:
 		y_cam = 0;
 		z_cam = 0;
 
-		cam_speed = 4;
+		cam_speed = 5;
 		cell_size = cam_speed;
 
 		main_window_wide = 1000;

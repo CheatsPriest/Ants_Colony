@@ -6,12 +6,11 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 
 	unsigned int food_ind;
 	int x, y;
+	cout <<endl<<"FOOD "<< food_collected << endl;
 	x = food_collected % size_x;
 	y = food_collected / size_x;
-	if (food_collected == 0) {
-		cout << "END";
-	}
-	if (x>=0 && y>=0 && y< size_y &&stuff[x][y] != 0 and food_collected>0) {
+
+	if ((x>=0 && y>=0 && y< size_y &&stuff[x][y] != 0 and food_collected>=0) or (stuff[0][0]>0 and food_collected ==0)) {
 		Entity* targEnt = (*entityList)[stuff[x][y]];
 
 		food_ind = stuff[x][y];
@@ -24,8 +23,9 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 			curAnt->saturation += itog;
 			curFood->food_value -= itog;
 
-			if (curFood->food_value<=0 && food_collected > 0) {
+			if (curFood->food_value<=0 && food_collected >= 0) {
 				food_collected--;
+				
 				stuff[x][y] = 0;
 				return food_ind;
 			}
@@ -41,14 +41,14 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pair<int, int> where) {
 	if (food_collected == size_x * size_y) { return false; }
 	int x, y;
-	if (food_collected == -1) { food_collected++; }
+	food_collected++;
 	x = food_collected%size_x;
 	y = food_collected/size_x;
 	
 	stuff[x][y] = curAnt->Put();
 	unsigned int carry_id = stuff[x][y];
 	Entity* curCarried = (*entityList)[carry_id];
-	food_collected++;
+	//food_collected++;
 	cout << 1;
 	if (curCarried->getType() == Entities::ANT) {
 		Ant* carriedAnt = (Ant*)(curCarried->getPtr());
