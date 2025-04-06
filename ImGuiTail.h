@@ -41,6 +41,7 @@ private:
     void DrawWorker(int x, int y, unsigned int id);
     void DrawSoldier(int x, int y, unsigned int id);
     void DrawFood(int x, int y, unsigned int id);
+    void DrawMaterial(int x, int y, unsigned int id);
 
     Field* field;
     

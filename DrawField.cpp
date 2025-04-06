@@ -31,6 +31,11 @@ void Window::DrawFood(int x, int y, unsigned int id) {
    // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "F");
    // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
+void Window::DrawMaterial(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Brown, 0.1f, 0);
+    // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "F");
+    // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
 
 void Window::DrawMainScene() {
 
@@ -102,6 +107,11 @@ void Window::DrawMainScene() {
                         ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Green, 0.1f, 0);
                        
                     }
+                    else if (cur->getType() == Entities::MATERIALS) {
+                        Materials* curMat = (Materials*)(cur->getPtr());
+                        DrawMaterial(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+
+                    }
                    
                 }
 
@@ -115,18 +125,35 @@ void Window::DrawMainScene() {
             curStock = el.second;
             //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
             ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x)* cell_size - data->x_cam, (curStock->pos_y)* cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x)* cell_size - data->x_cam, (curStock->pos_y + curStock->size_y)* cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
-           
-            for (int i = 0; i < curStock->size_y; i++) {
-                for (int j = 0; j < curStock->size_x; j++) {
-                    
-                    work_id = curStock->stuff[i][j];
-                    if (work_id != 0) {
-                        cur = data->entityList[work_id];
-                        Food* curFood = (Food*)(cur->getPtr());
+            if (curStock->type == FOOD_STOCK) {
+                for (int i = 0; i < curStock->size_y; i++) {
+                    for (int j = 0; j < curStock->size_x; j++) {
 
-                        draw_x = (curFood->pos_x - c_x) * cell_size;
-                        draw_y = (curFood->pos_y - c_y) * cell_size;
-                        DrawFood(draw_x, draw_y, work_id);
+                        work_id = curStock->stuff[i][j];
+                        if (work_id != 0) {
+                            cur = data->entityList[work_id];
+                            Food* curFood = (Food*)(cur->getPtr());
+
+                            draw_x = (curFood->pos_x - c_x) * cell_size;
+                            draw_y = (curFood->pos_y - c_y) * cell_size;
+                            DrawFood(draw_x, draw_y, work_id);
+                        }
+                    }
+                }
+            }
+            else if (curStock->type == MATERIAL_STOCK) {
+                for (int i = 0; i < curStock->size_y; i++) {
+                    for (int j = 0; j < curStock->size_x; j++) {
+
+                        work_id = curStock->stuff[i][j];
+                        if (work_id != 0) {
+                            cur = data->entityList[work_id];
+                            Materials* curMat = (Materials*)(cur->getPtr());
+
+                            draw_x = (curMat->pos_x - c_x) * cell_size;
+                            draw_y = (curMat->pos_y - c_y) * cell_size;
+                            DrawMaterial(draw_x, draw_y, work_id);
+                        }
                     }
                 }
             }

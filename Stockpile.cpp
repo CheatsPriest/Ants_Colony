@@ -10,7 +10,7 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 	x = food_collected % size_x;
 	y = food_collected / size_x;
 
-	if (x >= 0 && y >= 0 && y < size_y && stuff[x][y] != 0 and food_collected>0) {
+	if (x >= 0 && y >= 0 && y < size_y && stuff[x][y] != 0 and food_collected>=0) {
 		Entity* targEnt = (*entityList)[stuff[x][y]];
 
 		food_ind = stuff[x][y];
@@ -23,7 +23,7 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 			curAnt->saturation += itog;
 			curFood->food_value -= itog;
 
-			if (curFood->food_value<=0 && food_collected > 0) {
+			if (curFood->food_value<=0 && food_collected >= 0) {
 				food_collected--;
 				
 				stuff[x][y] = 0;
@@ -33,7 +33,36 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 		}
 	}
 	else if(x>=0 and y>=0 and food_collected>0) {
-		food_collected--;
+		//food_collected--;
+	}
+	return 0;
+
+}
+unsigned int Stockpile::PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityList) {
+
+	unsigned int food_ind;
+	int x, y;
+	
+	x = food_collected % size_x;
+	y = food_collected / size_x;
+
+	if (x >= 0 and y >= 0 and y < size_y and stuff[x][y] != 0 and food_collected >= 0) {
+		Entity* targEnt = (*entityList)[stuff[x][y]];
+		
+		food_ind = stuff[x][y];
+
+		if (targEnt->getType() == Entities::MATERIALS) {
+
+			Materials* curMat = (Materials*)(targEnt->getPtr());
+			
+			curAnt->inventary = food_ind;
+			food_collected--;
+			stuff[x][y] = 0;
+
+		}
+	}
+	else if (x >= 0 and y >= 0 and food_collected > 0) {
+		//food_collected--;
 	}
 	return 0;
 
@@ -62,6 +91,12 @@ bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pa
 		carriedFood->pos_x = x + pos_x;
 		carriedFood->pos_y =y + pos_y;
 		
+	}
+	else if (curCarried->getType() == Entities::MATERIALS) {
+		Materials* carriedMat = (Materials*)(curCarried->getPtr());
+		carriedMat->pos_x = x + pos_x;
+		carriedMat->pos_y = y + pos_y;
+
 	}
 
 	

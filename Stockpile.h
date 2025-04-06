@@ -2,6 +2,11 @@
 
 #include "Entity.h"
 
+enum Stockpiles {
+	FOOD_STOCK = 0,
+	MATERIAL_STOCK = 1
+};
+
 class Stockpile {
 public:
 	int pos_x;
@@ -35,4 +40,5 @@ public:
 
 	bool TryToPut(Ant* ant, map<unsigned int, Entity*>* entityList, pair<int,int>where);
 	unsigned int AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* entityList);
+	unsigned int PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityList);
 };
