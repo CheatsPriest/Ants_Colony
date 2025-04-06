@@ -10,7 +10,7 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 	x = food_collected % size_x;
 	y = food_collected / size_x;
 
-	if ((x>=0 && y>=0 && y< size_y &&stuff[x][y] != 0 and food_collected>=0) or (stuff[0][0]>0 and food_collected ==0)) {
+	if (x >= 0 && y >= 0 && y < size_y && stuff[x][y] != 0 and food_collected>0) {
 		Entity* targEnt = (*entityList)[stuff[x][y]];
 
 		food_ind = stuff[x][y];
@@ -23,7 +23,7 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 			curAnt->saturation += itog;
 			curFood->food_value -= itog;
 
-			if (curFood->food_value<=0 && food_collected >= 0) {
+			if (curFood->food_value<=0 && food_collected > 0) {
 				food_collected--;
 				
 				stuff[x][y] = 0;

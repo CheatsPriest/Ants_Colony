@@ -119,7 +119,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	for (double i = -1; i <= 1; i++) {
 		for (double j = -1; j <= 1; j++) {
 			if (ant->pos_x + i >= 0 and ant->pos_x + i < field_size_x and ant->pos_y + j >= 0 and ant->pos_y + j < field_size_y) {
-				dt.push_back({ dist(ant->pos_x + i,  ant->pos_y + j,  ant->aim.first,  ant->aim.second), 1 , i , j });
+				dt.push_back({ dist(ant->pos_x + i,  ant->pos_y + j,  ant->aim.first,  ant->aim.second), 1.1+rand()%2 , i , j});
 			}
 		}
 	}	
@@ -224,7 +224,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 								smth->aim = ant->nearest_Fd;
 								smth->action = 1;
 							}
-							if (smth->type == 2 && ant->action == 1 && smth->action <= 1) {
+							if (smth->type == 3 && ant->action == 1 && smth->action <= 1) {
 								smth->nearest_En = ant->nearest_En;
 								smth->aim = ant->nearest_En;
 								smth->action = 1;
