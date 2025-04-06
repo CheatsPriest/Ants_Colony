@@ -16,7 +16,8 @@ void processingEntities() {
 	Window* mainWindow = new Window(ultimateData);
 	srand(time(0));
 	ultimateData->CreateStockpile(10, 10, 0, 17, 17, 0);
-	
+	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 0);
+
 	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
 	for (int i = 0; i < 100; i++) {
@@ -29,8 +30,8 @@ void processingEntities() {
 		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
 	}
 
-	for (int i = 0; i < 100; i++) {
-		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 200, 10);
+	for (int i = 0; i < 800; i++) {
+		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 	}
 	/*for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntity(rand() % 100 + 50, rand() % 100 + 50,5);
