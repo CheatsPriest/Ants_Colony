@@ -141,23 +141,32 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	}
 	ant->saturation -= 0.2;
 
-	if (ant->saturation<=ant->max_Saturation*0.3) {
+	if (ant->saturation<=ant->max_Saturation*0.3 && ant->action!=3) {
 		ant->action = 3;
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
-
+			ant->stashid = stash->id;
 			if (stash->type == 0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
 				if (ant->type == 3) {
 					ant->nearest_En = { aim_x,aim_y };
+					ant->aim = { aim_x,aim_y };
 				}
 				else {
 					ant->aim = { aim_x,aim_y };
 				}
-				cout << 3;
+				
 				
 			}
+		}
+	}
+	if (ant->action==3) {
+		cout << "WANNA EAT" << endl;
+		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+			cout << "EAT" << endl;
+			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
+			ant->action = 0;
 		}
 	}
 	else if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
