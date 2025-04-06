@@ -26,9 +26,9 @@ void processingEntities() {
 	for (int i = 0; i < 50; i++) {
 		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
 	}
-	/*for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < 30; i++) {
 		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
-	}*/
+	}
 
 	for (int i = 0; i < 250; i++) {
 		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);

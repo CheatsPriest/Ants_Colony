@@ -104,41 +104,25 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 	if (ant->type > 3) { return; }
 	vector<vector<double>> dt;
-	vector<vector<double>> de;
 	for (double i = -1; i <= 1; i++) {
 		for (double j = -1; j <= 1; j++) {
 			if (ant->pos_x + i >= 0 and ant->pos_x + i < field_size_x and ant->pos_y + j >= 0 and ant->pos_y + j < field_size_y) {
-				dt.push_back({ dist(ant->pos_x + i,  ant->pos_y + j,  ant->aim.first,  ant->aim.second), -dist(ant->pos_x + i,  ant->pos_y + j,  ant->nearest_En.first,  ant->nearest_En.second) , i , j });
-				de.push_back({ dist(ant->pos_x + i,  ant->pos_y + j,  ant->nearest_En.first,  ant->nearest_En.second) , 1, i , j });
+				dt.push_back({ dist(ant->pos_x + i,  ant->pos_y + j,  ant->aim.first,  ant->aim.second), 1 , i , j });
 			}
 		}
 	}	
 	sort(dt.begin(), dt.end());
-	sort(de.begin(), de.end());
+	
 	int wh = 0;
-	if (ant->type == 3) {
-
-		int num = this->field->field[ant->pos_x][ant->pos_y]->CutEntity(0);
-		while (this->field->field[(int)(ant->pos_x + de[wh][2])][(int)(ant->pos_y + de[wh][3])]->IDs[0] && wh != 9) {
-			wh += 1;
-		}
-		if(wh!=9){
-			ant->pos_x += de[wh][2];
-			ant->pos_y += de[wh][3];
-			this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
-		}
+	int num = this->field->field[ant->pos_x][ant->pos_y]->CutEntity(0);
+	while (this->field->field[(int)(ant->pos_x + dt[wh][2])][(int)(ant->pos_y + dt[wh][3])]->IDs[0] && wh != 9) {
+		wh += 1;
 	}
-	else {
-		int num = this->field->field[ant->pos_x][ant->pos_y]->CutEntity(0);
-		while (this->field->field[(int)(ant->pos_x + dt[wh][2])][(int)(ant->pos_y + dt[wh][3])]->IDs[0] && wh != 9) {
-			wh += 1;
-		}
 		
-		if(wh!=9){
-			ant->pos_x += dt[wh][2];
-			ant->pos_y += dt[wh][3];
-			this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
-		}
+	if(wh!=9){
+		ant->pos_x += dt[wh][2];
+		ant->pos_y += dt[wh][3];
+		this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
 	}
 	ant->saturation -= 0.2;
 	if (ant->saturation < 0) {
@@ -192,9 +176,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
-
-	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
-		ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
+	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.first) <= 2) {
+		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
 
@@ -224,10 +207,14 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth == NULL)continue;
-							if ((smth->type == 2 or smth->type == 3) && ant->action == 1 && smth->action <= 1 ) {
-								smth->nearest_En = ant->nearest_En;
+							if (smth->type == 2  && ant->action == 1 && smth->action <= 1 ) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
+								smth->action = 1;
+							}
+							if (smth->type == 2 && ant->action == 1 && smth->action <= 1) {
+								smth->nearest_En = ant->nearest_En;
+								smth->aim = ant->nearest_En;
 								smth->action = 1;
 							}
 						}
@@ -274,18 +261,18 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth->type == 5 && ant->type == 3) {
-								ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
+								ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 								this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 								ant->action = 1;
 							}
 							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
-								smth->nearest_En = ant->nearest_En;
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
 								smth->action = 1;
 							}
 							if (smth->type == 3 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
 								smth->nearest_En = ant->nearest_En;
+								smth->aim = ant->nearest_En;
 								smth->action = 1;
 
 							}
