@@ -9,14 +9,16 @@ public:
 	int pos_z;
 	int size_x;
 	int size_y;
+	int type;//0 - еда, 1 - стройматериалы, 2 - 
 	int food_collected;
 	vector<vector<unsigned int>> stuff;
-	Stockpile(int x, int y, int z, int wide, int hight) {
+	Stockpile(int x, int y, int z, int wide, int hight, int cur_type) {
 		pos_x = x;
 		pos_y = y;
 		pos_z = z;
 		size_x = wide;
 		size_y = hight;
+		type = cur_type;
 		food_collected = 0;
 		stuff.resize(size_y);
 		for (int i = 0; i < size_y; i++) {

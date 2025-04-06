@@ -63,7 +63,7 @@ public:
 	bool CreateEntityAnt(int x, int y, int z, int type, int under_class);
 	bool CreateEntityFood(int x, int y, int z, int type, float food_value, int weight);
 	bool CreateEntity(int x, int y, int t); // костыль дениса
-	bool CreateStockpile(int x, int y, int z, int wide, int hight);
+	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type);
 
 
 	bool DeleteEntity(unsigned int id);
