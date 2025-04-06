@@ -48,6 +48,18 @@ bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value
 	free_key++;
 	return true;
 }
+bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) {
+	Materials* mat = new Materials(x, y, z, type, weight);
+	Entity* new_ent = new Entity(mat, Entities::MATERIALS);
+	entityList.insert({ free_key, new_ent });
+
+	field->field[mat->pos_x][mat->pos_y][mat->pos_z].IDs[0] = free_key;
+
+	mat->entity_id = free_key;
+
+	free_key++;
+	return true;
+}
 bool InfoSpace::CreateEntity(int x, int y, int t)
 {
 	if (field->field[x][y][0].IDs[0] != 0)return false;
@@ -319,6 +331,11 @@ bool InfoSpace::DeleteEntity(unsigned int id) {
 
 		delete curAnt;
 		
+	}
+	else if (curEnt->getType() == MATERIALS) {
+		Materials* curMat = (Materials*)(curEnt->getPtr());
+
+		delete curMat;
 	}
 	return false;
 }

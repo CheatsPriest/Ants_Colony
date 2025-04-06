@@ -3,6 +3,7 @@
 #include "Ant.h"
 #include "Food.h"
 #include "Insect.h"
+#include "Materials.h"
 
 using namespace std;
 
@@ -10,7 +11,8 @@ using namespace std;
 enum Entities {
 	ANT = 0,
 	FOOD = 1,
-	INSECT = 2
+	INSECT = 2,
+	MATERIALS = 3
 };
 class Entity {
 private:
