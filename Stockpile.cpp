@@ -25,6 +25,7 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 
 			if (curFood->food_value<=0 && food_collected >= 0) {
 				food_collected--;
+				
 				stuff[x][y] = 0;
 				return food_ind;
 			}

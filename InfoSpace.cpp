@@ -257,7 +257,13 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							for (auto stock : stockpileList) {
 								if (stock.second->type == 0 && stock.second->food_collected!= stock.second->size_x* stock.second->size_y) {
 									cout << "Illbeback" << endl;
-									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
+									if (stock.second->food_collected <0) {
+										na = { stock.second->pos_x + 0 % stock.second->size_x,stock.second->pos_y + 0 / stock.second->size_y };
+									}
+									else {
+										na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
+									}
+
 								}
 							}
 							ant->aim = na;
