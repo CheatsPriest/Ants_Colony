@@ -72,7 +72,7 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 			if (!field->field[i][j]->isFree)return false;
 		}
 	}
-	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type);
+	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key);
 
 	stockpileList.insert({ free_stockpile_key, new_stock });
 
@@ -247,10 +247,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
 							}
-<<<<<<< Updated upstream
 							//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
-=======
->>>>>>> Stashed changes
+
 							ant->aim = na;
 							ant->action = 2;
 						}
