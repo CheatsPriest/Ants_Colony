@@ -224,7 +224,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							}
 							pair<int, int> na;
 							for (auto stock : stockpileList) {
-								if (stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+								if (stock.second->type == 0) {
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
 							}

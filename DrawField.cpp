@@ -63,6 +63,11 @@ void Window::DrawMainScene() {
 
                     cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
                     if (cur == NULL) continue;
+                    if (cur->getType() == Entities::FOOD) {
+                        Food* curFood = (Food*)(cur->getPtr());
+                        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Green, 0.1f, 0);
+
+                    }
                     if (cur->getType() == Entities::ANT) {
                         Ant* curAnt = (Ant*)(cur->getPtr());
                         
@@ -97,11 +102,7 @@ void Window::DrawMainScene() {
                         //ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 11.f), Black, std::to_string((unsigned int)field->field[x][y][data->z_cam].IDs[0]).c_str());
                         
                     }
-                    else if (cur->getType() == Entities::FOOD) {
-                        Food* curFood = (Food*)(cur->getPtr());
-                        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Green, 0.1f, 0);
-                       
-                    }
+                    
                    
                 }
 
