@@ -139,14 +139,33 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
 		}
 	}
-	if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
+	ant->saturation -= 0.2;
+
+	if (ant->saturation<=ant->max_Saturation*0.3) {
+		ant->action = 3;
+		for (auto stock : stockpileList) {
+			Stockpile* stash = stock.second;
+			if (stash->type == 0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
+				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
+				if (ant->type == 3) {
+					ant->nearest_En = { aim_x,aim_y };
+				}
+				else {
+					ant->aim = { aim_x,aim_y };
+				}
+				cout << 3;
+				
+			}
+		}
+	}
+	else if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
-	if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+	else if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 		if (ant->inventary != 0) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
-				
 				if (stash->type==0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x+stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 					stash->TryToPut(ant, &entityList, ant->aim);
 					cout << 2;
@@ -159,7 +178,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->action = 0;
 	}
 
-	if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
+	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
 		ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
@@ -190,7 +209,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth == NULL)continue;
-							if ((smth->type == 2 or smth->type == 3) && ant->action == 1 && smth->action != 2) {
+							if ((smth->type == 2 or smth->type == 3) && ant->action == 1 && smth->action <= 1 ) {
 								smth->nearest_En = ant->nearest_En;
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
@@ -219,7 +238,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							if (ant->inventary == 0) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 								cout << "I picked food number " << ant->inventary << endl;//подбор еды
-
+								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							}
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
 							for (auto stock : stockpileList) {
@@ -228,7 +247,10 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
 							}
+<<<<<<< Updated upstream
 							//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+=======
+>>>>>>> Stashed changes
 							ant->aim = na;
 							ant->action = 2;
 						}
