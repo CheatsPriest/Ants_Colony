@@ -91,6 +91,8 @@ double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);
 }
 
+
+
 // MOVE
 void InfoSpace::MoveEntity(unsigned int id) {
 	Entity* curEnt = entityList[id];
@@ -104,7 +106,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	vector<vector<double>> de;
 	for (double i = -1; i <= 1; i++) {
 		for (double j = -1; j <= 1; j++) {
-			if (!(ant->pos_x + i < 0 or ant->pos_x + i >= field_size_x or ant->pos_y + j < 0 or ant->pos_y + j >= field_size_y)) {
+			if (ant->pos_x + i >= 0 and ant->pos_x + i < field_size_x and ant->pos_y + j >= 0 and ant->pos_y + j < field_size_y) {
 				dt.push_back({ dist(ant->pos_x + i,  ant->pos_y + j,  ant->aim.first,  ant->aim.second), -dist(ant->pos_x + i,  ant->pos_y + j,  ant->nearest_En.first,  ant->nearest_En.second) , i , j });
 				de.push_back({ dist(ant->pos_x + i,  ant->pos_y + j,  ant->nearest_En.first,  ant->nearest_En.second) , 1, i , j });
 			}
@@ -168,7 +170,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	if (ant->type == 1) {
 		for (double i = -3; i <= 3; i++) {
 			for (double j = -3; j <= 3; j++) {
-				if (!(ant->pos_x + i < 0 or ant->pos_x + i >= field_size_x or ant->pos_y + j < 0 or ant->pos_y + j >= field_size_y)) {
+				if (ant->pos_x + i >= 0 and ant->pos_x + i < field_size_x and ant->pos_y + j >= 0 and ant->pos_y + j < field_size_y) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 						Ant* smth = (Ant*)obj->getPtr();
@@ -203,7 +205,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	if (ant->type == 2 or ant->type == 3) {
 		for (double i = -1; i <= 1; i++) {
 			for (double j = -1; j <= 1; j++) {
-				if (!(ant->pos_x + i < 0 or ant->pos_x + i >= field_size_x or ant->pos_y + j < 0 or ant->pos_y + j >= field_size_y)) {
+				if (ant->pos_x + i >= 0 and ant->pos_x + i < field_size_x and ant->pos_y + j >= 0 and ant->pos_y + j < field_size_y) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 						Ant* smth = (Ant*)obj->getPtr();

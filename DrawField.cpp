@@ -56,7 +56,7 @@ void Window::DrawMainScene() {
                 draw_x = (x - c_x) * cell_size;
                 draw_y = (y - c_y) * cell_size;
 
-                ImGui::GetBackgroundDrawList()->AddRect(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0, 1.0f);
+                //ImGui::GetBackgroundDrawList()->AddRect(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0, 1.0f);
                 //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0);
                 
                 if (field->field[x][y][data->z_cam].IDs[0] != 0) {
