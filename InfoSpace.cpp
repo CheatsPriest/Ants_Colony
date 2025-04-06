@@ -73,6 +73,7 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 		}
 	}
 	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key);
+	cout << free_stockpile_key;
 
 	stockpileList.insert({ free_stockpile_key, new_stock });
 
@@ -142,11 +143,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	ant->saturation -= 0.2;
 
 	if (ant->saturation<=ant->max_Saturation*0.3 && ant->action!=3) {
-		ant->action = 3;
+		
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
 			
 			if (stash->type == 0 and stash->food_collected!=0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+				ant->action = 3;
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
 				ant->stashid = stash->id;
@@ -164,17 +166,16 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		}
 	}
 	if (ant->action==3) {
-		cout << "WANNA EAT" << endl;
 		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 			cout << "EAT" << endl;
 			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
 			ant->action = 0;
 		}
 	}
-	if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
+	else if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
-	if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+	else if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 		if (ant->inventary != 0) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
@@ -190,7 +191,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->action = 0;
 	}
 
-	 if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
+	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->nearest_En.first, ant->nearest_En.first) <= 2) {
 		ant->nearest_En = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
@@ -254,7 +255,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							}
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
 							for (auto stock : stockpileList) {
-								if (stock.second->type == 0) {
+								if (stock.second->type == 0 && stock.second->food_collected!= stock.second->size_x* stock.second->size_y) {
 									cout << "Illbeback" << endl;
 									na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_x + stock.second->food_collected / stock.second->size_x };
 								}
