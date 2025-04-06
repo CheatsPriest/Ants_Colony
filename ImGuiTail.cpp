@@ -1,5 +1,6 @@
 #include "ImGuiTail.h"
 #include "myfont.h"
+
 Window::Window(InfoSpace* data_p) {
     data = data_p;
 

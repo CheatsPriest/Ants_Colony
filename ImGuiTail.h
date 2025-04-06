@@ -7,6 +7,7 @@
 #include "InfoSpace.h"
 #include "DrawField.h"
 #include <string>
+#include <gl/GL.h>
 using namespace std;
 
 
@@ -21,11 +22,9 @@ static ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
 class Window {
 public:
 
-
     bool isValid;
     void NewFrame();
     void EndFrame();
-
     Window(InfoSpace* data_p);
     
     void Cleanup();

@@ -137,15 +137,6 @@
     <ClInclude Include="vendor\ImGui\imgui_internal.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\ImGui\imstb_rectpack.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imstb_textedit.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imstb_truetype.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="vendor\ImGui\backends\imgui_impl_dx9.h">
       <Filter>ImGui</Filter>
     </ClInclude>
@@ -187,6 +178,15 @@
     </ClInclude>
     <ClInclude Include="DrawAnts.cpp">
       <Filter>Рисовальщик</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
