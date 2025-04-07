@@ -60,6 +60,10 @@ void InfoSpace::MoveInsect(unsigned int id) {
 
 	if (insect->isTriggered) {
 		pair<int, int> newPos2 = { curr->pos_x, curr->pos_y };
+		if (field->field[insect->aim_pos.first][insect->aim_pos.second][0].IDs[0] != insect->aim_id) {
+			insect->isTriggered = false;
+			return;
+		}
 		if (curr->pos_x < insect->aim_pos.first)
 			newPos2.first++;
 		else
@@ -72,7 +76,6 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		if (isValidCell(newPos2) && isFreeCell(newPos2)) {
 			moveToCeil(newPos2, id, curr);
 		} else {
-
 			pair<int, int> p;
 			int counter = 0;
 			int flag = 1;
@@ -85,21 +88,19 @@ void InfoSpace::MoveInsect(unsigned int id) {
 				}
 			}
 			if (flag) moveToCeil(p, id, curr);
-		/*	bool flag = true;
-			for (int i = -1; i <= 1; i++) {
-				for (int j = -1; j <= 1; j++) {
-					if (i == j && i == 0) continue;
-					pair<int, int> p;
-					if (isValidCell(p = { curr->pos_x + i, curr->pos_y + j })) {
-						moveToCeil(p, id, curr);
-						flag = false;
-						break;
-					}
-				}
+		}
+		
+		float vec = pow(insect->aim_pos.first - curr->pos_x, 2) + pow(insect->aim_pos.second - curr->pos_y, 2);
+		if (0.95 < vec && vec < 1.1) {
+			Materials* currTarget = (Materials*)(entityList[insect->aim_id]->getPtr());
+			if (currTarget->hp > 1) {
+				currTarget->hp--;
 			}
-			if (flag) {
+			else {
+				DeleteEntity(insect->aim_id);
+				field->field[insect->aim_pos.first][insect->aim_pos.second][0].IDs[0] = 0;
 				insect->isTriggered = false;
-			}*/
+			}
 		}
 
 	}
