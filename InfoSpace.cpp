@@ -3,12 +3,27 @@
 #include "Insect.h"
 #include <queue>
 using namespace std;
+bool InfoSpace::isValidCell(pair<int, int> newPos) {
+	return !(newPos.first >= field_size_x || newPos.second >= field_size_y
+		|| newPos.first < 0 || newPos.second < 0);
+}
+bool InfoSpace::isFreeCell(pair<int, int> newPos2) {
+	return field->field[newPos2.first][newPos2.second][0].IDs[0] == 0;
+}
+
+void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Entity* curr) {
+	field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;
+	field->field[newPos2.first][newPos2.second][0].IDs[0] = id;
+	curr->pos_x = newPos2.first;
+	curr->pos_y = newPos2.second;
+}
+
 void InfoSpace::MoveInsect(unsigned int id) {
 
 	Entity* curr = entityList[id];
 
 	Insect* insect = (Insect*)(curr->getPtr());
-	if (insect->isEmpty && !insect->isTriggered) {
+	if ( !insect->isTriggered) {
 		unsigned int aim = 0;
 		pair<int, int> aim_pos;
 		vector<vector<bool>> visited(field_size_x, vector<bool>(field_size_y, false));
@@ -41,16 +56,9 @@ void InfoSpace::MoveInsect(unsigned int id) {
 			}
 		}
 
-		//if (aim != 0) {
-		//	insect->isTriggered = true;
-		//	insect->aim_id = aim;
-		//	insect->aim_pos = { 50, 50 };
-		//	//std::cout << "X: " << aim_pos.first << " Y: " << aim_pos.second << "\n";
-		//}
-
 	} 
 
-	if (insect->isEmpty && insect->isTriggered) {
+	if (insect->isTriggered) {
 		pair<int, int> newPos2 = { curr->pos_x, curr->pos_y };
 		if (curr->pos_x < insect->aim_pos.first)
 			newPos2.first++;
@@ -61,23 +69,40 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		else
 			newPos2.second--;
 		
-		if (newPos2.first < field_size_x && newPos2.second < field_size_y && newPos2.first >= 0 && newPos2.second >= 0) {
+		if (isValidCell(newPos2) && isFreeCell(newPos2)) {
+			moveToCeil(newPos2, id, curr);
+		} else {
 
-
-			if (field->field[newPos2.first][newPos2.second][0].IDs[0] == 0) {
-				field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;
-				field->field[newPos2.first][newPos2.second][0].IDs[0] = id;
-				cout << newPos2.first << " " << newPos2.second << "\n";
-				curr->pos_x = newPos2.first;
-				curr->pos_y = newPos2.second;
-
+			pair<int, int> p;
+			int counter = 0;
+			int flag = 1;
+			while(!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p))) {
+				counter++;
+				if (counter == 15) {
+					flag = 0;
+					insect->isTriggered = false;
+					break;
+				}
 			}
+			if (flag) moveToCeil(p, id, curr);
+		/*	bool flag = true;
+			for (int i = -1; i <= 1; i++) {
+				for (int j = -1; j <= 1; j++) {
+					if (i == j && i == 0) continue;
+					pair<int, int> p;
+					if (isValidCell(p = { curr->pos_x + i, curr->pos_y + j })) {
+						moveToCeil(p, id, curr);
+						flag = false;
+						break;
+					}
+				}
+			}
+			if (flag) {
+				insect->isTriggered = false;
+			}*/
 		}
-		else {
-	
-		}
+
 	}
-	
 	
 }
 

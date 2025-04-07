@@ -65,15 +65,15 @@ public:
 	bool CreateEntity(int x, int y, int t); // костыль дениса
 	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type);
 	bool CreateEntityMaterial(int x, int y, int z, int type, int weight);
-
+	bool isValidCell(pair<int, int> d);
 	bool CreateInsect(int x, int y, int z, InsectTypes type);
-
+	bool isFreeCell(pair<int, int>p);
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
 	void MoveEntity(unsigned int id);
 	void ProcessAnt(Ant* curAnt);
 	
-
+	void moveToCeil(pair<int, int> newPos2, unsigned int id, Entity* ent);
 	void MoveInsect(unsigned int id);
 
 	~InfoSpace() {

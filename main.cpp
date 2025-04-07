@@ -35,7 +35,7 @@ void processingEntities() {
 	//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 		//ultimateData->CreateEntityMaterial(0,0, 0, 0, 10);
 		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
-		ultimateData->CreateInsect(rand() % 100 + 5, rand() % 100 + 5, 0, InsectTypes::APHID);
+		ultimateData->CreateInsect(rand() % 20 + 5, rand() % 20 + 59, 0, InsectTypes::APHID);
 		//ultimateData->CreateInsect(30, 5, 0, InsectTypes::APHID);
 	}
 	/*for (int i = 0; i < 100; i++) {
@@ -143,6 +143,7 @@ void draw() {
 	delete mainWindow;
 }
 int main() {
+
 	
 	//поток обработки Entity
 	thread ProcessingEntity(processingEntities);
