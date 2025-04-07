@@ -20,17 +20,27 @@ public:
 	float max_saturation;
 	float attack;
 	float deffense;
+	unsigned int aim_id;
+	unsigned int store;
+	pair<int, int> aim_pos;
+	bool isEmpty;
+	bool isTriggered;
+	void setAimId(unsigned int id) {
+		aim_id = id;
+	}
 	Insect(InsectTypes type, int x, int y, int z) {
 		this->id = id;
 		this->type = type;
 		pos_x = x;
 		pos_y = y;
 		pos_z = z;
+		isEmpty = true;
+		isTriggered = false;
 	}
 	void info() {
 		cout << "I am INSECT" << "\n";
 	}
-	void move(map<unsigned int, Entity*>& list, int id);
+
 };
 
 

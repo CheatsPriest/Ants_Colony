@@ -1,6 +1,85 @@
 #include "InfoSpace.h"
 #include <algorithm>
 #include "Insect.h"
+#include <queue>
+using namespace std;
+void InfoSpace::MoveInsect(unsigned int id) {
+
+	Entity* curr = entityList[id];
+
+	Insect* insect = (Insect*)(curr->getPtr());
+	if (insect->isEmpty && !insect->isTriggered) {
+		unsigned int aim = 0;
+		pair<int, int> aim_pos;
+		vector<vector<bool>> visited(field_size_x, vector<bool>(field_size_y, false));
+		pair<int, int> start = { curr->pos_x, curr->pos_y };
+		queue<pair<int, int>> q;
+		q.push(start);
+
+		while (!q.empty()) {
+			pair<int, int> currPos = q.front();
+			q.pop();
+			unsigned int smth = 0;
+			if ((smth = field->field[currPos.first][currPos.second][0].IDs[0]) != 0) {
+	
+				if (entityList[smth]->getType() == Entities::MATERIALS) {
+					insect->isTriggered = true;
+					insect->aim_id = smth;
+					insect->aim_pos = currPos;
+					break;
+				}
+			}
+			for (int i = -1; i <= 1; i++) {
+				for (int j = -1; j <= 1; j++) {
+					pair<int, int> newPos = { currPos.first + i, currPos.second + j};
+					if ((j == 0 && i == 0) || newPos.first >= field_size_x || newPos.second >= field_size_y 
+						|| newPos.first < 0 || newPos.second < 0 || (visited[newPos.first][newPos.second])) continue;
+					q.push(newPos);
+					visited[newPos.first][newPos.second] = true;
+			
+				}
+			}
+		}
+
+		//if (aim != 0) {
+		//	insect->isTriggered = true;
+		//	insect->aim_id = aim;
+		//	insect->aim_pos = { 50, 50 };
+		//	//std::cout << "X: " << aim_pos.first << " Y: " << aim_pos.second << "\n";
+		//}
+
+	} 
+
+	if (insect->isEmpty && insect->isTriggered) {
+		pair<int, int> newPos2 = { curr->pos_x, curr->pos_y };
+		if (curr->pos_x < insect->aim_pos.first)
+			newPos2.first++;
+		else
+			newPos2.first--;
+		if (curr->pos_y < insect->aim_pos.second)
+			newPos2.second++;
+		else
+			newPos2.second--;
+		
+		if (newPos2.first < field_size_x && newPos2.second < field_size_y && newPos2.first >= 0 && newPos2.second >= 0) {
+
+
+			if (field->field[newPos2.first][newPos2.second][0].IDs[0] == 0) {
+				field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;
+				field->field[newPos2.first][newPos2.second][0].IDs[0] = id;
+				cout << newPos2.first << " " << newPos2.second << "\n";
+				curr->pos_x = newPos2.first;
+				curr->pos_y = newPos2.second;
+
+			}
+		}
+		else {
+	
+		}
+	}
+	
+	
+}
 
 //type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
 bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class) {
@@ -61,11 +140,13 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 	return true;
 }
 
-bool InfoSpace::CreateInsect(int x, int y, int z, InsectTypes type)
+bool InfoSpace::CreateInsect(int x,int y, int z, InsectTypes type)
 {	
 	if (field->field[x][y][0].IDs[0] != 0)return false;
 	Insect* insect = new Insect(type, x, y, z);
 	Entity* new_ent = new Entity(insect, Entities::INSECT);
+	new_ent->pos_x = x;
+	new_ent->pos_y = y;
 	insect->id = free_key;
 	entityList.insert({ free_key, new_ent });
 	field->field[insect->pos_x][insect->pos_y][insect->pos_z].IDs[0] = free_key;

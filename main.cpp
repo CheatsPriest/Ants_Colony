@@ -31,10 +31,12 @@ void processingEntities() {
 	//	ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
 	//}
 
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 30; i++) {
 	//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
+		//ultimateData->CreateEntityMaterial(0,0, 0, 0, 10);
 		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
-		ultimateData->CreateInsect(rand() % 50 + 5, rand() % 50 + 5, 0, InsectTypes::APHID);
+		ultimateData->CreateInsect(rand() % 100 + 5, rand() % 100 + 5, 0, InsectTypes::APHID);
+		//ultimateData->CreateInsect(30, 5, 0, InsectTypes::APHID);
 	}
 	/*for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntity(rand() % 100 + 50, rand() % 100 + 50,5);
@@ -59,7 +61,7 @@ void processingEntities() {
 		}
 		else if (curr->getType() == Entities::INSECT) {
 			Insect* currInsect = (Insect*)curr;
-			currInsect->info();
+			//currInsect->info();
 		}
 	}
 
@@ -75,6 +77,7 @@ void processingEntities() {
 			}
 			else if (curr->getType() == Entities::INSECT) {
 				Insect* insect = (Insect*)curr;
+				ultimateData->MoveInsect(ent.first);
 				//insect->move(ultimateData->entityList, ent.first);
 			}
 		}

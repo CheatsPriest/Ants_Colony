@@ -72,7 +72,9 @@ public:
 	void MoveCam(int x, int y);
 	void MoveEntity(unsigned int id);
 	void ProcessAnt(Ant* curAnt);
+	
 
+	void MoveInsect(unsigned int id);
 
 	~InfoSpace() {
 		delete field;
