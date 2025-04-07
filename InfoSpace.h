@@ -1,8 +1,8 @@
 #pragma once
-
+#include "Entity.h"
 #include <map>
 #include "Field.h"
-#include "Entity.h"
+
 #include "Collector.h"
 #include "Stockpile.h"
 
@@ -65,6 +65,8 @@ public:
 	bool CreateEntity(int x, int y, int t); // костыль дениса
 	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type);
 	bool CreateEntityMaterial(int x, int y, int z, int type, int weight);
+
+	//bool CreateInsect(int x, int y, int z, InsectTypes type);
 
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
