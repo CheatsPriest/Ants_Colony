@@ -43,6 +43,16 @@ void InfoSpace::MoveInsect(unsigned int id) {
 					insect->aim_pos = currPos;
 					break;
 				}
+				if (entityList[smth]->getType() == Entities::INSECT) {
+					Insect* neigbhor = ((Insect*)(entityList[smth]->getPtr()));
+					if (neigbhor->isTriggered) {
+						insect->isTriggered = true;
+
+						insect->aim_id = neigbhor->aim_id;
+						insect->aim_pos = neigbhor->aim_pos;
+						break;
+					}
+				}
 			}
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
