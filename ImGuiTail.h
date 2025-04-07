@@ -36,7 +36,7 @@ private:
     InfoSpace* data;
     ImGuiIO& Create();
     void DrawMainScene();
-
+    void DrawInsect(int x, int y, unsigned int id);
     void DrawScout(int x, int y, unsigned int id);
     void DrawWorker(int x, int y, unsigned int id);
     void DrawSoldier(int x, int y, unsigned int id);

@@ -1,6 +1,7 @@
-#pragma once
+
+#ifndef HHH
+#define HHH
 #include "Entity.h"
-#include "InfoSpace.h"
 enum InsectTypes {
 	APHID = 1
 };
@@ -26,5 +27,11 @@ public:
 		pos_y = y;
 		pos_z = z;
 	}
+	void info() {
+		cout << "I am INSECT" << "\n";
+	}
+	void move(map<unsigned int, Entity*>& list, int id);
 };
 
+
+#endif

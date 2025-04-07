@@ -1,3 +1,5 @@
+#ifndef HHHH
+#define HHHH
 #include "includes.h"
 #include "ImGuiTail.h"
 #include "Entity.h";
@@ -8,7 +10,6 @@
 #include <Windows.h>
 #include <random>
 
-
 InfoSpace* ultimateData = new InfoSpace;
 
 
@@ -17,22 +18,23 @@ void processingEntities() {
 	srand(time(0));
 	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0);
 	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 0);
+	
+	//ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
-	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
+	//for (int i = 0; i < 100; i++) {
+	//	ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
+	//}
+	//for (int i = 0; i < 50; i++) {
+	//	ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
+	//}
+	//for (int i = 0; i < 1; i++) {
+	//	ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
+	//}
 
-	for (int i = 0; i < 100; i++) {
-		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
-	}
 	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
-	}
-	for (int i = 0; i < 1; i++) {
-		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
-	}
-
-	for (int i = 0; i < 200; i++) {
-		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
+	//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
+		ultimateData->CreateInsect(rand() % 50 + 5, rand() % 50 + 5, 0, InsectTypes::APHID);
 	}
 	/*for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntity(rand() % 100 + 50, rand() % 100 + 50,5);
@@ -42,6 +44,7 @@ void processingEntities() {
 	
 	//ultimateData->entityList.insert({ 3, entity3 });
 
+	//Приветствие
 	for (auto el : ultimateData->entityList) {
 		Entity* curr = el.second;
 		if (curr->getType() == Entities::ANT) {
@@ -49,14 +52,18 @@ void processingEntities() {
 			currAnt->info();
 			
 			
-			
-			
 		}
 		else if (curr->getType() == Entities::FOOD) {
 			Food* currFood = (Food*)(curr->getPtr());
 			currFood->info();
 		}
+		else if (curr->getType() == Entities::INSECT) {
+			Insect* currInsect = (Insect*)curr;
+			currInsect->info();
+		}
 	}
+
+
 	while (ultimateData->mainLoop) {
 		for (auto ent : ultimateData->entityList) {
 			Entity* curr = ent.second;
@@ -65,6 +72,10 @@ void processingEntities() {
 				ultimateData->MoveEntity(ent.first);
 
 
+			}
+			else if (curr->getType() == Entities::INSECT) {
+				Insect* insect = (Insect*)curr;
+				//insect->move(ultimateData->entityList, ent.first);
 			}
 		}
 
@@ -141,3 +152,4 @@ int main() {
 	//Drow.join();
 	return 0;
 }
+#endif

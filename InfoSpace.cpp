@@ -61,18 +61,18 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 	return true;
 }
 
-//bool InfoSpace::CreateInsect(int x, int y, int z, InsectTypes type)
-//{	
-//	if (field->field[x][y][0].IDs[0] != 0)return false;
-//	Insect* insect = new Insect(type, x, y, z);
-//	Entity* new_ent = new Entity(insect, Entities::INSECT);
-//	insect->id = free_key;
-//	entityList.insert({ free_key, new_ent });
-//	field->field[insect->pos_x][insect->pos_y][insect->pos_z].IDs[0] = free_key;
-//	free_key++;
-//	return true;
-//
-//}
+bool InfoSpace::CreateInsect(int x, int y, int z, InsectTypes type)
+{	
+	if (field->field[x][y][0].IDs[0] != 0)return false;
+	Insect* insect = new Insect(type, x, y, z);
+	Entity* new_ent = new Entity(insect, Entities::INSECT);
+	insect->id = free_key;
+	entityList.insert({ free_key, new_ent });
+	field->field[insect->pos_x][insect->pos_y][insect->pos_z].IDs[0] = free_key;
+	free_key++;
+	return true;
+
+}
 
 bool InfoSpace::CreateEntity(int x, int y, int t)
 {

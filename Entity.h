@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HH
+#define HH
 #include <map>
 #include "Ant.h"
 #include "Food.h"
@@ -36,3 +37,4 @@ public:
 	int pos_z;
 };
 
+#endif
