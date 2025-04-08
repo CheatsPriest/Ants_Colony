@@ -210,13 +210,15 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			ant->aim = { stock->pos_x,stock->pos_y};
 			ant->action = 5;
 		}
-		if (ant->action == 5) {
+		if (ant->action == 5 or field->field[ant->aim.first][ant->aim.second]->cWall !=0) {
 			Stockpile* stock = stockpileList[ant->dest];
 			int ch = 0;
-			for (int i = stock->pos_x - 1; i <= stock->pos_x + stock->size_x; i++) {
-				for (int j = stock->pos_y - 1; i <= stock->pos_y + stock->size_y; i++) {
-					if (ch == 0 && i==i%size_x && j==j%size_y &&((abs(i-stock->pos_x)%stock->size_x)==1 or (abs(j - stock->pos_y) % stock->size_y) == 1) && field->field[i][j]->cWall==0) {
-						ant->aim = { i,j };
+			for (int i = - 1; i <= stock->size_x; i++) {
+				for (int j = - 1; i <= stock->size_y; i++) {
+					int ci = i + stock->pos_x;
+					int cj = j + stock->pos_y;
+					if (ch == 0 && ci==ci%size_x && cj==cj%size_y && (i==-1 or i==stock->size_x or j==-1 or j==stock->size_y) && field->field[ci][cj]->cWall == 0) {
+						ant->aim = { ci,cj };
 						ant->action = 6;
 						ch = 1;
 						
@@ -225,7 +227,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 			
 		}
-		if (ant->action == 6) {
+		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) < 1 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
 			BuildWall(ant);
 			ant->action = 0;
 		
