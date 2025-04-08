@@ -185,7 +185,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
 	else if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
-		if (ant->inventary != 0) {
+		if (ant->inventary != 0 && ant->action<5) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
 				if (ant->inventary !=0 &&((stash->type==0 && entityList[ant->inventary]->getType() == Entities::FOOD) or (stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS)) and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
@@ -193,7 +193,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				}
 			}	
 		}
-		if (ant->action == 0) {
+		
+		if (ant->action == 0 or (ant->dest != 0 && stockpileList[ant->dest]->needWalled == false)) {
 			pair<int, int> stocks = search();
 			ant->source = stocks.first;
 			ant->dest = stocks.second;
@@ -202,6 +203,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				Stockpile* stock = stockpileList[ant->source];
 				ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
 			}
+			
 		}
 		if (ant->action == 4) {
 			Stockpile* stock = stockpileList[ant->source];
@@ -210,11 +212,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			ant->aim = { stock->pos_x,stock->pos_y};
 			ant->action = 5;
 		}
-		if (ant->action == 5 or field->field[ant->aim.first][ant->aim.second]->cWall !=0) {
+		if (ant->action == 5 or (ant->dest!=0 && field->field[ant->aim.first][ant->aim.second]->cWall !=0) ) {
 			Stockpile* stock = stockpileList[ant->dest];
 			int ch = 0;
 			for (int i = - 1; i <= stock->size_x; i++) {
-				for (int j = - 1; i <= stock->size_y; i++) {
+				for (int j = - 1; j <= stock->size_y; j++) {
 					int ci = i + stock->pos_x;
 					int cj = j + stock->pos_y;
 					if (ch == 0 && ci==ci%size_x && cj==cj%size_y && (i==-1 or i==stock->size_x or j==-1 or j==stock->size_y) && field->field[ci][cj]->cWall == 0) {
@@ -229,6 +231,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		}
 		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) < 1 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
 			BuildWall(ant);
+			Stockpile* stash = stockpileList[ant->dest];
+			stash->wall_len += 1;
+			if (stash->wall_len==(stash->size_x + stash->size_y+2)*2) {
+				stash->needWalled = false;
+			}
 			ant->action = 0;
 		
 		}
