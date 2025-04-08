@@ -21,13 +21,13 @@ void processingEntities() {
 	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
 	for (int i = 0; i < 100; i++) {
-		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
+		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1,1);
 	}
 	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
+		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2,1);
 	}
-	for (int i = 0; i < 1; i++) {
-		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
+	for (int i = 0; i < 10; i++) {
+		ultimateData->CreateEntityAnt(12, i, 0, 0, 3,1);
 	}
 
 	for (int i = 0; i < 200; i++) {

@@ -3,23 +3,23 @@
 
 
 //type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
-bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class) {
+bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, int clan) {
 	
 	if (field->field[x][y][z].IDs[0] != 0)return false;
 	if (type == 0) {
 
 		Ant* new_ant;
 		if (under_class == 0) {
-			new_ant = new Queen(x, y, z);
+			new_ant = new Queen(x, y, z, clan);
 		}
 		else if (under_class == 1) {
-			new_ant = new Scout(x, y, z);
+			new_ant = new Scout(x, y, z, clan);
 		}
 		else if (under_class == 2) {
-			new_ant = new Worker(x, y, z);
+			new_ant = new Worker(x, y, z, clan);
 		}
 		else if (under_class == 3) {
-			new_ant = new Soldier(x, y, z);
+			new_ant = new Soldier(x, y, z, clan);
 		}
 		else return false;
 		Entity* new_ent = new Entity(new_ant, Entities::ANT);
@@ -60,23 +60,7 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 	free_key++;
 	return true;
 }
-bool InfoSpace::CreateEntity(int x, int y, int t)
-{
-	if (field->field[x][y][0].IDs[0] != 0)return false;
-	Ant* new_ant;
-	new_ant = new Ant(x, y, 0, t,1,1,1,1);
-	Entity* new_ent = new Entity(new_ant, Entities::ANT);
 
-
-
-	entityList.insert({ free_key, new_ent });
-	field->field[new_ant->pos_x][new_ant->pos_y][new_ant->pos_z].IDs[0] = free_key;
-	
-	free_key++;
-	return true;
-
-	
-}
 bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int type) {
 
 	for (int i = x; i < x + wide; i++) {

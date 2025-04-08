@@ -60,7 +60,7 @@ public:
 	}
 
 	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
-	bool CreateEntityAnt(int x, int y, int z, int type, int under_class);
+	bool CreateEntityAnt(int x, int y, int z, int type, int under_class, int clan);
 	bool CreateEntityFood(int x, int y, int z, int type, float food_value, int weight);
 	bool CreateEntity(int x, int y, int t); // костыль дениса
 	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type);
