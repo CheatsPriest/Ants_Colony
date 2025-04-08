@@ -19,7 +19,7 @@ void Cell::CreateWall(float _max_hp, int _clan) {
 }
 
 void Cell::DeleteWall() {
-
+	cWall = 0;
 	delete cWall;
 
 }

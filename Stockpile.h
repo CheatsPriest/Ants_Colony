@@ -13,6 +13,8 @@ public:
 	int pos_y;
 	int pos_z;
 
+	int clan;
+
 	bool needWalled;
 	int wall_len;
 
@@ -23,7 +25,7 @@ public:
 	unsigned int id;
 	vector<vector<unsigned int>> stuff;
 	
-	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id) {
+	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id, int cr_clan) {
 
 		needWalled = true;
 		wall_len = 0;
@@ -31,6 +33,9 @@ public:
 		pos_x = x;
 		pos_y = y;
 		pos_z = z;
+
+		clan = cr_clan;
+
 		size_x = wide;
 		size_y = hight;
 		type = cur_type;

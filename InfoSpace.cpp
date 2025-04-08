@@ -61,14 +61,14 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 	return true;
 }
 
-bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int type) {
+bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int type, int clan) {
 
 	for (int i = x; i < x + wide; i++) {
 		for (int j = y; j < y + hight; j++) {
 			if (field->field[i][j]->cWall)return false;
 		}
 	}
-	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key);
+	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key, clan);
 	cout << free_stockpile_key;
 
 	stockpileList.insert({ free_stockpile_key, new_stock });

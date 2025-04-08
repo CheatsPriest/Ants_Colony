@@ -15,8 +15,8 @@ InfoSpace* ultimateData = new InfoSpace;
 void processingEntities() {
 	Window* mainWindow = new Window(ultimateData);
 	srand(time(0));
-	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0);
-	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1);
+	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
+	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1, 1);
 
 	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
