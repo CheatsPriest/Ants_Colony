@@ -56,7 +56,7 @@ public:
 
 		field = new Field;
 
-		draw_debug_move_lines = false;
+		draw_debug_move_lines = true;
 	}
 
 	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen

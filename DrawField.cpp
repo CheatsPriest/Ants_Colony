@@ -76,7 +76,7 @@ void Window::DrawMainScene() {
                         
                         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
                         
-                        if (data->draw_debug_move_lines) {
+                        if (data->draw_debug_move_lines and curAnt->inventary!=0 and data->entityList[curAnt->inventary]->getType()==MATERIALS) {
                    
                             ImGui::GetBackgroundDrawList()->AddLine(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), ImVec2((curAnt->aim.first - c_x) * cell_size+cell_size/2, (curAnt->aim.second - c_y) * cell_size+cell_size/2), Red, 1.f);
                             ImGui::GetBackgroundDrawList()->AddCircleFilled(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), 3.f, Red);
