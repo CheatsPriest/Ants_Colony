@@ -2,6 +2,9 @@
 #include <algorithm>
 #include "InfoSpace.h"
 
+
+
+
 Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation) : Ant() 
 {
     this->pos_x = x;

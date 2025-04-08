@@ -81,7 +81,7 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 
 	for (int i = x; i < x + wide; i++) {
 		for (int j = y; j < y + hight; j++) {
-			if (!field->field[i][j]->isFree)return false;
+			if (field->field[i][j]->cWall)return false;
 		}
 	}
 	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key);
@@ -96,7 +96,19 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 
 }
 
+bool InfoSpace::BuildWall(Ant* cAnt) {
 
+	if (cAnt->inventary == 0)return 0;
+
+	if (entityList[cAnt->inventary]->getType() == 3) {
+		DeleteEntity(cAnt->inventary);
+		cAnt->inventary = 0;
+
+		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, 0);
+
+	}
+
+}
 
 
 

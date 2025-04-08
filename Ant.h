@@ -18,6 +18,7 @@ public:
 	unsigned int Put();
 	void CopyPosition(Ant* source);
 	void GivePosition(Ant* input);
+	
 
 	float HP;
 	float max_HP;

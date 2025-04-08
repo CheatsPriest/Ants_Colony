@@ -9,3 +9,17 @@ void Cell::DeleteEntity(int ind) {
 	IDs[ind] = 0;
 	
 }
+
+void Cell::CreateWall(float _max_hp, int _clan) {
+
+	Wall* curWall = new Wall(_max_hp, _clan);
+
+	cWall = curWall;
+
+}
+
+void Cell::DeleteWall() {
+
+	delete cWall;
+
+}

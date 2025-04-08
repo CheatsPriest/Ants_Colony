@@ -4,7 +4,7 @@
 
 enum Stockpiles {
 	FOOD_STOCK = 0,
-	MATERIAL_STOCK = 1
+	MATERIAL_STOCK = 1, 
 };
 
 class Stockpile {
@@ -12,6 +12,9 @@ public:
 	int pos_x;
 	int pos_y;
 	int pos_z;
+
+	bool needWalled;
+
 	int size_x;
 	int size_y;
 	int type;//0 - еда, 1 - стройматериалы, 2 - 
@@ -20,6 +23,9 @@ public:
 	vector<vector<unsigned int>> stuff;
 	
 	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id) {
+
+		needWalled = false;
+
 		pos_x = x;
 		pos_y = y;
 		pos_z = z;
