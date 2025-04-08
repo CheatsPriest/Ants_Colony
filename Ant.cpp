@@ -15,6 +15,7 @@ Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defens
     this->saturation = max_Saturation;
     this->aim = { this->pos_x,this->pos_y };
     nearest_En = { this->pos_x,this->pos_y };
+    nearest_Mat = { this->pos_x,this->pos_y };
     nearest_Fd = { this->pos_x,this->pos_y };
     inventary = 0;
 }
