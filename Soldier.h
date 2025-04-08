@@ -3,7 +3,7 @@
 class Soldier : public Ant
 {
 public:
-	Soldier(int x, int y, int z);
+	Soldier(int x, int y, int z, int clan);
 protected:
 	void moveToPosition();
 	void patrol();
