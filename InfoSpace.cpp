@@ -19,73 +19,52 @@ void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Entity* curr
 }
 
 void InfoSpace::MoveInsect(unsigned int id) {
-	
+
 	Entity* curr = entityList[id];
 
 	Insect* insect = (Insect*)(curr->getPtr());
-	//if ( !insect->isTriggered) {
-	//	unsigned int aim = 0;
-	//	pair<int, int> aim_pos;
-	//	vector<vector<bool>> visited(field_size_x, vector<bool>(field_size_y, false));
-	//	pair<int, int> start = { curr->pos_x, curr->pos_y };
-	//	queue<pair<pair<int, int>, int>> q;
-	//	q.push({ start, 0 });
-	//	int radius = 15;
-	//	while (!q.empty()) {
-	//		pair<int, int> currPos = q.front().first;
-	//		int currRadius = q.front().second;
-	//		q.pop();
-	//		unsigned int smth = 0;
-	//		if ((smth = field->field[currPos.first][currPos.second][0].IDs[0]) != 0) {
-	//			
-	//			if (entityList[smth]->getType() == Entities::MATERIALS) {
-	//				insect->isTriggered = true;
-	//				insect->aim_id = smth;
-	//				insect->aim_pos = currPos;
-	//				break;
-	//			}
-	//		}
-	//		if (++currRadius <= radius) {
-	//			for (int i = -1; i <= 1; i++) {
-	//				for (int j = -1; j <= 1; j++) {
-	//					pair<int, int> newPos = { currPos.first + i, currPos.second + j };
-	//					if ((j == 0 && i == 0) || newPos.first >= field_size_x || newPos.second >= field_size_y
-	//						|| newPos.first < 0 || newPos.second < 0 || (visited[newPos.first][newPos.second])) continue;
-	//					if (!insect->isIndoors(newPos.first, newPos.second)) {
-	//					
-	//						continue;
-	//					}
-	//					q.push({ newPos, currRadius });
-	//					visited[newPos.first][newPos.second] = true;
 
-	//				}
-	//			}
-	//		}
-	//		else {
-	//			break;
-	//		}
-	//		
-	//
-	//	}
-
-	//} 
 	if (!insect->isTriggered) {
-			pair<int, int> p;
+		if (insect->nearlest.first != 0){
+			insect->aim_id = insect->nearlest.first;
+			insect->aim_pos = insect->nearlest.second;
+			insect->isTriggered = true;
+		}
+		else {
+			pair<int, int> p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 };
 			int counter = 0;
 			int flag = 1;
-			while (!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p) && insect->isIndoors(p.first, p.second))) {
+			while (!(insect->isIndoors(p.first, p.second) && isFreeCell(p))) {
+				p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 };
 				counter++;
-				if (counter == 15) {
+				if (counter == 5) {
 					flag = 0;
 					insect->isTriggered = false;
 					break;
 				}
 			}
 			if (flag) moveToCeil(p, id, curr);
-		
-	}
 
-	if (insect->isTriggered) {
+			pair<int, pair<int, int>> prob = { 0, {p.first, p.second} };
+			for (int i = -1; i <= 1; i++) {
+				for (int j = -1; j <= 1; j++) {
+					prob.second = { p.first + i, p.second + j };
+					if ((i == j && i == 0) || !insect->isIndoors(prob.second.first, prob.second.second) || isFreeCell(prob.second)) continue;
+					if (entityList[field->field[prob.second.first][prob.second.second][0].IDs[0]]->getType() == Entities::MATERIALS) {
+						insect->nearlest.first = field->field[prob.second.first][prob.second.second][0].IDs[0];
+						insect->nearlest.second = { prob.second.first, prob.second.second };
+
+						insect->aim_id = field->field[prob.second.first][prob.second.second][0].IDs[0];
+						insect->aim_pos = { prob.second.first, prob.second.second };
+						insect->isTriggered = true;
+
+					}
+				}
+			}
+		}
+
+	}
+	else if (insect->isTriggered) {
 		pair<int, int> newPos2 = { curr->pos_x, curr->pos_y };
 		if (field->field[insect->aim_pos.first][insect->aim_pos.second][0].IDs[0] != insect->aim_id) {
 			insect->isTriggered = false;
@@ -99,14 +78,15 @@ void InfoSpace::MoveInsect(unsigned int id) {
 			newPos2.second++;
 		else
 			newPos2.second--;
-		
-		if (isValidCell(newPos2) && isFreeCell(newPos2) && insect->isIndoors(newPos2.first, newPos2.second)) {
+
+		if (isFreeCell(newPos2) && insect->isIndoors(newPos2.first, newPos2.second)) {
 			moveToCeil(newPos2, id, curr);
-		} else {
+		}
+		else {
 			pair<int, int> p;
 			int counter = 0;
 			int flag = 1;
-			while(!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p) && insect->isIndoors(p.first, p.second))) {
+			while (!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p) && insect->isIndoors(p.first, p.second))) {
 				counter++;
 				if (counter == 15) {
 					flag = 0;
@@ -116,7 +96,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 			}
 			if (flag) moveToCeil(p, id, curr);
 		}
-		
+
 		float vec = pow(insect->aim_pos.first - curr->pos_x, 2) + pow(insect->aim_pos.second - curr->pos_y, 2);
 		if (0.95 < vec && vec < 1.1) {
 			Materials* currTarget = (Materials*)(entityList[insect->aim_id]->getPtr());
@@ -124,14 +104,15 @@ void InfoSpace::MoveInsect(unsigned int id) {
 				currTarget->hp--;
 			}
 			else {
+				if (insect->nearlest.first == insect->aim_id) {
+					insect->nearlest.first = 0;
+				}
 				DeleteEntity(insect->aim_id);
 				field->field[insect->aim_pos.first][insect->aim_pos.second][0].IDs[0] = 0;
 				insect->isTriggered = false;
 			}
 		}
-
 	}
-	
 }
 
 //type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen

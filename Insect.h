@@ -1,4 +1,3 @@
-
 #ifndef HHH
 #define HHH
 #include "Entity.h"
@@ -8,7 +7,7 @@ enum InsectTypes {
 class Insect
 {
 public:
-	int id;
+	static pair<int, pair<int,int>> nearlest;
 	InsectTypes type;
 	int agressive;
 	int pos_x;
@@ -16,6 +15,7 @@ public:
 	int pos_z;
 	float max_hp;
 	float hp;
+	int id;
 	float saturation;
 	float max_saturation;
 	float attack;
