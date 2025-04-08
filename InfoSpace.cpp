@@ -19,44 +19,71 @@ void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Entity* curr
 }
 
 void InfoSpace::MoveInsect(unsigned int id) {
-
+	
 	Entity* curr = entityList[id];
 
 	Insect* insect = (Insect*)(curr->getPtr());
-	if ( !insect->isTriggered) {
-		unsigned int aim = 0;
-		pair<int, int> aim_pos;
-		vector<vector<bool>> visited(field_size_x, vector<bool>(field_size_y, false));
-		pair<int, int> start = { curr->pos_x, curr->pos_y };
-		queue<pair<int, int>> q;
-		q.push(start);
+	//if ( !insect->isTriggered) {
+	//	unsigned int aim = 0;
+	//	pair<int, int> aim_pos;
+	//	vector<vector<bool>> visited(field_size_x, vector<bool>(field_size_y, false));
+	//	pair<int, int> start = { curr->pos_x, curr->pos_y };
+	//	queue<pair<pair<int, int>, int>> q;
+	//	q.push({ start, 0 });
+	//	int radius = 15;
+	//	while (!q.empty()) {
+	//		pair<int, int> currPos = q.front().first;
+	//		int currRadius = q.front().second;
+	//		q.pop();
+	//		unsigned int smth = 0;
+	//		if ((smth = field->field[currPos.first][currPos.second][0].IDs[0]) != 0) {
+	//			
+	//			if (entityList[smth]->getType() == Entities::MATERIALS) {
+	//				insect->isTriggered = true;
+	//				insect->aim_id = smth;
+	//				insect->aim_pos = currPos;
+	//				break;
+	//			}
+	//		}
+	//		if (++currRadius <= radius) {
+	//			for (int i = -1; i <= 1; i++) {
+	//				for (int j = -1; j <= 1; j++) {
+	//					pair<int, int> newPos = { currPos.first + i, currPos.second + j };
+	//					if ((j == 0 && i == 0) || newPos.first >= field_size_x || newPos.second >= field_size_y
+	//						|| newPos.first < 0 || newPos.second < 0 || (visited[newPos.first][newPos.second])) continue;
+	//					if (!insect->isIndoors(newPos.first, newPos.second)) {
+	//					
+	//						continue;
+	//					}
+	//					q.push({ newPos, currRadius });
+	//					visited[newPos.first][newPos.second] = true;
 
-		while (!q.empty()) {
-			pair<int, int> currPos = q.front();
-			q.pop();
-			unsigned int smth = 0;
-			if ((smth = field->field[currPos.first][currPos.second][0].IDs[0]) != 0) {
-	
-				if (entityList[smth]->getType() == Entities::MATERIALS) {
-					insect->isTriggered = true;
-					insect->aim_id = smth;
-					insect->aim_pos = currPos;
+	//				}
+	//			}
+	//		}
+	//		else {
+	//			break;
+	//		}
+	//		
+	//
+	//	}
+
+	//} 
+	if (!insect->isTriggered) {
+			pair<int, int> p;
+			int counter = 0;
+			int flag = 1;
+			while (!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p) && insect->isIndoors(p.first, p.second))) {
+				counter++;
+				if (counter == 15) {
+					flag = 0;
+					insect->isTriggered = false;
 					break;
 				}
 			}
-			for (int i = -1; i <= 1; i++) {
-				for (int j = -1; j <= 1; j++) {
-					pair<int, int> newPos = { currPos.first + i, currPos.second + j};
-					if ((j == 0 && i == 0) || newPos.first >= field_size_x || newPos.second >= field_size_y 
-						|| newPos.first < 0 || newPos.second < 0 || (visited[newPos.first][newPos.second])) continue;
-					q.push(newPos);
-					visited[newPos.first][newPos.second] = true;
-			
-				}
-			}
-		}
-
-	} 
+			if (flag) moveToCeil(p, id, curr);
+		
+	}
 
 	if (insect->isTriggered) {
 		pair<int, int> newPos2 = { curr->pos_x, curr->pos_y };
@@ -73,13 +100,13 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		else
 			newPos2.second--;
 		
-		if (isValidCell(newPos2) && isFreeCell(newPos2)) {
+		if (isValidCell(newPos2) && isFreeCell(newPos2) && insect->isIndoors(newPos2.first, newPos2.second)) {
 			moveToCeil(newPos2, id, curr);
 		} else {
 			pair<int, int> p;
 			int counter = 0;
 			int flag = 1;
-			while(!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p))) {
+			while(!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p) && insect->isIndoors(p.first, p.second))) {
 				counter++;
 				if (counter == 15) {
 					flag = 0;
@@ -152,7 +179,7 @@ bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value
 
 	free_key++;
 	return true;
-}
+}	
 bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) {
 	Materials* mat = new Materials(x, y, z, type, weight);
 	Entity* new_ent = new Entity(mat, Entities::MATERIALS);

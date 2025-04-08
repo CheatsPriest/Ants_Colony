@@ -40,6 +40,11 @@ public:
 	void info() {
 		cout << "I am INSECT" << "\n";
 	}
+	bool isIndoors(int x, int y) {
+		return( stockPos.first < x) && (x < stockPos.first + stockSize.first)
+			&& (stockPos.second < y) &&( y < stockPos.second + stockSize.second);
+	
+	}
 
 };
 

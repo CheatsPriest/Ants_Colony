@@ -17,29 +17,29 @@ void processingEntities() {
 	Window* mainWindow = new Window(ultimateData);
 	srand(time(0));
 	int stockX = 60;
-	int stockY = 10;
+	int stockY = 60;
 	int stockWidth = 17;
 	int stockHeight = 17;
 
 	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0);
 	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 0);
 	
-	//ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
+	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
-	//for (int i = 0; i < 100; i++) {
-	//	ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
-	//}
-	//for (int i = 0; i < 50; i++) {
-	//	ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
-	//}
-	//for (int i = 0; i < 1; i++) {
-	//	ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
-	//}
+	for (int i = 0; i < 100; i++) {
+		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1);
+	}
+	for (int i = 0; i < 50; i++) {
+		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2);
+	}
+	for (int i = 0; i < 1; i++) {
+		ultimateData->CreateEntityAnt(12, i, 0, 0, 3);
+	}
 
 	for (int i = 0; i < 200; i++) {
 	//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 		//ultimateData->CreateEntityMaterial(0,0, 0, 0, 10);
-	//	ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
+		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
 		//ultimateData->CreateInsect(rand() % 60 + i, rand() % 20 + i, 0, InsectTypes::APHID);
 		//ultimateData->CreateInsect(30, 5, 0, InsectTypes::APHID);
 	}
