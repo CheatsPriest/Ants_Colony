@@ -149,6 +149,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		cout << "dead" << ant->type<< endl;
 	}
 	if (ant->saturation<=ant->max_Saturation*0.3 && ant->action!=3) {
+		ant->paction = ant->action;
+		ant->paim = ant->aim;
 		
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
@@ -175,21 +177,19 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 			cout << "EAT" << endl;
 			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
-			ant->action = 0;
+			ant->action = ant->paction;
+			ant->aim = ant->paim;
 		}
 	}
 	else if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
 	else if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
-		
-
 		if (ant->inventary != 0) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
 				if (ant->inventary !=0 &&((stash->type==0 && entityList[ant->inventary]->getType() == Entities::FOOD) or (stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS)) and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 					stash->TryToPut(ant, &entityList, ant->aim);
-					cout << 2;
 				}
 			}	
 		}
@@ -212,22 +212,22 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		}
 		if (ant->action == 5) {
 			Stockpile* stock = stockpileList[ant->dest];
-			for (int i = stock->pos_x - 1; i <= stock->pos_x + size_x; i++) {
-				for (int j = stock->pos_y - 1; i <= stock->pos_y + size_y; i++) {
-					if (i==i%size_x && j==j%size_y &&((abs(i-stock->pos_x)%stock->size_x)==1 or (abs(j - stock->pos_y) % stock->size_y) == 1) && field->field[i][j]->cWall==0) {
+			int ch = 0;
+			for (int i = stock->pos_x - 1; i <= stock->pos_x + stock->size_x; i++) {
+				for (int j = stock->pos_y - 1; i <= stock->pos_y + stock->size_y; i++) {
+					if (ch == 0 && i==i%size_x && j==j%size_y &&((abs(i-stock->pos_x)%stock->size_x)==1 or (abs(j - stock->pos_y) % stock->size_y) == 1) && field->field[i][j]->cWall==0) {
 						ant->aim = { i,j };
-						cout << i << j;
-						ant->action == 6;
-						break;
+						ant->action = 6;
+						ch = 1;
+						
 					}
 				}
 			}
 			
 		}
 		if (ant->action == 6) {
-			field->field[ant->aim.first][ant->aim.second]->CreateWall(300, ant->clan);
-			ant->inventary == 0;
-			ant->action == 0;
+			BuildWall(ant);
+			ant->action = 0;
 		
 		}
 		if (ant->action < 4) {
@@ -299,7 +299,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 						
-						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action != 2) {
+						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							if (ant->inventary == 0) {
@@ -323,7 +323,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->aim = na;
 							ant->action = 2;
 						}
-						else if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action != 2) {
+						else if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Mat = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							if (ant->inventary == 0) {
@@ -344,16 +344,13 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 								}
 							}
-							ant->aim = na;
-							ant->action = 2;
+							if (ant->action != 6) {
+								ant->aim = na;
+								ant->action = 2;
+							}
 						}
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
-							if (smth->type == 5 && ant->type == 3) {
-								ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
-								this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-								ant->action = 1;
-							}
 							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;

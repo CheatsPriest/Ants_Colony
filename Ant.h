@@ -34,7 +34,9 @@ public:
 
 	int clan;
 	int smell_Rad;
+	int paction;
 	pair<int, int> aim = {pos_x,pos_y};
+	pair<int, int> paim = { pos_x,pos_y };
 	pair<int, int> nearest_En = { pos_x,pos_y };
 	pair<int, int> nearest_Fd = { pos_x,pos_y };
 	pair<int, int> nearest_Mat = { this->pos_x,this->pos_y };
