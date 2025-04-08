@@ -118,23 +118,23 @@ void InfoSpace::MoveInsect(unsigned int id) {
 }
 
 //type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
-bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class) {
+bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, int clan) {
 	
 	if (field->field[x][y][z].IDs[0] != 0)return false;
 	if (type == 0) {
 
 		Ant* new_ant;
 		if (under_class == 0) {
-			new_ant = new Queen(x, y, z);
+			new_ant = new Queen(x, y, z, clan);
 		}
 		else if (under_class == 1) {
-			new_ant = new Scout(x, y, z);
+			new_ant = new Scout(x, y, z, clan);
 		}
 		else if (under_class == 2) {
-			new_ant = new Worker(x, y, z);
+			new_ant = new Worker(x, y, z, clan);
 		}
 		else if (under_class == 3) {
-			new_ant = new Soldier(x, y, z);
+			new_ant = new Soldier(x, y, z, clan);
 		}
 		else return false;
 		Entity* new_ent = new Entity(new_ant, Entities::ANT);
@@ -191,31 +191,16 @@ bool InfoSpace::CreateInsect(int x,int y, int z, InsectTypes type)
 
 }
 
-bool InfoSpace::CreateEntity(int x, int y, int t)
-{
-	if (field->field[x][y][0].IDs[0] != 0)return false;
-	Ant* new_ant;
-	new_ant = new Ant(x, y, 0, t,1,1,1,1);
-	Entity* new_ent = new Entity(new_ant, Entities::ANT);
 
 
-
-	entityList.insert({ free_key, new_ent });
-	field->field[new_ant->pos_x][new_ant->pos_y][new_ant->pos_z].IDs[0] = free_key;
-	
-	free_key++;
-	return true;
-
-	
-}
-bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int type) {
+bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int type, int clan) {
 
 	for (int i = x; i < x + wide; i++) {
 		for (int j = y; j < y + hight; j++) {
-			if (!field->field[i][j]->isFree)return false;
+			if (field->field[i][j]->cWall)return false;
 		}
 	}
-	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key);
+	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key, clan);
 	cout << free_stockpile_key;
 
 	stockpileList.insert({ free_stockpile_key, new_stock });
@@ -227,7 +212,19 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 
 }
 
+bool InfoSpace::BuildWall(Ant* cAnt) {
 
+	if (cAnt->inventary == 0)return 0;
+
+	if (entityList[cAnt->inventary]->getType() == 3) {
+		DeleteEntity(cAnt->inventary);
+		cAnt->inventary = 0;
+
+		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
+
+	}
+
+}
 
 
 
@@ -308,7 +305,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		if (ant->inventary != 0) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
-				if (stash->type==0 and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x+stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
+				if (ant->inventary !=0 &&((stash->type==0 && entityList[ant->inventary]->getType() == Entities::FOOD) or (stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS)) and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 					stash->TryToPut(ant, &entityList, ant->aim);
 					cout << 2;
 				}
@@ -340,6 +337,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 							ant->action = 1;
 							
+						}
+						if (obj->getType() == Entities::MATERIALS) {
+							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
+							ant->action = 1;
+
 						}
 						/*if (smth->type == 5) {
 							ant->nearest_En = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
@@ -401,6 +404,30 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->aim = na;
 							ant->action = 2;
 						}
+						else if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action != 2) {
+							ant->nearest_Mat = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+
+							if (ant->inventary == 0) {
+								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+								cout << "I picked Mat number " << ant->inventary << endl;//подбор еды
+								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+							}
+							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
+							for (auto stock : stockpileList) {
+								if (stock.second->type == 1 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+									cout << "Illbeback" << endl;
+									if (stock.second->food_collected < 0) {
+										na = { stock.second->pos_x + 0 % stock.second->size_x,stock.second->pos_y + 0 / stock.second->size_y };
+									}
+									else {
+										na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
+									}
+
+								}
+							}
+							ant->aim = na;
+							ant->action = 2;
+						}
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth->type == 5 && ant->type == 3) {
@@ -411,6 +438,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
+								smth->action = 1;
+							}
+							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
+								smth->nearest_Fd = ant->nearest_Fd;
+								smth->aim = ant->nearest_Mat;
 								smth->action = 1;
 							}
 							if (smth->type == 3 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {

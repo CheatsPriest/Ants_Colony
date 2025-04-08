@@ -2,7 +2,13 @@
 #include <algorithm>
 #include "InfoSpace.h"
 
-Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation) : Ant() 
+
+
+
+
+
+Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation, int clan) : Ant() 
+
 {
     this->pos_x = x;
     this->pos_y = y;
@@ -13,8 +19,10 @@ Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defens
     this->defense = defense;
     this->max_Saturation = max_Saturation;
     this->saturation = max_Saturation;
+    this->clan = clan;
     this->aim = { this->pos_x,this->pos_y };
     nearest_En = { this->pos_x,this->pos_y };
+    nearest_Mat = { this->pos_x,this->pos_y };
     nearest_Fd = { this->pos_x,this->pos_y };
     inventary = 0;
 }
