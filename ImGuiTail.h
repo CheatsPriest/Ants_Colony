@@ -14,7 +14,10 @@ static ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
 static ImColor Blue = ImColor(0.4f, 0.4f, 0.9f);
 
 static ImColor Brown = ImColor(0.8f, 0.4f, 0.1f);
-static ImColor Black = ImColor(0.f, 0.f, 0.f);
+
+static ImColor Purple = ImColor(0.8f, 0.1f, 0.9f);
+
+static ImColor Black = ImColor(0.01f, 0.01f, 0.01f);
 static ImColor White = ImColor(0.8f, 0.8f, 0.8f);
 static ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
 

@@ -8,7 +8,7 @@ class Ant
 {
 public:
 	Ant() {};
-	Ant(int x, int y, int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation);
+	Ant(int x, int y, int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation, int clan);
 	void info() {
 		cout << "I AM A SURGEON\n";
 	}
@@ -18,6 +18,7 @@ public:
 	unsigned int Put();
 	void CopyPosition(Ant* source);
 	void GivePosition(Ant* input);
+	
 
 	float HP;
 	float max_HP;
@@ -29,11 +30,12 @@ public:
 
 	unsigned int stashid;
 
-	int level;//Пока что 1
+	int clan;
 	int smell_Rad;
 	pair<int, int> aim = {pos_x,pos_y};
 	pair<int, int> nearest_En = { pos_x,pos_y };
 	pair<int, int> nearest_Fd = { pos_x,pos_y };
+	pair<int, int> nearest_Mat = { this->pos_x,this->pos_y };
 	int ground_Lvl;
 	float saturation;
 	float max_Saturation;

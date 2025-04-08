@@ -70,7 +70,10 @@ void Window::DrawMainScene() {
 
                 //ImGui::GetBackgroundDrawList()->AddRect(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0, 1.0f);
                 //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0);
-                
+                if (data->field->field[x][y][data->z_cam].cWall != 0) {
+                    //cout << 1 << endl;
+                    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Purple, 0.1f, 0);
+                }
                 if (field->field[x][y][data->z_cam].IDs[0] != 0) {
 
                     cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
@@ -79,7 +82,7 @@ void Window::DrawMainScene() {
                         Ant* curAnt = (Ant*)(cur->getPtr());
                         
                         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
-
+                        
                         if (data->draw_debug_move_lines) {
                    
                             ImGui::GetBackgroundDrawList()->AddLine(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), ImVec2((curAnt->aim.first - c_x) * cell_size+cell_size/2, (curAnt->aim.second - c_y) * cell_size+cell_size/2), Red, 1.f);
