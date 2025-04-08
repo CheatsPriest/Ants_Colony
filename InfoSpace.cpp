@@ -88,7 +88,7 @@ bool InfoSpace::BuildWall(Ant* cAnt) {
 		DeleteEntity(cAnt->inventary);
 		cAnt->inventary = 0;
 
-		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, 0);
+		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
 
 	}
 
