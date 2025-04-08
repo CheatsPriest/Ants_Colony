@@ -12,14 +12,16 @@
 #include "stb_image.h"
 */
 
-//#include "d3d9.h"
-//#include "d3dx9.h"
+#include "d3dx9.h"
+#include "d3d9.h"
 #include "d3dx9tex.h"
-#pragma comment(lib, "d3dx9")
+#pragma comment(lib, "d3dx9.lib")
+
+
 
 bool LoadTextureFromFile(const char* filename, PDIRECT3DTEXTURE9* out_texture, int* out_width, int* out_height)
 {
-    PDIRECT3DTEXTURE9 texture;
+    PDIRECT3DTEXTURE9 texture = { 0 };
     HRESULT hr = D3DXCreateTextureFromFileA(g_pd3dDevice, filename, &texture);
     if (hr != S_OK)
         return false;
@@ -53,6 +55,7 @@ int draw_x, draw_y;
 
 unsigned int work_id;
 
+
 Entity* cur;
 /*
 GLuint LoadTexture(const char* path) {
@@ -79,7 +82,15 @@ GLuint soldier_texture;
 GLuint queen_texture;
 */ // Трэш просто...
 void Window::DrawScout(int x, int y, unsigned int id) {
-    ImGui::Image((ImTextureID)(intptr_t)my_texture, ImVec2(my_image_width, my_image_height));
+    static bool isDraw = false; 
+
+    if (!isDraw)
+    {
+        InitResources();
+        isDraw = true;
+    }
+
+    ImGui::Image((ImTextureID)my_texture, ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f));
     //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Blue, 0.1f, 0);
     /*ImVec2 start_pos(x + 1.f, y + 1.f);
     ImVec2 end_pos(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f);
