@@ -23,8 +23,9 @@ public:
 	unsigned int aim_id;
 	unsigned int store;
 	pair<int, int> aim_pos;
-	bool isEmpty;
 	bool isTriggered;
+	pair<int, int> stockPos;
+	pair<int, int> stockSize;
 	void setAimId(unsigned int id) {
 		aim_id = id;
 	}
@@ -34,7 +35,6 @@ public:
 		pos_x = x;
 		pos_y = y;
 		pos_z = z;
-		isEmpty = true;
 		isTriggered = false;
 	}
 	void info() {

@@ -66,7 +66,7 @@ public:
 	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type);
 	bool CreateEntityMaterial(int x, int y, int z, int type, int weight);
 	bool isValidCell(pair<int, int> d);
-	bool CreateInsect(int x, int y, int z, InsectTypes type);
+	bool CreateInsect(int x, int y, int z, InsectTypes type, pair<int, int> stockPos, pair<int, int> stockSize);
 	bool isFreeCell(pair<int, int>p);
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);

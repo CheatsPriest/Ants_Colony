@@ -166,10 +166,12 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 	return true;
 }
 
-bool InfoSpace::CreateInsect(int x,int y, int z, InsectTypes type)
+bool InfoSpace::CreateInsect(int x,int y, int z, InsectTypes type, pair<int, int> stockPos, pair<int, int> stockSize)
 {	
 	if (field->field[x][y][0].IDs[0] != 0)return false;
 	Insect* insect = new Insect(type, x, y, z);
+	insect->stockPos = stockPos;
+	insect->stockSize = stockSize;
 	Entity* new_ent = new Entity(insect, Entities::INSECT);
 	new_ent->pos_x = x;
 	new_ent->pos_y = y;
