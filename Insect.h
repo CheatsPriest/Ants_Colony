@@ -1,6 +1,6 @@
 
-#ifndef HHH
-#define HHH
+#pragma once
+
 #include "Entity.h"
 enum InsectTypes {
 	APHID = 1
@@ -44,4 +44,3 @@ public:
 };
 
 
-#endif
