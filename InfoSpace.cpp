@@ -81,13 +81,10 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 }
 
 bool InfoSpace::BuildWall(Ant* cAnt) {
-
 	if (cAnt->inventary == 0)return 0;
-
 	if (entityList[cAnt->inventary]->getType() == 3) {
 		DeleteEntity(cAnt->inventary);
 		cAnt->inventary = 0;
-
 		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
 
 	}
@@ -95,6 +92,21 @@ bool InfoSpace::BuildWall(Ant* cAnt) {
 }
 
 
+pair<int, int> InfoSpace::search() {
+	int source = 0;
+	int dest = 0;
+	for (auto stock : stockpileList) {
+		Stockpile* stash = stock.second;
+		if (stash->needWalled == true) {
+			dest = stash->id;
+		}
+		if (stash->type == 1 && stash->food_collected > 0) {
+			source = stash->id;
+		}
+	}
+	return { source,dest };
+
+}
 
 double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);
@@ -170,6 +182,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
 	else if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+		
+
 		if (ant->inventary != 0) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
@@ -177,12 +191,49 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					stash->TryToPut(ant, &entityList, ant->aim);
 					cout << 2;
 				}
+			}	
+		}
+		if (ant->action == 0) {
+			pair<int, int> stocks = search();
+			ant->source = stocks.first;
+			ant->dest = stocks.second;
+			if (ant->source && ant->dest) {
+				ant->action = 4;
+				Stockpile* stock = stockpileList[ant->source];
+				ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
+			}
+		}
+		if (ant->action == 4) {
+			Stockpile* stock = stockpileList[ant->source];
+			stock->PickUp(ant, &entityList);
+			stock = stockpileList[ant->dest];
+			ant->aim = { stock->pos_x,stock->pos_y};
+			ant->action = 5;
+		}
+		if (ant->action == 5) {
+			Stockpile* stock = stockpileList[ant->dest];
+			for (int i = stock->pos_x - 1; i <= stock->pos_x + size_x; i++) {
+				for (int j = stock->pos_y - 1; i <= stock->pos_y + size_y; i++) {
+					if (i==i%size_x && j==j%size_y &&((abs(i-stock->pos_x)%stock->size_x)==1 or (abs(j - stock->pos_y) % stock->size_y) == 1) && field->field[i][j]->cWall==0) {
+						ant->aim = { i,j };
+						cout << i << j;
+						ant->action == 6;
+						break;
+					}
+				}
 			}
 			
-				
 		}
-		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
-		ant->action = 0;
+		if (ant->action == 6) {
+			field->field[ant->aim.first][ant->aim.second]->CreateWall(300, ant->clan);
+			ant->inventary == 0;
+			ant->action == 0;
+		
+		}
+		if (ant->action < 4) {
+			ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
+			ant->action = 0;
+		}
 	}
 	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.first) <= 2) {
 		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы

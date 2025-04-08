@@ -27,6 +27,8 @@ public:
 	int pos_x;
 	int pos_y;
 	int pos_z;
+	int dest;
+	int source;
 
 	unsigned int stashid;
 

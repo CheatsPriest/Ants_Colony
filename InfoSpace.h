@@ -68,6 +68,9 @@ public:
 
 	bool BuildWall(Ant* cAnt);
 
+	pair<int, int> search();
+
+
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
 	void MoveEntity(unsigned int id);

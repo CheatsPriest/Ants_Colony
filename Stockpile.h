@@ -14,6 +14,7 @@ public:
 	int pos_z;
 
 	bool needWalled;
+	int wall_len;
 
 	int size_x;
 	int size_y;
@@ -24,7 +25,8 @@ public:
 	
 	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id) {
 
-		needWalled = false;
+		needWalled = true;
+		wall_len = 0;
 
 		pos_x = x;
 		pos_y = y;
