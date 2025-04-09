@@ -24,7 +24,7 @@ static ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
 class Window {
 public:
 
-
+        
     bool isValid;
     void NewFrame();
     void EndFrame();

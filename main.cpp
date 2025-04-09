@@ -128,16 +128,120 @@ void draw() {
 	mainWindow->Cleanup();
 	delete mainWindow;
 }
-int main() {
-	
-	//поток обработки Entity
-	thread ProcessingEntity(processingEntities);
-	//поток отрисовки
-	//thread Drow(draw);
-	
 
 
-	ProcessingEntity.join();
-	//Drow.join();
+//int main() {
+//	
+//	//поток обработки Entity
+//	thread ProcessingEntity(processingEntities);
+//	//поток отрисовки
+//	//thread Drow(draw);
+//	
+//
+//
+//	ProcessingEntity.join();
+//	//Drow.join();
+//	return 0;
+//}
+//InfoSpace* ultimateData = new InfoSpace;
+
+
+#include "SFML/Graphics.hpp"
+
+int main()
+{
+	// Создание окна
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Zoom with Texture Switch");
+	sf::Clock clock;
+	// Загрузка текстур
+	sf::Texture antTexture, subObjTexture;
+	if (!antTexture.loadFromFile("X://ant.png") ||
+		!subObjTexture.loadFromFile("X://antFace.png"))
+	{
+		return EXIT_FAILURE; // Проверка загрузки текстур
+	}
+
+
+	int cell = 1; // +- 0.1
+
+
+
+	// Создание спрайта     
+	sf::Sprite object(antTexture);
+	object.setPosition(300, 200); // Позиция по центру экрана
+
+	// Настройка камеры
+	sf::View view = window.getDefaultView();
+
+	float zoomLevel = 1.0f; // Текущий уровень зума (1.0 = 100%)
+	const float cameraSpeed = 200.0f; // Скорость в пикселях/сек
+
+	// Пороги смены текстур
+	const float FAR_ZOOM = 2.0f;  // 50% видимости
+	const float NEAR_ZOOM = 1.0f; // 100% видимости
+
+	while (window.isOpen())
+	{
+		float deltaTime = clock.restart().asSeconds();
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+
+			// Обработка клавиш
+			if (event.type == sf::Event::MouseWheelScrolled)
+			{
+				// Приближение (H)
+				if (event.mouseWheelScroll.delta > 0)
+				{
+					view.zoom(0.9f); // Уменьшаем размер вида
+					zoomLevel *= 0.9f;
+				}
+				// Отдаление (U)
+				else if (event.mouseWheelScroll.delta < 0)
+				{
+					view.zoom(1.1f); // Увеличиваем размер вида
+					zoomLevel *= 1.1f;
+				}
+			}
+		}
+
+		// Движение камеры
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			view.move(0, -cameraSpeed * deltaTime);
+
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			view.move(0, cameraSpeed * deltaTime);
+
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			view.move(-cameraSpeed * deltaTime, 0);
+
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			view.move(cameraSpeed * deltaTime, 0);
+
+		// Проверка уровня зума и смена текстуры
+		if (zoomLevel >= FAR_ZOOM)
+		{
+			object.setTexture(subObjTexture);
+		}
+		else
+		{
+			object.setTexture(antTexture);
+		}
+
+		// Обновление камеры
+		window.setView(view);
+
+		// Отрисовка
+		window.setView(view);
+		window.clear();
+		window.draw(object);
+		window.display();
+	}
+
 	return 0;
 }

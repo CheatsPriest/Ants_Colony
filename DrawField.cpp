@@ -7,8 +7,6 @@ int cell_size;
 int draw_x, draw_y;
 
 unsigned int work_id;
-
-
 Entity* cur;
 
 void Window::DrawScout(int x, int y, unsigned int id) {

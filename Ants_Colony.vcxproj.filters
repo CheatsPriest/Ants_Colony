@@ -108,6 +108,12 @@
     <ClCompile Include="Food.cpp">
       <Filter>Еда</Filter>
     </ClCompile>
+    <ClCompile Include="Materials.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="walls.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes.h">
@@ -187,6 +193,12 @@
     </ClInclude>
     <ClInclude Include="DrawAnts.cpp">
       <Filter>Рисовальщик</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="walls.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
