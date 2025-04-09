@@ -1,6 +1,6 @@
 #pragma once
 //#include "InfoSpace.h"
-#include "Entity.h"
+//#include "Entity.h"
 #include "Cell.h"
 
 

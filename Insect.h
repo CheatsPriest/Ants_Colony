@@ -1,6 +1,8 @@
 #ifndef HHH
 #define HHH
+#include "Field.h"
 #include "Entity.h"
+
 enum InsectTypes {
 	APHID = 1
 };
@@ -8,6 +10,7 @@ class Insect
 {
 public:
 	static pair<int, pair<int,int>> nearlest;
+	static bool isSlaveZone;
 	InsectTypes type;
 	int agressive;
 	int pos_x;
@@ -26,6 +29,7 @@ public:
 	bool isTriggered;
 	pair<int, int> stockPos;
 	pair<int, int> stockSize;
+	bool isSlaver = false;
 	void setAimId(unsigned int id) {
 		aim_id = id;
 	}
@@ -40,11 +44,12 @@ public:
 	void info() {
 		cout << "I am INSECT" << "\n";
 	}
-	bool isIndoors(int x, int y) {
-		return( stockPos.first < x) && (x < stockPos.first + stockSize.first)
-			&& (stockPos.second < y) &&( y < stockPos.second + stockSize.second);
-	
+	bool isIndoors(int x, int y, Field* field) {
+	/*	return( stockPos.first < x) && (x < stockPos.first + stockSize.first)
+			&& (stockPos.second < y) &&( y < stockPos.second + stockSize.second);*/
+		return field->field[x][y][0].cWall == 0;
 	}
+	
 
 };
 

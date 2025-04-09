@@ -67,7 +67,7 @@ public:
 	bool CreateEntityMaterial(int x, int y, int z, int type, int weight);
 
 	bool isValidCell(pair<int, int> d);
-	bool CreateInsect(int x, int y, int z, InsectTypes type, pair<int, int> stockPos, pair<int, int> stockSize);
+	bool CreateInsect(int x, int y, int z, InsectTypes type, pair<int, int> stockPos, pair<int, int> stockSize, bool isSlaver);
 	bool isFreeCell(pair<int, int>p);
 
 
