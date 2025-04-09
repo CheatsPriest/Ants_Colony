@@ -4,6 +4,8 @@
 #include <queue>
 using namespace std;
 bool InfoSpace::isValidCell(pair<int, int> newPos) {
+	//return !(newPos.first >= field_size_x || newPos.second >= field_size_y
+	//	|| newPos.first < 0 || newPos.second < 0);
 	return !(newPos.first >= field_size_x || newPos.second >= field_size_y
 		|| newPos.first < 0 || newPos.second < 0);
 }
@@ -45,15 +47,23 @@ void InfoSpace::MoveInsect(unsigned int id) {
 					break;
 				}
 			}
-			if (flag) moveToCeil(p, id, curr);
-
+			if (flag) {
+				moveToCeil(p, id, curr);
+			}
+			p = { curr->pos_x, curr->pos_y };
 			pair<int, pair<int, int>> prob = { 0, {p.first, p.second} };
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
 					prob.second = { p.first + i, p.second + j };
-					if (!isValidCell(prob.second)) continue;
+					if (!isValidCell(prob.second)) {
+						continue;
+					}
+					else {
+						
+					}
 					if ((i == j && i == 0) || !insect->isIndoors(prob.second.first, prob.second.second, field) || isFreeCell(prob.second)) continue;
 					if (entityList[field->field[prob.second.first][prob.second.second][0].IDs[0]]->getType() == Entities::MATERIALS) {
+						//cout << prob.second.first << " : " << prob.second.second << "\n";
 						insect->nearlest.first = field->field[prob.second.first][prob.second.second][0].IDs[0];
 						insect->nearlest.second = { prob.second.first, prob.second.second };
 						if (insect->isSlaver) {
@@ -62,6 +72,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 						else {
 							insect->isSlaveZone = false;
 						}
+						//cout << "FUCK CODE RED: " << p.first;
 						insect->aim_id = field->field[prob.second.first][prob.second.second][0].IDs[0];
 						insect->aim_pos = { prob.second.first, prob.second.second };
 						insect->isTriggered = true;

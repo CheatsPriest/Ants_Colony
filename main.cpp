@@ -24,14 +24,14 @@ void processingEntities() {
 	for (int i = 0; i < wallWidth; i++) {
 		ultimateData->field->field[wallX + i][wallY][0].CreateWall(10, 1);
 		ultimateData->field->field[wallX + i][wallY + wallHeight][0].CreateWall(10, 1);
-		ultimateData->CreateEntityMaterial(wallX + i, wallY	, 0, 0, 10);
-		ultimateData->CreateEntityMaterial(wallX + i, wallY + wallHeight, 0, 0, 10);
+		//ultimateData->CreateEntityMaterial(wallX + i, wallY - 1	, 0, 0, 10);
+		//ultimateData->CreateEntityMaterial(wallX + i, wallY + wallHeight + 1, 0, 0, 10);
 	}
 	for (int i = 0; i < wallHeight; i++) {
-		ultimateData->field->field[wallX][wallY + i][0].CreateWall(10, 1);
+		ultimateData->field->field[wallX ][wallY + i][0].CreateWall(10, 1);
 		ultimateData->field->field[wallX + wallWidth][wallY + i][0].CreateWall(10, 1);
-		ultimateData->CreateEntityMaterial(wallX, wallY + i, 0, 0, 10);
-		ultimateData->CreateEntityMaterial(wallX + wallWidth, wallY + i, 0, 0, 10);
+		//ultimateData->CreateEntityMaterial(wallX, wallY + i - 1, 0, 0, 10);
+		//ultimateData->CreateEntityMaterial(wallX + wallWidth, wallY + i + 1, 0, 0, 10);
 	}
 
 
@@ -87,18 +87,25 @@ void processingEntities() {
 		//ultimateData->CreateInsect(rand() % 60 + i, rand() % 20 + i, 0, InsectTypes::APHID);
 		//ultimateData->CreateInsect(30, 5, 0, InsectTypes::APHID);
 	}
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < 50; i++) {
 		//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 			//ultimateData->CreateEntityMaterial(0,0, 0, 0, 10);
 		//ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
 		ultimateData->CreateInsect(rand() % wallWidth + wallX, rand() % wallHeight + wallY, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, true);
 		//ultimateData->CreateInsect(30, 5, 0, InsectTypes::APHID);
 	}
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < 50; i++) {
 		//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 			//ultimateData->CreateEntityMaterial(0,0, 0, 0, 10);
 		//ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
 		ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, false);
+		//ultimateData->CreateInsect(30, 5, 0, InsectTypes::APHID);
+	}
+	for (int i = 0; i < 3000; i++) {
+		//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
+			//ultimateData->CreateEntityMaterial(0,0, 0, 0, 10);
+	//	ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
+		//ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, false);
 		//ultimateData->CreateInsect(30, 5, 0, InsectTypes::APHID);
 	}
 	/*for (int i = 0; i < 100; i++) {

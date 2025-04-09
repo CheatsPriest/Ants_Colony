@@ -15,7 +15,7 @@ public:
 		this->pos_z = z;
 		this->type = type;
 		this->weight = weight;
-		this->hp = 100;
+		this->hp = 50;
 	}
 };
 
