@@ -39,9 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Ant.cpp">
       <Filter>Муравьи</Filter>
     </ClCompile>
@@ -112,6 +109,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="walls.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,5 +200,97 @@
     <ClInclude Include="walls.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\BlendMode.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\CircleShape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Color.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\ConvexShape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Drawable.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Export.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Font.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glsl.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glyph.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Image.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\PrimitiveType.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Rect.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RectangleShape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderStates.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTarget.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTexture.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderWindow.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shader.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Sprite.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Text.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Texture.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transform.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transformable.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Vertex.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexArray.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexBuffer.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\View.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Glsl.inl">
+      <Filter>Исходные файлы</Filter>
+    </None>
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Rect.inl">
+      <Filter>Исходные файлы</Filter>
+    </None>
   </ItemGroup>
 </Project>

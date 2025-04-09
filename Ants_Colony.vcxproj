@@ -108,7 +108,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)SFML-2.6.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -180,6 +180,34 @@
     <ClInclude Include="includes.h" />
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Scout.h" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\BlendMode.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\CircleShape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Color.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\ConvexShape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Drawable.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Export.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Font.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glsl.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glyph.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Image.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\PrimitiveType.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Rect.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RectangleShape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderStates.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTarget.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTexture.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderWindow.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shader.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Sprite.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Text.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Texture.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transform.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transformable.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Vertex.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexArray.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexBuffer.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\View.hpp" />
     <ClInclude Include="Soldier.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="vendor\ImGui\backends\imgui_impl_dx9.h" />
@@ -192,6 +220,10 @@
     <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
     <ClInclude Include="walls.h" />
     <ClInclude Include="Worker.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Glsl.inl" />
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Rect.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

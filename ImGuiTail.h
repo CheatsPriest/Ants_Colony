@@ -9,7 +9,6 @@
 #include <string>
 using namespace std;
 
-
 static ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
 static ImColor Blue = ImColor(0.4f, 0.4f, 0.9f);
 
