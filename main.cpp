@@ -7,6 +7,7 @@
 #include <conio.h>
 #include <Windows.h>
 #include <random>
+#include "SFML/Graphics.hpp"
 
 
 InfoSpace* ultimateData = new InfoSpace;
@@ -146,7 +147,6 @@ void draw() {
 //InfoSpace* ultimateData = new InfoSpace;
 
 
-#include "SFML/Graphics.hpp"
 
 int main()
 {
