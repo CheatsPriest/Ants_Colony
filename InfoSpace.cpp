@@ -80,15 +80,61 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 
 }
 
+bool InfoSpace::EntityChangePostion(unsigned int id, int x, int y, int z) {
+	if (id == 0) {
+		return false;
+	}
+	Entity* curEnt = entityList[id];
+	
+	if (curEnt->getType() == FOOD) {//еда
+
+		Food* curFood = (Food*)(curEnt->getPtr());
+		curFood->pos_x = x;
+		curFood->pos_y = y;
+		curFood->pos_z = z;
+
+	}
+	else if (curEnt->getType() == ANT) {//еда
+		Ant* curAnt = (Ant*)(curEnt->getPtr());
+		curAnt->pos_x = x;
+		curAnt->pos_y = y;
+		curAnt->pos_z = z;
+
+
+	}
+	else if (curEnt->getType() == MATERIALS) {
+		Materials* curMat = (Materials*)(curEnt->getPtr());
+		curMat->pos_x = x;
+		curMat->pos_y = y;
+		curMat->pos_z = z;
+	}
+	return false;
+}
+
 bool InfoSpace::BuildWall(Ant* cAnt) {
-	if (cAnt->inventary == 0)return 0;
+	if (cAnt->inventary == 0 or field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].cWall!=0)return false;
 	if (entityList[cAnt->inventary]->getType() == 3) {
 		DeleteEntity(cAnt->inventary);
 		cAnt->inventary = 0;
 		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
-
+		return true;
 	}
+	return false;
+}
 
+bool  InfoSpace::TryToDrop(Ant* cAnt) {
+	if (cAnt->inventary == 0)return false;
+	for (int i = -3; i < 3; i++) {
+		for (int j = -3; j < 3; j++) {
+			if (field->field[cAnt->pos_x + i][cAnt->pos_y + j][cAnt->pos_z].IDs[0] == 0) {
+				field->field[cAnt->pos_x + i][cAnt->pos_y + j][cAnt->pos_z].IDs[0] = cAnt->inventary;
+				EntityChangePostion(cAnt->inventary, cAnt->pos_x + i, cAnt->pos_y + j, cAnt->pos_z);
+				cAnt->inventary = 0;
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 
@@ -158,7 +204,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			if (stash->type == 0 and stash->food_collected>=0) {
 				ant->action = 3;
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
-				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
+				int aim_y = stash->pos_y + stash->food_collected / stash->size_y;
+				if (stash->food_collected >= stash->size_y * stash->size_x) {
+					aim_x = stash->pos_x + stash->size_x - 1;
+					aim_y = stash->pos_y + stash->size_y - 1;
+				}
 				ant->stashid = stash->id;
 				cout << stash->id;
 				if (ant->type == 3) {
@@ -229,14 +279,20 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 			
 		}
-		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) < 1 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
-			BuildWall(ant);
-			Stockpile* stash = stockpileList[ant->dest];
-			stash->wall_len += 1;
-			if (stash->wall_len==(stash->size_x + stash->size_y+2)*2) {
-				stash->needWalled = false;
+		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) < 1) {
+			if (BuildWall(ant)) {
+				Stockpile* stash = stockpileList[ant->dest];
+				stash->wall_len += 1;
+				if (stash->wall_len == (stash->size_x + stash->size_y + 2) * 2) {
+					stash->needWalled = false;
+
+				}
+				ant->action = 0;
 			}
-			ant->action = 0;
+			if (stockpileList[ant->dest]->needWalled == false) {
+				if (TryToDrop(ant))ant->action = 0;
+			}
+			
 		
 		}
 		if (ant->action < 4) {
@@ -259,7 +315,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 
-						
+						if (obj == 0 or obj==NULL)break;
 						if (obj->getType() == Entities::FOOD) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };

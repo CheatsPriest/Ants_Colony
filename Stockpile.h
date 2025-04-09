@@ -27,7 +27,7 @@ public:
 	
 	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id, int cr_clan) {
 
-		needWalled = true;
+		needWalled = false;
 		wall_len = 0;
 
 		pos_x = x;

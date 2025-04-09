@@ -15,8 +15,11 @@ InfoSpace* ultimateData = new InfoSpace;
 void processingEntities() {
 	Window* mainWindow = new Window(ultimateData);
 	srand(time(0));
-	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
+	//ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
+	ultimateData->CreateStockpile(90, 10, 0, 37, 37, 0, 1);
+
 	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1, 1);
+	//ultimateData->CreateStockpile(60, 80, 0, 17, 17, 1, 1);
 
 	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
@@ -30,7 +33,7 @@ void processingEntities() {
 		ultimateData->CreateEntityAnt(12, i, 0, 0, 3,1);
 	}
 
-	for (int i = 0; i < 200; i++) {
+	for (int i = 0; i < 600; i++) {
 		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
 	}
@@ -74,6 +77,18 @@ void processingEntities() {
 			ultimateData->MoveCam(-1, 0);
 			for (int i = 0; i < 25; i++) {
 				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
+				
+			}
+			for (auto ent : ultimateData->entityList) {
+				break;
+				Entity* curr = ent.second;
+				if (curr->getType() == Entities::ANT) {
+					Ant* curOne = (Ant*)curr->getPtr();
+					ultimateData->TryToDrop(curOne);
+					ultimateData->MoveEntity(ent.first);
+
+
+				}
 			}
 		}
 		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {

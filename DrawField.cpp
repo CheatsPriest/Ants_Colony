@@ -56,6 +56,48 @@ void Window::DrawMainScene() {
     {
         //for (int x = 0; x < data->field_size_x; x++) {
         //    for (int y = 0; y < data->field_size_y; y++){//Неоптимизированно
+
+        Stockpile* curStock;
+        for (auto el : data->stockpileList) {
+            curStock = el.second;
+            if (curStock->food_collected >= 15)curStock->needWalled = true;
+            //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
+            ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x) * cell_size - data->x_cam, (curStock->pos_y) * cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x) * cell_size - data->x_cam, (curStock->pos_y + curStock->size_y) * cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
+            if (curStock->type == FOOD_STOCK) {
+                for (int i = 0; i < curStock->size_y; i++) {
+                    for (int j = 0; j < curStock->size_x; j++) {
+
+                        work_id = curStock->stuff[i][j];
+                        if (work_id != 0) {
+                            cur = data->entityList[work_id];
+                            Food* curFood = (Food*)(cur->getPtr());
+
+                            draw_x = (curFood->pos_x - c_x) * cell_size;
+                            draw_y = (curFood->pos_y - c_y) * cell_size;
+                            DrawFood(draw_x, draw_y, work_id);
+                        }
+                    }
+                }
+            }
+            else if (curStock->type == MATERIAL_STOCK) {
+                for (int i = 0; i < curStock->size_y; i++) {
+                    for (int j = 0; j < curStock->size_x; j++) {
+
+                        work_id = curStock->stuff[i][j];
+                        if (work_id != 0) {
+                            cur = data->entityList[work_id];
+                            Materials* curMat = (Materials*)(cur->getPtr());
+
+                            draw_x = (curMat->pos_x - c_x) * cell_size;
+                            draw_y = (curMat->pos_y - c_y) * cell_size;
+                            DrawMaterial(draw_x, draw_y, work_id);
+                        }
+                    }
+                }
+            }
+        }
+
+
         for (int x = c_x; x < max_x; x++) {
             for (int y = c_y; y < max_y; y++) {
                 draw_x = (x - c_x) * cell_size;
@@ -123,44 +165,7 @@ void Window::DrawMainScene() {
         }
         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(100, 100), ImVec2(200, 200), Green, 0.f, 0);
 
-        Stockpile* curStock;
-        for (auto el : data->stockpileList) {
-            curStock = el.second;
-            //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
-            ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x)* cell_size - data->x_cam, (curStock->pos_y)* cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x)* cell_size - data->x_cam, (curStock->pos_y + curStock->size_y)* cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
-            if (curStock->type == FOOD_STOCK) {
-                for (int i = 0; i < curStock->size_y; i++) {
-                    for (int j = 0; j < curStock->size_x; j++) {
-
-                        work_id = curStock->stuff[i][j];
-                        if (work_id != 0) {
-                            cur = data->entityList[work_id];
-                            Food* curFood = (Food*)(cur->getPtr());
-
-                            draw_x = (curFood->pos_x - c_x) * cell_size;
-                            draw_y = (curFood->pos_y - c_y) * cell_size;
-                            DrawFood(draw_x, draw_y, work_id);
-                        }
-                    }
-                }
-            }
-            else if (curStock->type == MATERIAL_STOCK) {
-                for (int i = 0; i < curStock->size_y; i++) {
-                    for (int j = 0; j < curStock->size_x; j++) {
-
-                        work_id = curStock->stuff[i][j];
-                        if (work_id != 0) {
-                            cur = data->entityList[work_id];
-                            Materials* curMat = (Materials*)(cur->getPtr());
-
-                            draw_x = (curMat->pos_x - c_x) * cell_size;
-                            draw_y = (curMat->pos_y - c_y) * cell_size;
-                            DrawMaterial(draw_x, draw_y, work_id);
-                        }
-                    }
-                }
-            }
-        }
+        
 
     }ImGui::End();
 

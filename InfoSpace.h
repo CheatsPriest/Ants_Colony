@@ -66,7 +66,10 @@ public:
 	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type, int clan);
 	bool CreateEntityMaterial(int x, int y, int z, int type, int weight);
 
+	bool EntityChangePostion(unsigned int id, int x, int y, int z);
 	bool BuildWall(Ant* cAnt);
+	bool TryToDrop(Ant* cAnt);
+	
 
 	pair<int, int> search();
 
