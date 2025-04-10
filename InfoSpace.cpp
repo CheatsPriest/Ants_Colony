@@ -435,6 +435,10 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					Stockpile* stock = stockpileList[ant->source];
 					ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
 				}
+				if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+					Stockpile* stock = stockpileList[ant->source];
+					stock->TryToPut(ant, &entityList, ant->aim);
+				}
 			}
 		}
 		else if (mem && mem->getType()==Entities::MAGGOTS) {
