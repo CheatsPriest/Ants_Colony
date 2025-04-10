@@ -7,9 +7,13 @@
 //#include <conio.h>
 //#include <random>
 //#define NOMINMAX
-#include <Windows.h>
-//#include "SFML/Graphics.hpp"
-#include "X://Repositories/Ants_Colony/SFML-2.6.2/include/SFML/Graphics.hpp"
+//#include <Windows.h>
+#include "SFML/Graphics.hpp"
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+
+
 
 
 //InfoSpace* ultimateData = new InfoSpace;
@@ -149,100 +153,124 @@
 
 
 
-int main()
-{
-	// Создание окна
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Zoom with Texture Switch");
-	sf::Clock clock;
-	// Загрузка текстур
-	sf::Texture antTexture, subObjTexture;
-	if (!antTexture.loadFromFile("X://ant.png") ||
-		!subObjTexture.loadFromFile("X://antFace.png"))
-	{
-		return EXIT_FAILURE; // Проверка загрузки текстур
-	}
 
 
-	int cell = 1; // +- 0.1
+struct Ant {
+    sf::Sprite sprite;
+    sf::Vector2f velocity;
+};
 
+int main() {
+    srand(static_cast<unsigned int>(time(nullptr)));
+    sf::RenderWindow window(sf::VideoMode(1920, 1440), "Zoom with Texture Switch");
+    sf::Clock clock;
 
+    // Загрузка текстур
+    sf::Texture antTexture, subObjTexture;
+    if (!antTexture.loadFromFile("images//ant.png") ||
+        !subObjTexture.loadFromFile("images//antFace.png")) {
+        return EXIT_FAILURE;
+    }
 
-	// Создание спрайта     
-	sf::Sprite object(antTexture);
-	object.setPosition(300, 200); // Позиция по центру экрана
+    // Создание объектов
+    std::vector<Ant> ants;
+    const int NUM_ANTS = 10;
+    for (int i = 0; i < NUM_ANTS; ++i) {
+        Ant ant;
+        ant.sprite.setTexture(antTexture);
+        sf::FloatRect bounds = ant.sprite.getLocalBounds();
 
-	// Настройка камеры
-	sf::View view = window.getDefaultView();
+        // Центрируем начало координат спрайта
+        ant.sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 
-	float zoomLevel = 1.0f; // Текущий уровень зума (1.0 = 100%)
-	const float cameraSpeed = 200.0f; // Скорость в пикселях/сек
+        float x = rand() % (1920 - static_cast<int>(bounds.width));
+        float y = rand() % (1440 - static_cast<int>(bounds.height));
+        ant.sprite.setPosition(x, y);
 
-	// Пороги смены текстур
-	const float FAR_ZOOM = 2.0f;  // 50% видимости
-	const float NEAR_ZOOM = 1.0f; // 100% видимости
+        float angle = static_cast<float>(rand() % 360) * (3.14159f / 180.f);
+        float speed = 100.0f;
+        ant.velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
+        ants.push_back(ant);
+    }
 
-	while (window.isOpen())
-	{
-		float deltaTime = clock.restart().asSeconds();
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
+    // Настройка камеры
+    sf::View view = window.getDefaultView();
+    float zoomLevel = 1.0f;
+    const float FAR_ZOOM = 2.0f;
+    const float cameraSpeed = 200.0f;
 
-			// Обработка клавиш
-			if (event.type == sf::Event::MouseWheelScrolled)
-			{
-				// Приближение (H)
-				if (event.mouseWheelScroll.delta > 0)
-				{
-					view.zoom(0.9f); // Уменьшаем размер вида
-					zoomLevel *= 0.9f;
-				}
-				// Отдаление (U)
-				else if (event.mouseWheelScroll.delta < 0)
-				{
-					view.zoom(1.1f); // Увеличиваем размер вида
-					zoomLevel *= 1.1f;
-				}
-			}
-		}
+    while (window.isOpen()) {
+        float deltaTime = clock.restart().asSeconds();
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
 
-		// Движение камеры
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			view.move(0, -cameraSpeed * deltaTime);
+            if (event.type == sf::Event::MouseWheelScrolled) {
+                if (event.mouseWheelScroll.delta > 0) {
+                    view.zoom(0.9f);
+                    zoomLevel *= 0.9f;
+                }
+                else {
+                    view.zoom(1.1f);
+                    zoomLevel *= 1.1f;
+                }
+            }
+        }
 
+        // Движение камеры
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) view.move(0, -cameraSpeed * deltaTime);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) view.move(0, cameraSpeed * deltaTime);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) view.move(-cameraSpeed * deltaTime, 0);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) view.move(cameraSpeed * deltaTime, 0);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			view.move(0, cameraSpeed * deltaTime);
+        // Обновление объектов
+        for (auto& ant : ants) {
+            ant.sprite.move(ant.velocity * deltaTime);
+            sf::FloatRect bounds = ant.sprite.getGlobalBounds();
 
+            // Поворот спрайта по направлению движения
+            if (ant.velocity.x != 0 || ant.velocity.y != 0) {
+                float angle = std::atan2(ant.velocity.y, ant.velocity.x) * (180 / 3.14159f);
+                ant.sprite.setRotation(angle + 90); // +90 если текстура изначально смотрит вверх
+            }
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			view.move(-cameraSpeed * deltaTime, 0);
+            // Проверка границ
+            if (bounds.left < 0) {
+                ant.velocity.x = std::abs(ant.velocity.x);
+                ant.sprite.setPosition(bounds.width / 2, ant.sprite.getPosition().y);
+            }
+            else if (bounds.left + bounds.width > 1920) {
+                ant.velocity.x = -std::abs(ant.velocity.x);
+                ant.sprite.setPosition(1920 - bounds.width / 2, ant.sprite.getPosition().y);
+            }
 
+            if (bounds.top < 0) {
+                ant.velocity.y = std::abs(ant.velocity.y);
+                ant.sprite.setPosition(ant.sprite.getPosition().x, bounds.height / 2);
+            }
+            else if (bounds.top + bounds.height > 1440) {
+                ant.velocity.y = -std::abs(ant.velocity.y);
+                ant.sprite.setPosition(ant.sprite.getPosition().x, 1440 - bounds.height / 2);
+            }
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			view.move(cameraSpeed * deltaTime, 0);
+            // Смена текстуры
+            if (zoomLevel >= FAR_ZOOM) {
+                ant.sprite.setTexture(subObjTexture, true);
+            }
+            else {
+                ant.sprite.setTexture(antTexture, true);
+            }
+        }
 
-		// Проверка уровня зума и смена текстуры
-		if (zoomLevel >= FAR_ZOOM)
-		{
-			object.setTexture(subObjTexture);
-		}
-		else
-		{
-			object.setTexture(antTexture);
-		}
+        // Отрисовка
+        window.setView(view);
+        window.clear();
+        for (const auto& ant : ants) {
+            window.draw(ant.sprite);
+        }
+        window.display();
+    }
 
-		// Обновление камеры
-		window.setView(view);
-
-		// Отрисовка
-		window.setView(view);
-		window.clear();
-		window.draw(object);
-		window.display();
-	}
-
-	return 0;
+    return 0;
 }
