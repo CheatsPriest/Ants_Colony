@@ -104,6 +104,12 @@ bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pa
 		carriedFood->pos_y =y + pos_y;
 		
 	}
+	else if (curCarried->getType() == Entities::MAGGOTS) {
+		Maggot* carriedFood = (Maggot*)(curCarried->getPtr());
+		carriedFood->pos_x = x + pos_x;
+		carriedFood->pos_y = y + pos_y;
+
+	}
 	else if (curCarried->getType() == Entities::MATERIALS) {
 		Materials* carriedMat = (Materials*)(curCarried->getPtr());
 		carriedMat->pos_x = x + pos_x;

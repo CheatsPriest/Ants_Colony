@@ -72,7 +72,7 @@ void processingEntities() {
 	while (ultimateData->mainLoop) {
 		for (auto ent : ultimateData->entityList) {
 			Entity* curr = ent.second;
-			if(curr->getType() == Entities::ANT) {
+			if(curr && curr->getType() == Entities::ANT) {
 				
 				ultimateData->MoveEntity(ent.first);
 
