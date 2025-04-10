@@ -173,12 +173,13 @@ bool InfoSpace::FeedTheQueen(Ant* curAnt) {
 
 void InfoSpace::Hatching(Stockpile* curStock) {
 
-	if (curStock->type != MAGGOT_STOCK) {
+	if (curStock->type != MAGGOT_STOCK or curStock->food_collected==-1) {
 		return;
 	}
 	unsigned int ind;
 	for (int i = 0; i < curStock->size_x; i++) {
 		for (int j = 0; j < curStock->size_y; j++) {
+			if (i + j > curStock->food_collected)return;
 			ind = curStock->stuff[i][j];
 			if (ind != 0) {
 				if (entityList[ind]->getType() != MAGGOTS)continue;
@@ -188,16 +189,20 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 
 					curStock->stuff[i][j] = 0;
 
-					if (curStock->food_collected < curStock->size_x * curStock->size_y) {
+					if (curStock->food_collected < curStock->size_x * curStock->size_y and curStock->food_collected<=0) {
 						curStock->stuff[i][j] = curStock->stuff[curStock->food_collected% curStock->size_x][curStock->food_collected/ curStock->size_y];
+					}
+					else if (curStock->food_collected <= 0) {
+
 					}
 					else {
 						curStock->stuff[i][j] = curStock->stuff[curStock->size_x-1][curStock->size_y-1];
 					}
 					curStock->food_collected--;
 
-					//DeleteEntity(ind);
-
+					DeleteEntity(ind);
+					ind = 0;
+					continue;
 					//entityList.erase(ind);
 					
 				}
@@ -598,6 +603,8 @@ bool InfoSpace::DeleteEntity(unsigned int id) {
 	Entity* curEnt = entityList[id];
 	entityList.erase(id);
 	
+	
+
 	if(curEnt->getType() == FOOD) {//еда
 
 		Food* curFood = (Food*)(curEnt->getPtr());
