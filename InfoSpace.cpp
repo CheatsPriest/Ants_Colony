@@ -68,7 +68,7 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 	return true;
 }
 
-static int timer_born = 2000;
+static int timer_born = 500;
 bool InfoSpace::CreateEntityMaggot(int x, int y, int z, int clan) {
 	if (field->field[x][y][z].IDs[0] != 0)return false;
 	Maggot* new_maggot = new Maggot(clan, timer_born);
@@ -169,6 +169,44 @@ bool InfoSpace::FeedTheQueen(Ant* curAnt) {
 	return true;
 
 
+}
+
+void InfoSpace::Hatching(Stockpile* curStock) {
+
+	if (curStock->type != MAGGOT_STOCK) {
+		return;
+	}
+	unsigned int ind;
+	for (int i = 0; i < curStock->size_x; i++) {
+		for (int j = 0; j < curStock->size_y; j++) {
+			ind = curStock->stuff[i][j];
+			if (ind != 0) {
+				if (entityList[ind]->getType() != MAGGOTS)continue;
+				Maggot* curMaggot = (Maggot*)entityList[ind]->getPtr();
+				if (curMaggot->release_timer <= 0) {
+					CreateEntityAnt(i + curStock->pos_x, j + curStock->pos_y, curStock->pos_z, 0, 1, curMaggot->clan);
+
+					curStock->stuff[i][j] = 0;
+
+					if (curStock->food_collected < curStock->size_x * curStock->size_y) {
+						curStock->stuff[i][j] = curStock->stuff[curStock->food_collected% curStock->size_x][curStock->food_collected/ curStock->size_y];
+					}
+					else {
+						curStock->stuff[i][j] = curStock->stuff[curStock->size_x-1][curStock->size_y-1];
+					}
+					curStock->food_collected--;
+
+					//DeleteEntity(ind);
+
+					//entityList.erase(ind);
+					
+				}
+				else {
+					--curMaggot->release_timer;
+				}
+			}
+		}
+	}
 }
 
 double dist(int p1, int p2, int p3, int p4) {
@@ -508,6 +546,7 @@ bool InfoSpace::DeleteEntity(unsigned int id) {
 	}
 	Entity* curEnt = entityList[id];
 	entityList.erase(id);
+	
 	if(curEnt->getType() == FOOD) {//еда
 
 		Food* curFood = (Food*)(curEnt->getPtr());
@@ -526,6 +565,11 @@ bool InfoSpace::DeleteEntity(unsigned int id) {
 		Materials* curMat = (Materials*)(curEnt->getPtr());
 
 		delete curMat;
+	}
+	else if (curEnt->getType() == MAGGOTS) {
+		Maggot* curMag = (Maggot*)(curEnt->getPtr());
+
+		delete curMag;
 	}
 	return false;
 }

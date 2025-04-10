@@ -187,6 +187,7 @@ void Window::DrawMainScene() {
                 }
             }
             else if (curStock->type == MAGGOT_STOCK) {
+                data->Hatching(curStock);
                 for (int i = 0; i < curStock->size_y; i++) {
                     for (int j = 0; j < curStock->size_x; j++) {
 
