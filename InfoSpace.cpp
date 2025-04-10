@@ -191,7 +191,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		return;
 	}
 
-	if (ant->type > 3) { return; }
+	if (ant->type > 4) { return; }
 
 	vector<vector<double>> dt;
 	for (double i = -1; i <= 1; i++) {
@@ -325,7 +325,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			ant->action = 0;
 		}
 	}
-	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.first) <= 2) {
+	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
@@ -343,13 +343,19 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				}
 				ant->source = source;
 				if (ant->source) {
-					ant->action = 4;
 					Stockpile* stock = stockpileList[ant->source];
 					ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
+				}
+				if (ant->source && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+					Stockpile* stock = stockpileList[ant->source];
+					stock->PickUp(ant, &entityList);
 				}
 			}
 			else if(entityList[ant->inventary]->getType() == Entities::FOOD) {
 				ant->aim = {Mom->pos_x,Mom->pos_y };
+				if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+					FeedTheQueen(ant);
+				}
 			}
 		}
 	}
@@ -387,12 +393,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							if (smth->type == 2  && ant->action == 1 && smth->action <= 1  && ant->clan==smth->clan) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
-								smth->action = 1;
+								
 							}
 							if (smth->type == 3 && ant->action == 1 && smth->action <= 1 && ant->clan == smth->clan) {
 								smth->nearest_En = ant->nearest_En;
 								smth->aim = ant->nearest_En;
-								smth->action = 1;
+								
 							}
 						}
 						
@@ -463,24 +469,24 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
-							if ( ant->clan == smth->clan &&smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
+							if ( ant->clan == smth->clan &&smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
-								smth->action = 1;
+								
 							}
-							if (ant->action == 1 && smth->action <= 1 && ant->clan != smth->clan) {
+							if (smth->action <= 1 && ant->clan != smth->clan) {
 								ant->nearest_En = { smth->pos_x, smth->pos_y };
 								smth->nearest_En = { ant->pos_x, ant->pos_y };
 							}
-							if (ant->clan == smth->clan && smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
+							if (ant->clan == smth->clan && smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Mat;
-								smth->action = 1;
+								
 							}
-							if (ant->clan == smth->clan && smth->type == 3 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
+							if (ant->clan == smth->clan && smth->type == 3  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
 								smth->nearest_En = ant->nearest_En;
 								smth->aim = ant->nearest_En;
-								smth->action = 1;
+								
 
 							}
 						}
