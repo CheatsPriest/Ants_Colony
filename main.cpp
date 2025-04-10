@@ -20,6 +20,8 @@ void processingEntities() {
 
 	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
+	ultimateData->CreateEntityAnt(15, 15, 0, 0, 0, 1);
+
 	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1,1);
 	}
@@ -64,6 +66,7 @@ void processingEntities() {
 				
 				ultimateData->MoveEntity(ent.first);
 
+				
 
 			}
 		}

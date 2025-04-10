@@ -76,6 +76,7 @@ public:
 	void MoveEntity(unsigned int id);
 	void ProcessAnt(Ant* curAnt);
 
+	bool BornNewAnts(Ant* Queen);
 
 	~InfoSpace() {
 		delete field;

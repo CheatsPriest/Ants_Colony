@@ -108,6 +108,38 @@ pair<int, int> InfoSpace::search() {
 
 }
 
+
+bool InfoSpace::BornNewAnts(Ant* Queen) {
+	if (Queen->type != 0) {
+		return false;
+	}
+	int whoWillBorn = 0;
+	double chance = ((double)(rand()%10))/10;
+	
+
+	if (chance < 0.3) {
+		whoWillBorn = 1;
+
+	}
+	else if (chance <= 0.7 and chance >= 0.3) {
+		whoWillBorn = 2;
+	}
+	else if (chance > 0.7) {
+		whoWillBorn = 3;
+		
+	}
+	//whoWillBorn = 1;
+
+
+	if (CreateEntityAnt(Queen->pos_x, Queen->pos_y + 1, 0, 0, whoWillBorn, Queen->clan)) {
+		Queen->saturation -= 100;
+		return true;
+	}
+
+	return false;
+
+}
+
 double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);
 }
@@ -121,6 +153,10 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 	Ant* ant = (Ant *)curEnt->getPtr();
 
+	if (ant->type == QUEEN) {
+		//cout << "HERE" << endl;
+		BornNewAnts(ant);
+	}
 
 	if (ant->type > 3) { return; }
 	vector<vector<double>> dt;
@@ -144,7 +180,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->pos_y += dt[wh][3];
 		this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
 	}
+
 	ant->saturation -= 0.2; // randommmmmmmmmmmmm
+
 	if (ant->saturation < 0) {
 		cout << "dead" << ant->type<< endl;
 	}
