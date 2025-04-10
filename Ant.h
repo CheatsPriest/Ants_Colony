@@ -3,7 +3,12 @@
 using namespace std;
 #include <vector>
 
-
+enum Ants {
+	QUEEN = 0,
+	SCOUT = 1,
+	WORKER = 2,
+	SOLDIER = 3
+};
 class Ant
 {
 public:

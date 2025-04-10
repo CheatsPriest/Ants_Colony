@@ -5,6 +5,3 @@ Queen::Queen(int x, int y, int z, int clan) : Ant(x, y, z, 0, 1000, 0,1000, 0.1,
 	attack = max_HP * coefOfQueen;
 }
 
-void Queen::createNewAnt()
-{
-}
