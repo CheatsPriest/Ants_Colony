@@ -42,6 +42,7 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, 
 }
 
 bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value, int weight) {
+	if (field->field[x][y][z].IDs[0] != 0)return false;
 	Food* food = new Food(x, y, z, type, food_value, weight);
 	Entity* new_ent = new Entity(food, Entities::FOOD);
 	entityList.insert({ free_key, new_ent });
@@ -54,6 +55,7 @@ bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value
 	return true;
 }
 bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) {
+	if (field->field[x][y][z].IDs[0] != 0)return false;
 	Materials* mat = new Materials(x, y, z, type, weight);
 	Entity* new_ent = new Entity(mat, Entities::MATERIALS);
 	entityList.insert({ free_key, new_ent });
@@ -61,6 +63,19 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 	field->field[mat->pos_x][mat->pos_y][mat->pos_z].IDs[0] = free_key;
 
 	mat->entity_id = free_key;
+
+	free_key++;
+	return true;
+}
+
+static int timer_born = 2000;
+bool InfoSpace::CreateEntityMaggot(int x, int y, int z, int clan) {
+	if (field->field[x][y][z].IDs[0] != 0)return false;
+	Maggot* new_maggot = new Maggot(clan, timer_born);
+	Entity* new_ent = new Entity(new_maggot, Entities::MAGGOTS);
+	entityList.insert({ free_key, new_ent });
+
+	field->field[x][y][z].IDs[0] = free_key;
 
 	free_key++;
 	return true;
@@ -122,21 +137,10 @@ bool InfoSpace::BornNewAnts(Ant* Queen) {
 	double chance = ((double)(rand()%10))/10;
 	
 
-	if (chance < 0.3) {
-		whoWillBorn = 1;
-
-	}
-	else if (chance <= 0.7 and chance >= 0.3) {
-		whoWillBorn = 2;
-	}
-	else if (chance > 0.7) {
-		whoWillBorn = 3;
-		
-	}
-	whoWillBorn = 1;
+	
 
 
-	if (CreateEntityAnt(Queen->pos_x, Queen->pos_y + 1, 0, 0, whoWillBorn, Queen->clan)) {
+	if (CreateEntityMaggot(Queen->pos_x, Queen->pos_y + 1, 0, Queen->clan)) {
 		Queen->saturation -= 100;
 		return true;
 	}

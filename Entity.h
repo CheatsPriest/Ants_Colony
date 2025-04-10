@@ -4,6 +4,8 @@
 #include "Food.h"
 #include "Insect.h"
 #include "Materials.h"
+#include "Maggot.h"
+
 
 using namespace std;
 
@@ -12,7 +14,8 @@ enum Entities {
 	ANT = 0,
 	FOOD = 1,
 	INSECT = 2,
-	MATERIALS = 3
+	MATERIALS = 3,
+	MAGGOTS = 4
 };
 class Entity {
 private:

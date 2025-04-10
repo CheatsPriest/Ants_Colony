@@ -5,3 +5,4 @@
 #include "Worker.h"
 #include "Queen.h"
 #include "Nurse.h"
+#include "Collector.h"

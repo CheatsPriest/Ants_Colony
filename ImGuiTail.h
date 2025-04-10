@@ -12,6 +12,7 @@ using namespace std;
 
 static ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
 static ImColor Blue = ImColor(0.4f, 0.4f, 0.9f);
+static ImColor WhiteBlue = ImColor(0.4f, 0.1f, 0.9f);
 
 static ImColor Yellow = ImColor(0.8f, 0.8f, 0.1f);
 
@@ -51,6 +52,7 @@ private:
     void DrawMaterial(int x, int y, unsigned int id);
     void DrawQueen(int x, int y, unsigned int id);
     void DrawNurse(int x, int y, unsigned int id);
+    void DrawMaggot(int x, int y, unsigned int id);
 
     Field* field;
     

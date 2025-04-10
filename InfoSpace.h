@@ -80,7 +80,7 @@ public:
 
 	bool BornNewAnts(Ant* Queen);
 	bool FeedTheQueen(Ant* curAnt);
-
+	bool CreateEntityMaggot(int x, int y, int z, int clan);
 
 	~InfoSpace() {
 		delete field;

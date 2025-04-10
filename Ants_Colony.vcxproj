@@ -145,6 +145,7 @@
     <ClCompile Include="ImGuiTail.cpp" />
     <ClCompile Include="InfoSpace.cpp" />
     <ClCompile Include="Insect.cpp" />
+    <ClCompile Include="Maggot.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Materials.cpp" />
     <ClCompile Include="myfont.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Food.h" />
     <ClInclude Include="InfoSpace.h" />
     <ClInclude Include="Insect.h" />
+    <ClInclude Include="Maggot.h" />
     <ClInclude Include="Materials.h" />
     <ClInclude Include="myfont.h" />
     <ClInclude Include="ImGuiTail.h" />

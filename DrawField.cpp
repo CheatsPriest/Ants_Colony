@@ -10,8 +10,14 @@ unsigned int work_id;
 
 
 Entity* cur;
+
+void Window::DrawMaggot(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size  - 1.0f, y + data->cell_size  - 1.0f), WhiteBlue, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "Q");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
 void Window::DrawQueen(int x, int y, unsigned int id) {
-    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size*4 - 1.0f, y + data->cell_size*4 - 1.0f), Yellow, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Yellow, 0.1f, 0);
     ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "Q");
     ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
@@ -130,6 +136,11 @@ void Window::DrawMainScene() {
                         DrawMaterial(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
 
                     }
+                    else if (cur->getType() == Entities::MAGGOTS) {
+                        Maggot* curMat = (Maggot*)(cur->getPtr());
+                        DrawMaggot(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+
+                    }
                    
                 }
 
@@ -171,6 +182,22 @@ void Window::DrawMainScene() {
                             draw_x = (curMat->pos_x - c_x) * cell_size;
                             draw_y = (curMat->pos_y - c_y) * cell_size;
                             DrawMaterial(draw_x, draw_y, work_id);
+                        }
+                    }
+                }
+            }
+            else if (curStock->type == MAGGOT_STOCK) {
+                for (int i = 0; i < curStock->size_y; i++) {
+                    for (int j = 0; j < curStock->size_x; j++) {
+
+                        work_id = curStock->stuff[i][j];
+                        if (work_id != 0) {
+                            cur = data->entityList[work_id];
+                            Maggot* curMat = (Maggot*)(cur->getPtr());
+
+                            draw_x = (curStock->pos_x + i -c_x) * cell_size;
+                            draw_y = (curStock->pos_y + j - c_y) * cell_size;
+                            DrawMaggot(draw_x, draw_y, work_id);
                         }
                     }
                 }

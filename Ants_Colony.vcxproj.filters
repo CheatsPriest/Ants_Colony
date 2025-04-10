@@ -40,9 +40,6 @@
     <Filter Include="Colony">
       <UniqueIdentifier>{4eab4f1e-e2c1-43e1-9e4d-420d99731162}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Няньки">
-      <UniqueIdentifier>{22927afd-9674-4109-9623-5e3a04801e3e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -124,6 +121,9 @@
       <Filter>Colony</Filter>
     </ClCompile>
     <ClCompile Include="Nurse.cpp">
+      <Filter>Муравьи</Filter>
+    </ClCompile>
+    <ClCompile Include="Maggot.cpp">
       <Filter>Муравьи</Filter>
     </ClCompile>
   </ItemGroup>
@@ -216,6 +216,9 @@
       <Filter>Colony</Filter>
     </ClInclude>
     <ClInclude Include="Nurse.h">
+      <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="Maggot.h">
       <Filter>Муравьи</Filter>
     </ClInclude>
   </ItemGroup>
