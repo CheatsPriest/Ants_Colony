@@ -37,6 +37,7 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, 
 	
 	return false;
 }
+
 bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value, int weight) {
 	Food* food = new Food(x, y, z, type, food_value, weight);
 	Entity* new_ent = new Entity(food, Entities::FOOD);
@@ -143,7 +144,25 @@ bool InfoSpace::BornNewAnts(Ant* Queen) {
 
 }
 
+bool InfoSpace::FeedTheQueen(Ant* curAnt) {
 
+	if (curAnt->inventary == 0 or entityList[curAnt->inventary]->getType()!=FOOD)return false;
+
+	Food* curFood = (Food*)entityList[curAnt->inventary]->getPtr();
+
+	Ant* curQueen = coloniesList[curAnt->clan]->Queen;
+
+	if (curQueen == NULL or curFood==NULL)return false;
+
+	curQueen->saturation += curFood->food_value * 1.5;
+
+	DeleteEntity(curAnt->inventary);
+	curAnt->inventary = 0;
+
+	return true;
+
+
+}
 
 double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);

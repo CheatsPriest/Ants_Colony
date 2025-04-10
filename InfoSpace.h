@@ -79,7 +79,7 @@ public:
 	void ProcessAnt(Ant* curAnt);
 
 	bool BornNewAnts(Ant* Queen);
-	
+	bool FeedTheQueen(Ant* curAnt);
 
 
 	~InfoSpace() {
