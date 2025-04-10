@@ -7,7 +7,8 @@ enum Ants {
 	QUEEN = 0,
 	SCOUT = 1,
 	WORKER = 2,
-	SOLDIER = 3
+	SOLDIER = 3,
+	NURSE = 4
 };
 class Ant
 {

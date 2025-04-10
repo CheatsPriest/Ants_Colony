@@ -22,6 +22,9 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, 
 		else if (under_class == 3) {
 			new_ant = new Soldier(x, y, z, clan);
 		}
+		else if (under_class == 4) {
+			new_ant = new Nurse(x, y, z, clan);
+		}
 		else return false;
 		Entity* new_ent = new Entity(new_ant, Entities::ANT);
 

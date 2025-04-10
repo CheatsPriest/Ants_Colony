@@ -148,6 +148,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Materials.cpp" />
     <ClCompile Include="myfont.cpp" />
+    <ClCompile Include="Nurse.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Scout.cpp" />
     <ClCompile Include="Soldier.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="myfont.h" />
     <ClInclude Include="ImGuiTail.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="Nurse.h" />
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Scout.h" />
     <ClInclude Include="Soldier.h" />
