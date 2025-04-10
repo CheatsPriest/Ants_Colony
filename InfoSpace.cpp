@@ -97,7 +97,7 @@ bool InfoSpace::BuildWall(Ant* cAnt) {
 }
 
 
-pair<int, int> InfoSpace::search() {
+pair<int, int> InfoSpace::searchmat() {
 	int source = 0;
 	int dest = 0;
 	for (auto stock : stockpileList) {
@@ -188,6 +188,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	}
 
 	if (ant->type > 3) { return; }
+
 	vector<vector<double>> dt;
 	for (double i = -1; i <= 1; i++) {
 		for (double j = -1; j <= 1; j++) {
@@ -267,8 +268,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}	
 		}
 		
+
 		if (ant->action == 0 or (ant->dest != 0 && stockpileList[ant->dest]->needWalled == false)) {
-			pair<int, int> stocks = search();
+			pair<int, int> stocks = searchmat();
 			ant->source = stocks.first;
 			ant->dest = stocks.second;
 			
@@ -322,6 +324,30 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.first) <= 2) {
 		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
+	}
+	else if (ant->type == 4) {
+		Ant* Mom = coloniesList[ant->clan]->Queen;
+		if (Mom->saturation <= Mom->max_Saturation * 0.7) {
+			if (ant->inventary == 0) {
+				int source = 0;
+				for (auto stock : stockpileList) {
+					Stockpile* stash = stock.second;
+					if (stash->type == 0 && stash->food_collected > 0) {
+						source = stash->id;
+					}
+
+				}
+				ant->source = source;
+				if (ant->source) {
+					ant->action = 4;
+					Stockpile* stock = stockpileList[ant->source];
+					ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
+				}
+			}
+			else if(entityList[ant->inventary]->getType() == Entities::FOOD) {
+				ant->aim = {Mom->pos_x,Mom->pos_y };
+			}
+		}
 	}
 
 
