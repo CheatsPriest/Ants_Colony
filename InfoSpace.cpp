@@ -85,7 +85,7 @@ bool InfoSpace::BuildWall(Ant* cAnt) {
 	if (entityList[cAnt->inventary]->getType() == 3) {
 		DeleteEntity(cAnt->inventary);
 		cAnt->inventary = 0;
-		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
+		field->field[cAnt->aim.first][cAnt->aim.second][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
 
 	}
 
@@ -144,7 +144,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->pos_y += dt[wh][3];
 		this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
 	}
-	ant->saturation -= 0.2;
+	ant->saturation -= 0.2; // randommmmmmmmmmmmm
 	if (ant->saturation < 0) {
 		cout << "dead" << ant->type<< endl;
 	}
@@ -191,6 +191,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				if (ant->inventary !=0 &&((stash->type==0 && entityList[ant->inventary]->getType() == Entities::FOOD) or (stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS)) and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 					stash->TryToPut(ant, &entityList, ant->aim);
 				}
+				else if(ant->inventary != 0 && stash->type == 0 && entityList[ant->inventary]->getType() == Entities::FOOD) {
+					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
+				}
+				else if (ant->inventary != 0 && stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS) {
+					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
+				}
 			}	
 		}
 		
@@ -198,6 +204,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			pair<int, int> stocks = search();
 			ant->source = stocks.first;
 			ant->dest = stocks.second;
+			
 			if (ant->source && ant->dest) {
 				ant->action = 4;
 				Stockpile* stock = stockpileList[ant->source];
@@ -229,8 +236,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 			
 		}
-		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) < 1 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
+		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
 			BuildWall(ant);
+			if (ant->dest==0) { ant->action = 0; return; }
 			Stockpile* stash = stockpileList[ant->dest];
 			stash->wall_len += 1;
 			if (stash->wall_len==(stash->size_x + stash->size_y+2)*2) {
@@ -272,21 +280,19 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->action = 1;
 
 						}
-						/*if (smth->type == 5) {
-							ant->nearest_En = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
-							ant->action = 1;
-		
-						}*/
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth == NULL)continue;
-							if (smth->type == 2  && ant->action == 1 && smth->action <= 1 ) {
+							if (ant->action == 1 && smth->action <= 1 && ant->clan != smth->clan) {
+								ant->nearest_En = {smth->pos_x, smth->pos_y};
+								smth->nearest_En = { ant->pos_x, ant->pos_y };
+							}
+							if (smth->type == 2  && ant->action == 1 && smth->action <= 1  && ant->clan==smth->clan) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
 								smth->action = 1;
 							}
-							if (smth->type == 3 && ant->action == 1 && smth->action <= 1) {
+							if (smth->type == 3 && ant->action == 1 && smth->action <= 1 && ant->clan == smth->clan) {
 								smth->nearest_En = ant->nearest_En;
 								smth->aim = ant->nearest_En;
 								smth->action = 1;
@@ -360,17 +366,21 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
-							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
+							if ( ant->clan == smth->clan &&smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
 								smth->action = 1;
 							}
-							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
+							if (ant->action == 1 && smth->action <= 1 && ant->clan != smth->clan) {
+								ant->nearest_En = { smth->pos_x, smth->pos_y };
+								smth->nearest_En = { ant->pos_x, ant->pos_y };
+							}
+							if (ant->clan == smth->clan && smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Mat;
 								smth->action = 1;
 							}
-							if (smth->type == 3 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
+							if (ant->clan == smth->clan && smth->type == 3 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
 								smth->nearest_En = ant->nearest_En;
 								smth->aim = ant->nearest_En;
 								smth->action = 1;
