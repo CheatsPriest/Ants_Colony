@@ -189,14 +189,16 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 
 					curStock->stuff[i][j] = 0;
 
-					if (curStock->food_collected < curStock->size_x * curStock->size_y and curStock->food_collected<=0) {
-						curStock->stuff[i][j] = curStock->stuff[curStock->food_collected% curStock->size_x][curStock->food_collected/ curStock->size_y];
+					if (curStock->food_collected < curStock->size_x * curStock->size_y and curStock->food_collected>0) {
+						curStock->stuff[i][j] = curStock->stuff[(curStock->food_collected) % curStock->size_x][(curStock->food_collected)/ curStock->size_y];
+						curStock->stuff[(curStock->food_collected) % curStock->size_x][(curStock->food_collected) / curStock->size_y] = 0;
 					}
 					else if (curStock->food_collected <= 0) {
 
 					}
 					else {
 						curStock->stuff[i][j] = curStock->stuff[curStock->size_x-1][curStock->size_y-1];
+						curStock->stuff[curStock->size_x - 1][curStock->size_y - 1] = 0;
 					}
 					curStock->food_collected--;
 
