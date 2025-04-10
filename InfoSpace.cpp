@@ -110,7 +110,7 @@ pair<int, int> InfoSpace::search() {
 
 
 bool InfoSpace::BornNewAnts(Ant* Queen) {
-	if (Queen->type != 0) {
+	if (Queen->type != 0 or Queen->saturation<= Queen->max_Saturation*0.3) {
 		return false;
 	}
 	int whoWillBorn = 0;
@@ -128,13 +128,15 @@ bool InfoSpace::BornNewAnts(Ant* Queen) {
 		whoWillBorn = 3;
 		
 	}
-	//whoWillBorn = 1;
+	whoWillBorn = 1;
 
 
 	if (CreateEntityAnt(Queen->pos_x, Queen->pos_y + 1, 0, 0, whoWillBorn, Queen->clan)) {
 		Queen->saturation -= 100;
 		return true;
 	}
+
+	
 
 	return false;
 
@@ -156,6 +158,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	if (ant->type == QUEEN) {
 		//cout << "HERE" << endl;
 		BornNewAnts(ant);
+
+		return;
 	}
 
 	if (ant->type > 3) { return; }
