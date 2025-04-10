@@ -37,6 +37,9 @@
     <Filter Include="Еда">
       <UniqueIdentifier>{f47b1ce6-4fdc-4b62-bb55-03e569ad392c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Colony">
+      <UniqueIdentifier>{4eab4f1e-e2c1-43e1-9e4d-420d99731162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="Food.cpp">
       <Filter>Еда</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="walls.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Colony.cpp">
+      <Filter>Colony</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +199,15 @@
     </ClInclude>
     <ClInclude Include="DrawAnts.cpp">
       <Filter>Рисовальщик</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="walls.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Colony.h">
+      <Filter>Colony</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, 
 		Ant* new_ant;
 		if (under_class == 0) {
 			new_ant = new Queen(x, y, z, clan);
+			coloniesList[clan]->Queen = new_ant;
 		}
 		else if (under_class == 1) {
 			new_ant = new Scout(x, y, z, clan);
@@ -141,6 +142,8 @@ bool InfoSpace::BornNewAnts(Ant* Queen) {
 	return false;
 
 }
+
+
 
 double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);

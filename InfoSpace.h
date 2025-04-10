@@ -5,6 +5,8 @@
 #include "Entity.h"
 #include "Collector.h"
 #include "Stockpile.h"
+#include "Colony.h"
+
 
 class InfoSpace
 {
@@ -30,7 +32,7 @@ public:
 	map<unsigned int, Entity*> entityList;
 
 	map<unsigned int, Stockpile*> stockpileList;
-
+	map<int, Colony*> coloniesList;
 
 	bool draw_debug_move_lines;
 
@@ -77,6 +79,8 @@ public:
 	void ProcessAnt(Ant* curAnt);
 
 	bool BornNewAnts(Ant* Queen);
+	
+
 
 	~InfoSpace() {
 		delete field;
