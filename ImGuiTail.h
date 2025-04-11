@@ -21,6 +21,10 @@ static ImColor Black = ImColor(0.01f, 0.01f, 0.01f);
 static ImColor White = ImColor(0.8f, 0.8f, 0.8f);
 static ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
 
+
+static ImColor BLACK_TLYA = ImColor(0.2f, 0.99f, 0.2f);
+
+
 class Window {
 public:
 
