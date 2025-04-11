@@ -3,6 +3,8 @@
 #include "Insect.h"
 #include <queue>
 using namespace std;
+
+
 bool InfoSpace::isValidCell(pair<int, int> newPos) {
 	//return !(newPos.first >= field_size_x || newPos.second >= field_size_y
 	//	|| newPos.first < 0 || newPos.second < 0);
@@ -25,7 +27,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 	Entity* curr = entityList[id];
 
 	Insect* insect = (Insect*)(curr->getPtr());
-
+	
 	if (!insect->isTriggered) {
 		
 		if (insect->nearlest.first != 0 && (insect->isSlaveZone == insect->isSlaver)) {
@@ -48,7 +50,10 @@ void InfoSpace::MoveInsect(unsigned int id) {
 				}
 			}
 			if (flag) {
+				pair<int, int> lastPos = { curr->pos_x, curr->pos_y };
 				moveToCeil(p, id, curr);
+				spawnEat(lastPos);
+
 			}
 			p = { curr->pos_x, curr->pos_y };
 			pair<int, pair<int, int>> prob = { 0, {p.first, p.second} };
@@ -97,9 +102,12 @@ void InfoSpace::MoveInsect(unsigned int id) {
 			newPos2.second++;
 		else
 			newPos2.second--;
+		bool hasMoved = false;
+		pair<int, int> lastPos = { curr->pos_x, curr->pos_y };
 
 		if (isValidCell(newPos2) && isFreeCell(newPos2) && insect->isIndoors(newPos2.first, newPos2.second, field)) {
 			moveToCeil(newPos2, id, curr);
+			hasMoved = true;
 		}
 		else {
 			pair<int, int> p;
@@ -113,7 +121,13 @@ void InfoSpace::MoveInsect(unsigned int id) {
 					break;
 				}
 			}
-			if (flag) moveToCeil(p, id, curr);
+			if (flag) {
+				moveToCeil(p, id, curr);
+				hasMoved = true;
+			}
+		}
+		if (hasMoved) {
+			spawnEat(lastPos);
 		}
 
 		float vec = pow(insect->aim_pos.first - curr->pos_x, 2) + pow(insect->aim_pos.second - curr->pos_y, 2);
@@ -254,6 +268,7 @@ double dist(int p1, int p2, int p3, int p4) {
 
 
 // MOVE
+
 void InfoSpace::MoveEntity(unsigned int id) {
 	Entity* curEnt = entityList[id];
 
