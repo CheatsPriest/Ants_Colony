@@ -134,39 +134,39 @@ void processingEntities() {
 	// sfml test -----
 }
 
-void draw() {
-	
-	Window* mainWindow = new Window(ultimateData);
-
-	
-
-
-	
-
-	while (ultimateData->mainLoop) {
-		
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-1, 0);
-		}
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(1, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -1);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 1);
-		}
-		
-		mainWindow->NewFrame();
-
-		mainWindow->EndFrame();
-	}
-
-	mainWindow->Cleanup();
-	delete mainWindow;
-}
+//void draw() {
+//	
+//	Window* mainWindow = new Window(ultimateData);
+//
+//	
+//
+//
+//	
+//
+//	while (ultimateData->mainLoop) {
+//		
+//		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
+//		{
+//			ultimateData->MoveCam(-1, 0);
+//		}
+//		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
+//			ultimateData->MoveCam(1, 0);
+//		}
+//		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
+//			ultimateData->MoveCam(0, -1);
+//		}
+//		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
+//			ultimateData->MoveCam(0, 1);
+//		}
+//		
+//		mainWindow->NewFrame();
+//
+//		mainWindow->EndFrame();
+//	}
+//
+//	mainWindow->Cleanup();
+//	delete mainWindow;
+//}
 
 
 int main() {
