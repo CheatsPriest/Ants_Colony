@@ -5,6 +5,8 @@
 enum Stockpiles {
 	FOOD_STOCK = 0,
 	MATERIAL_STOCK = 1, 
+
+	MAGGOT_STOCK = 3
 };
 
 class Stockpile {
