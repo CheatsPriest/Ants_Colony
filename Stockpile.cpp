@@ -63,6 +63,15 @@ unsigned int Stockpile::PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityLi
 			stuff[x][y] = 0;
 
 		}
+		else if (targEnt->getType() == Entities::FOOD) {
+
+			Food* curFood = (Food*)(targEnt->getPtr());
+
+			curAnt->inventary = food_ind;
+			food_collected--;
+			stuff[x][y] = 0;
+
+		}
 	}
 	else if (x >= 0 and y >= 0 and food_collected > 0) {
 		//food_collected--;
@@ -94,6 +103,12 @@ bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pa
 		carriedFood->pos_x = x + pos_x;
 		carriedFood->pos_y =y + pos_y;
 		
+	}
+	else if (curCarried->getType() == Entities::MAGGOTS) {
+		Maggot* carriedFood = (Maggot*)(curCarried->getPtr());
+		carriedFood->pos_x = x + pos_x;
+		carriedFood->pos_y = y + pos_y;
+
 	}
 	else if (curCarried->getType() == Entities::MATERIALS) {
 		Materials* carriedMat = (Materials*)(curCarried->getPtr());
