@@ -11,6 +11,21 @@ unsigned int work_id;
 
 Entity* cur;
 
+void Window::DrawMaggot(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size  - 1.0f, y + data->cell_size  - 1.0f), WhiteBlue, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "Q");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
+void Window::DrawQueen(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Yellow, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "Q");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
+void Window::DrawNurse(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Pink, 0.1f, 0);
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black , "N");
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
 
 void Window::DrawInsect(int x, int y, unsigned int id) {
     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), BLACK_TLYA, 0.1f, 0);
@@ -83,7 +98,7 @@ void Window::DrawMainScene() {
                         
                         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x +1.f, draw_y + 1.f), ImVec2(draw_x + cell_size-1.0f, draw_y + cell_size-1.0f), Brown, 0.1f, 0);
                         
-                        if (data->draw_debug_move_lines) {
+                        if (data->draw_debug_move_lines and curAnt->inventary!=0 and data->entityList[curAnt->inventary]->getType()==MATERIALS) {
                    
                             ImGui::GetBackgroundDrawList()->AddLine(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), ImVec2((curAnt->aim.first - c_x) * cell_size+cell_size/2, (curAnt->aim.second - c_y) * cell_size+cell_size/2), Red, 1.f);
                             ImGui::GetBackgroundDrawList()->AddCircleFilled(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), 3.f, Red);
@@ -99,6 +114,12 @@ void Window::DrawMainScene() {
                         }
                         else if (curAnt->type == 3) {
                             DrawSoldier(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+                        }
+                        else if (curAnt->type == 4) {
+                            DrawNurse(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+                        }
+                        else if (curAnt->type == 0) {
+                            DrawQueen(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
                         }
                         else if (curAnt->type == 0) {
                             ImGui::GetBackgroundDrawList()->AddText(ImVec2(draw_x + 1.f, draw_y + 1.f), Black, "Q");
@@ -125,6 +146,11 @@ void Window::DrawMainScene() {
           
                         Insect* insect = (Insect*)(cur->getPtr());
                         DrawInsect(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+                    }
+                    else if (cur->getType() == Entities::MAGGOTS) {
+                        Maggot* curMat = (Maggot*)(cur->getPtr());
+                        DrawMaggot(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+
                     }
                    
                 }
@@ -167,6 +193,23 @@ void Window::DrawMainScene() {
                             draw_x = (curMat->pos_x - c_x) * cell_size;
                             draw_y = (curMat->pos_y - c_y) * cell_size;
                             DrawMaterial(draw_x, draw_y, work_id);
+                        }
+                    }
+                }
+            }
+            else if (curStock->type == MAGGOT_STOCK) {
+                data->Hatching(curStock);
+                for (int i = 0; i < curStock->size_y; i++) {
+                    for (int j = 0; j < curStock->size_x; j++) {
+
+                        work_id = curStock->stuff[i][j];
+                        if (work_id != 0) {
+                            cur = data->entityList[work_id];
+                            Maggot* curMat = (Maggot*)(cur->getPtr());
+
+                            draw_x = (curStock->pos_x + i -c_x) * cell_size;
+                            draw_y = (curStock->pos_y + j - c_y) * cell_size;
+                            DrawMaggot(draw_x, draw_y, work_id);
                         }
                     }
                 }

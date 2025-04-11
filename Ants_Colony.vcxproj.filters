@@ -37,6 +37,9 @@
     <Filter Include="Еда">
       <UniqueIdentifier>{f47b1ce6-4fdc-4b62-bb55-03e569ad392c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Colony">
+      <UniqueIdentifier>{4eab4f1e-e2c1-43e1-9e4d-420d99731162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,6 +113,18 @@
     </ClCompile>
     <ClCompile Include="Materials.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="walls.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Colony.cpp">
+      <Filter>Colony</Filter>
+    </ClCompile>
+    <ClCompile Include="Nurse.cpp">
+      <Filter>Муравьи</Filter>
+    </ClCompile>
+    <ClCompile Include="Maggot.cpp">
+      <Filter>Муравьи</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +208,18 @@
     </ClInclude>
     <ClInclude Include="Materials.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="walls.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Colony.h">
+      <Filter>Colony</Filter>
+    </ClInclude>
+    <ClInclude Include="Nurse.h">
+      <Filter>Муравьи</Filter>
+    </ClInclude>
+    <ClInclude Include="Maggot.h">
+      <Filter>Муравьи</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

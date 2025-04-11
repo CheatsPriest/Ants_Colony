@@ -157,6 +157,7 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, 
 		Ant* new_ant;
 		if (under_class == 0) {
 			new_ant = new Queen(x, y, z, clan);
+			coloniesList[clan]->Queen = new_ant;
 		}
 		else if (under_class == 1) {
 			new_ant = new Scout(x, y, z, clan);
@@ -166,6 +167,9 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, 
 		}
 		else if (under_class == 3) {
 			new_ant = new Soldier(x, y, z, clan);
+		}
+		else if (under_class == 4) {
+			new_ant = new Nurse(x, y, z, clan);
 		}
 		else return false;
 		Entity* new_ent = new Entity(new_ant, Entities::ANT);
@@ -182,7 +186,9 @@ bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, 
 	
 	return false;
 }
+
 bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value, int weight) {
+	if (field->field[x][y][z].IDs[0] != 0)return false;
 	Food* food = new Food(x, y, z, type, food_value, weight);
 	Entity* new_ent = new Entity(food, Entities::FOOD);
 	entityList.insert({ free_key, new_ent });
@@ -195,6 +201,7 @@ bool InfoSpace::CreateEntityFood(int x, int y, int z, int type, float food_value
 	return true;
 }	
 bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) {
+	if (field->field[x][y][z].IDs[0] != 0)return false;
 	Materials* mat = new Materials(x, y, z, type, weight);
 	Entity* new_ent = new Entity(mat, Entities::MATERIALS);
 	entityList.insert({ free_key, new_ent });
@@ -225,6 +232,18 @@ bool InfoSpace::CreateInsect(int x,int y, int z, InsectTypes type, pair<int, int
 
 }
 
+static int timer_born = 500;
+bool InfoSpace::CreateEntityMaggot(int x, int y, int z, int clan) {
+	if (field->field[x][y][z].IDs[0] != 0)return false;
+	Maggot* new_maggot = new Maggot(clan, timer_born, x, y);
+	Entity* new_ent = new Entity(new_maggot, Entities::MAGGOTS);
+	entityList.insert({ free_key, new_ent });
+
+	field->field[x][y][z].IDs[0] = free_key;
+
+	free_key++;
+	return true;
+}
 
 bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int type, int clan) {
 
@@ -246,20 +265,120 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 }
 
 bool InfoSpace::BuildWall(Ant* cAnt) {
-
 	if (cAnt->inventary == 0)return 0;
-
 	if (entityList[cAnt->inventary]->getType() == 3) {
 		DeleteEntity(cAnt->inventary);
 		cAnt->inventary = 0;
-
-		field->field[cAnt->pos_x][cAnt->pos_y][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
+		field->field[cAnt->aim.first][cAnt->aim.second][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
 
 	}
 
 }
 
 
+pair<int, int> InfoSpace::searchmat() {
+	int source = 0;
+	int dest = 0;
+	for (auto stock : stockpileList) {
+		Stockpile* stash = stock.second;
+		if (stash->needWalled == true) {
+			dest = stash->id;
+		}
+		if (stash->type == 1 && stash->food_collected > 0) {
+			source = stash->id;
+		}
+	}
+	return { source,dest };
+
+}
+
+
+bool InfoSpace::BornNewAnts(Ant* Queen) {
+	if (Queen->type != 0 or Queen->saturation<= Queen->max_Saturation*0.3) {
+		return false;
+	}
+	int whoWillBorn = 0;
+	double chance = ((double)(rand()%10))/10;
+	
+
+	
+
+
+	if (CreateEntityMaggot(Queen->pos_x, Queen->pos_y + 1, 0, Queen->clan)) {
+		Queen->saturation -= 100;
+		return true;
+	}
+
+	
+
+	return false;
+
+}
+
+bool InfoSpace::FeedTheQueen(Ant* curAnt) {
+
+	if (curAnt->inventary == 0 or entityList[curAnt->inventary]->getType()!=FOOD)return false;
+
+	Food* curFood = (Food*)entityList[curAnt->inventary]->getPtr();
+
+	Ant* curQueen = coloniesList[curAnt->clan]->Queen;
+
+	if (curQueen == NULL or curFood==NULL)return false;
+
+	curQueen->saturation += curFood->food_value * 1.5;
+
+	DeleteEntity(curAnt->inventary);
+	curAnt->inventary = 0;
+
+	return true;
+
+
+}
+
+void InfoSpace::Hatching(Stockpile* curStock) {
+
+	if (curStock->type != MAGGOT_STOCK or curStock->food_collected==-1) {
+		return;
+	}
+	unsigned int ind;
+	for (int i = 0; i < curStock->size_x; i++) {
+		for (int j = 0; j < curStock->size_y; j++) {
+			if (i + j > curStock->food_collected)return;
+			ind = curStock->stuff[i][j];
+			if (ind != 0) {
+				if (entityList[ind]->getType() != MAGGOTS)continue;
+				Maggot* curMaggot = (Maggot*)entityList[ind]->getPtr();
+				if (curMaggot->release_timer <= 0) {
+					CreateEntityAnt(i + curStock->pos_x, j + curStock->pos_y, curStock->pos_z, 0, 1, curMaggot->clan);
+
+					curStock->stuff[i][j] = 0;
+
+					if (curStock->food_collected < curStock->size_x * curStock->size_y and curStock->food_collected>0) {
+						curStock->stuff[i][j] = curStock->stuff[(curStock->food_collected) % curStock->size_x][(curStock->food_collected)/ curStock->size_y];
+						curStock->stuff[(curStock->food_collected) % curStock->size_x][(curStock->food_collected) / curStock->size_y] = 0;
+					}
+					else if (curStock->food_collected <= 0) {
+
+					}
+					else {
+						curStock->stuff[i][j] = curStock->stuff[curStock->size_x-1][curStock->size_y-1];
+						curStock->stuff[curStock->size_x - 1][curStock->size_y - 1] = 0;
+					}
+					curStock->food_collected--;
+
+					DeleteEntity(ind);
+					ind = 0;
+					continue;
+					//entityList.erase(ind);
+					
+				}
+				else {
+					--curMaggot->release_timer;
+				}
+			}
+		}
+	}
+}
 
 double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);
@@ -275,8 +394,17 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 	Ant* ant = (Ant *)curEnt->getPtr();
 
+	if (ant->type == QUEEN) {
+		//cout << "HERE" << endl;
+		BornNewAnts(ant);
 
-	if (ant->type > 3) { return; }
+		return;
+	}
+
+	if (ant->type > 4) { return; }
+
+	// move 1 turn >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 	vector<vector<double>> dt;
 	for (double i = -1; i <= 1; i++) {
 		for (double j = -1; j <= 1; j++) {
@@ -298,19 +426,34 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->pos_y += dt[wh][3];
 		this->field->field[ant->pos_x][ant->pos_y]->IDs[0] = num;
 	}
-	ant->saturation -= 0.2;
+
+	// hungrys >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	ant->saturation -= 0.2; // randommmmmmmmmmmmm
+
 	if (ant->saturation < 0) {
 		cout << "dead" << ant->type<< endl;
 	}
+
+	
+
 	if (ant->saturation<=ant->max_Saturation*0.3 && ant->action!=3) {
+		ant->paction = ant->action;
+		ant->paim = ant->aim;
 		
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
 			
 			if (stash->type == 0 and stash->food_collected>=0) {
 				ant->action = 3;
+				if (stash->food_collected == stash->size_x * stash->size_y) {
+				}
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
+				if (stash->food_collected == stash->size_x * stash->size_y) {
+					aim_x += stash->size_x - 1;
+					aim_y -= 1;
+				}
 				ant->stashid = stash->id;
 				cout << stash->id;
 				if (ant->type == 3) {
@@ -325,38 +468,164 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 		}
 	}
+
 	if (ant->action==3) {
 		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 			cout << "EAT" << endl;
 			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
-			ant->action = 0;
+			ant->action = ant->paction;
+			ant->aim = ant->paim;
 		}
 	}
+
+	// scouts >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 	else if (ant->type == 1 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <=2) {
 		 ant->aim = { rand() % (this->field_size_x-2)+1,  rand() % (this->field_size_x - 2) + 1 };
 	}
+
+	// workers >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	
 	else if (ant->type == 2 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
-		if (ant->inventary != 0) {
+		if (ant->inventary != 0 && ant->action<5) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
 				if (ant->inventary !=0 &&((stash->type==0 && entityList[ant->inventary]->getType() == Entities::FOOD) or (stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS)) and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 					stash->TryToPut(ant, &entityList, ant->aim);
-					cout << 2;
+				}
+				else if(ant->inventary != 0 && stash->type == 0 && entityList[ant->inventary]->getType() == Entities::FOOD) {
+					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
+				}
+				else if (ant->inventary != 0 && stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS) {
+					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
+				}
+			}	
+		}
+		
+
+		if (ant->action == 0 or (ant->dest != 0 && stockpileList[ant->dest]->needWalled == false)) {
+			pair<int, int> stocks = searchmat();
+			ant->source = stocks.first;
+			ant->dest = stocks.second;
+			
+			if (ant->source && ant->dest) {
+				ant->action = 4;
+				Stockpile* stock = stockpileList[ant->source];
+				ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
+			}
+			
+		}
+		if (ant->action == 4) {
+			Stockpile* stock = stockpileList[ant->source];
+			stock->PickUp(ant, &entityList);
+			stock = stockpileList[ant->dest];
+			ant->aim = { stock->pos_x,stock->pos_y};
+			ant->action = 5;
+		}
+		if (ant->action == 5 or (ant->dest!=0 && field->field[ant->aim.first][ant->aim.second]->cWall !=0) ) {
+			Stockpile* stock = stockpileList[ant->dest];
+			int ch = 0;
+			for (int i = - 1; i <= stock->size_x; i++) {
+				for (int j = - 1; j <= stock->size_y; j++) {
+					int ci = i + stock->pos_x;
+					int cj = j + stock->pos_y;
+					if (ch == 0 && ci==ci%size_x && cj==cj%size_y && (i==-1 or i==stock->size_x or j==-1 or j==stock->size_y) && field->field[ci][cj]->cWall == 0) {
+						ant->aim = { ci,cj };
+						ant->action = 6;
+						ch = 1;
+						
+					}
 				}
 			}
 			
-				
 		}
-		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
-		ant->action = 0;
+		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
+			BuildWall(ant);
+			if (ant->dest==0) { ant->action = 0; return; }
+			Stockpile* stash = stockpileList[ant->dest];
+			stash->wall_len += 1;
+			if (stash->wall_len==(stash->size_x + stash->size_y+2)*2) {
+				stash->needWalled = false;
+			}
+			ant->action = 0;
+		
+		}
+		if (ant->action < 4) {
+			ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
+			ant->action = 0;
+		}
 	}
-	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.first) <= 2) {
+
+	// warriors >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
 
+	// NURSES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	
+	else if (ant->type == 4) { 
+		Ant* Mom = coloniesList[ant->clan]->Queen;
+		Entity* mem = entityList[field->field[Mom->pos_x][Mom->pos_y + 1]->IDs[0]];
+		if (Mom->saturation <= Mom->max_Saturation * 0.7) {
+			if (ant->inventary == 0) {
+				int source = 0;
+				for (auto stock : stockpileList) {
+					Stockpile* stash = stock.second;
+					if (stash->type == 0 && stash->food_collected > 0) {
+						source = stash->id;
+					}
+
+				}
+				ant->source = source;
+				if (ant->source) {
+					Stockpile* stock = stockpileList[ant->source];
+					ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
+				}
+				if (ant->source && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+					Stockpile* stock = stockpileList[ant->source];
+					stock->PickUp(ant, &entityList);
+				}
+			}
+			else if(entityList[ant->inventary]->getType() == Entities::FOOD) {
+				ant->aim = {Mom->pos_x,Mom->pos_y };
+				if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+					FeedTheQueen(ant);
+				}
+			}
+			else if (entityList[ant->inventary]->getType() == Entities::MAGGOTS) {
+				int source = 0;
+				for (auto stock : stockpileList) {
+					Stockpile* stash = stock.second;
+					if (stash->type == 3) {
+						source = stash->id;
+					}
+				}
+				ant->source = source;
+				if (ant->source) {
+					Stockpile* stock = stockpileList[ant->source];
+					ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
+				}
+				if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+					Stockpile* stock = stockpileList[ant->source];
+					stock->TryToPut(ant, &entityList, ant->aim);
+				}
+			}
+		}
+		else if (mem && mem->getType()==Entities::MAGGOTS) {
+			ant->aim = { Mom->pos_x,Mom->pos_y + 1 };
+			if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+				ant->inventary=field->field[Mom->pos_x][Mom->pos_y + 1]->CutEntity(0);
+			}
+		}
+		else  {
+			ant->aim = { rand() % 40 - 20 + Mom->pos_x,  rand() % 40 - 20 + Mom->pos_y };
+		}
+	}
+
+
+	// scout says >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 	if (ant->type == 1) {
 		for (double i = -3; i <= 3; i++) {
@@ -378,24 +647,22 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->action = 1;
 
 						}
-						/*if (smth->type == 5) {
-							ant->nearest_En = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
-							ant->action = 1;
-		
-						}*/
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth == NULL)continue;
-							if (smth->type == 2  && ant->action == 1 && smth->action <= 1 ) {
+							if (ant->action == 1 && smth->action <= 1 && ant->clan != smth->clan) {
+								ant->nearest_En = {smth->pos_x, smth->pos_y};
+								smth->nearest_En = { ant->pos_x, ant->pos_y };
+							}
+							if (smth->type == 2  && ant->action == 1 && smth->action <= 1  && ant->clan==smth->clan) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
-								smth->action = 1;
+								
 							}
-							if (smth->type == 3 && ant->action == 1 && smth->action <= 1) {
+							if (smth->type == 3 && ant->action == 1 && smth->action <= 1 && ant->clan == smth->clan) {
 								smth->nearest_En = ant->nearest_En;
 								smth->aim = ant->nearest_En;
-								smth->action = 1;
+								
 							}
 						}
 						
@@ -406,6 +673,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		}
 	}
 
+	// runners says >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 	if (ant->type == 2 or ant->type == 3) {
 		for (double i = -1; i <= 1; i++) {
@@ -414,7 +682,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 						
-						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action != 2) {
+						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							if (ant->inventary == 0) {
@@ -438,7 +706,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->aim = na;
 							ant->action = 2;
 						}
-						else if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action != 2) {
+						else if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Mat = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							if (ant->inventary == 0) {
@@ -459,30 +727,31 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 								}
 							}
-							ant->aim = na;
-							ant->action = 2;
+							if (ant->action != 6) {
+								ant->aim = na;
+								ant->action = 2;
+							}
 						}
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
-							if (smth->type == 5 && ant->type == 3) {
-								ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
-								this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-								ant->action = 1;
-							}
-							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
+							if ( ant->clan == smth->clan &&smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
-								smth->action = 1;
+								
 							}
-							if (smth->type == 2 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
+							if (smth->action <= 1 && ant->clan != smth->clan) {
+								ant->nearest_En = { smth->pos_x, smth->pos_y };
+								smth->nearest_En = { ant->pos_x, ant->pos_y };
+							}
+							if (ant->clan == smth->clan && smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Mat;
-								smth->action = 1;
+								
 							}
-							if (smth->type == 3 && ant->action == 1 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
+							if (ant->clan == smth->clan && smth->type == 3  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
 								smth->nearest_En = ant->nearest_En;
 								smth->aim = ant->nearest_En;
-								smth->action = 1;
+								
 
 							}
 						}
@@ -504,6 +773,9 @@ bool InfoSpace::DeleteEntity(unsigned int id) {
 	}
 	Entity* curEnt = entityList[id];
 	entityList.erase(id);
+	
+	
+
 	if(curEnt->getType() == FOOD) {//еда
 
 		Food* curFood = (Food*)(curEnt->getPtr());
@@ -522,6 +794,11 @@ bool InfoSpace::DeleteEntity(unsigned int id) {
 		Materials* curMat = (Materials*)(curEnt->getPtr());
 
 		delete curMat;
+	}
+	else if (curEnt->getType() == MAGGOTS) {
+		Maggot* curMag = (Maggot*)(curEnt->getPtr());
+
+		delete curMag;
 	}
 	return false;
 }

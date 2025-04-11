@@ -5,6 +5,8 @@
 
 #include "Collector.h"
 #include "Stockpile.h"
+#include "Colony.h"
+
 
 class InfoSpace
 {
@@ -30,7 +32,7 @@ public:
 	map<unsigned int, Entity*> entityList;
 
 	map<unsigned int, Stockpile*> stockpileList;
-
+	map<int, Colony*> coloniesList;
 
 	bool draw_debug_move_lines;
 
@@ -57,7 +59,7 @@ public:
 
 		field = new Field;
 
-		draw_debug_move_lines = false;
+		draw_debug_move_lines = true;
 	}
 
 	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
@@ -74,6 +76,8 @@ public:
 
 	bool BuildWall(Ant* cAnt);
 
+	pair<int, int> searchmat();
+	
 
 	bool DeleteEntity(unsigned int id);
 	void MoveCam(int x, int y);
@@ -82,6 +86,10 @@ public:
 	void moveToCeil(pair<int, int> newPos2, unsigned int id, Entity* ent);
 	void MoveInsect(unsigned int id);
 
+	bool BornNewAnts(Ant* Queen);
+	bool FeedTheQueen(Ant* curAnt);
+	bool CreateEntityMaggot(int x, int y, int z, int clan);
+	void Hatching(Stockpile* curStock);
 	void spawnEat(pair<int, int> position) {
 		double chaince = 0.001;
 		if ( ((double)(rand() % 10000) / 10000) <= chaince) {

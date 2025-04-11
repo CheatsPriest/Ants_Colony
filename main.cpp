@@ -16,30 +16,23 @@ InfoSpace* ultimateData = new InfoSpace;
 void processingEntities() {
 	Window* mainWindow = new Window(ultimateData);
 
+
+	srand(time(0));
+
+	ultimateData->coloniesList[1] = new Colony(1);
+
 	
-	// создание загона
-	int wallX = 90;
-	int wallY = 90;
-	int wallWidth = 30;
-	int wallHeight = 30;
 
-	for (int i = 0; i < wallWidth; i++) {
-		ultimateData->field->field[wallX + i][wallY][0].CreateWall(10, 1);
-		ultimateData->field->field[wallX + i][wallY + wallHeight][0].CreateWall(10, 1);
+	ultimateData->CreateStockpile(24, 24, 0, 17, 17, 3, 1);
 
-	}
-	for (int i = 0; i <= wallHeight; i++) {
-		ultimateData->field->field[wallX ][wallY + i][0].CreateWall(10, 1);
-		ultimateData->field->field[wallX + wallWidth][wallY + i][0].CreateWall(10, 1);
+	
 
-	}
-	// конец создания загона
-
-	// создание складов
 	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
 	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1, 1);
 
 
+
+	ultimateData->CreateEntityAnt(15, 15, 0, 0, 0, 1);
 
 	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1,1);
@@ -49,6 +42,9 @@ void processingEntities() {
 	}
 	for (int i = 0; i < 10; i++) {
 		ultimateData->CreateEntityAnt(12, i, 0, 0, 3,1);
+	}
+	for (int i = 0; i < 10; i++) {
+		ultimateData->CreateEntityAnt(22, i, 0, 0, 4, 1);
 	}
 
 
@@ -91,10 +87,11 @@ void processingEntities() {
 		for (auto ent : ultimateData->entityList) {
 
 			Entity* curr = ent.second;
-			if(curr->getType() == Entities::ANT) {
+			if(curr && curr->getType() == Entities::ANT) {
 				
 				ultimateData->MoveEntity(ent.first);
 
+				
 
 			}
 			else if (curr->getType() == Entities::INSECT) {

@@ -3,7 +3,13 @@
 using namespace std;
 #include <vector>
 
-
+enum Ants {
+	QUEEN = 0,
+	SCOUT = 1,
+	WORKER = 2,
+	SOLDIER = 3,
+	NURSE = 4
+};
 class Ant
 {
 public:
@@ -27,12 +33,16 @@ public:
 	int pos_x;
 	int pos_y;
 	int pos_z;
+	int dest;
+	int source;
 
 	unsigned int stashid;
 
 	int clan;
 	int smell_Rad;
+	int paction;
 	pair<int, int> aim = {pos_x,pos_y};
+	pair<int, int> paim = { pos_x,pos_y };
 	pair<int, int> nearest_En = { pos_x,pos_y };
 	pair<int, int> nearest_Fd = { pos_x,pos_y };
 	pair<int, int> nearest_Mat = { this->pos_x,this->pos_y };

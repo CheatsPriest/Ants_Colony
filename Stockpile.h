@@ -6,6 +6,8 @@ enum Stockpiles {
 	FOOD_STOCK = 0,
 	MATERIAL_STOCK = 1, 
 	APHIT_STOCK = 2
+
+	MAGGOT_STOCK = 3
 };
 
 class Stockpile {
@@ -17,6 +19,7 @@ public:
 	int clan;
 
 	bool needWalled;
+	int wall_len;
 
 	int size_x;
 	int size_y;
@@ -27,7 +30,8 @@ public:
 	
 	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id, int cr_clan) {
 
-		needWalled = false;
+		needWalled = true;
+		wall_len = 0;
 
 		pos_x = x;
 		pos_y = y;
