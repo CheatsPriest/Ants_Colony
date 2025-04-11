@@ -47,15 +47,15 @@ void processingEntities() {
 		ultimateData->CreateEntityAnt(22, i, 0, 0, 4, 1);
 	}
 
-
+	ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	// тля внутри загона
-	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateInsect(rand() % wallWidth + wallX, rand() % wallHeight + wallY, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, true);
-	}
+	//for (int i = 0; i < 50; i++) {
+	//	ultimateData->CreateInsect(rand() % wallWidth + wallX, rand() % wallHeight + wallY, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, true);
+	//}
 
-	// тля вне загона(не рабы пока что)
+	//// тля вне загона(не рабы пока что)
 	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, false);
+		ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 	for (int i = 0; i < 300; i++) {
 		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
@@ -94,7 +94,7 @@ void processingEntities() {
 				
 
 			}
-			else if (curr->getType() == Entities::INSECT) {
+			else if (curr and curr->getType() == Entities::INSECT) {
 				Insect* insect = (Insect*)curr;
 				ultimateData->MoveInsect(ent.first);
 				//insect->move(ultimateData->entityList, ent.first);

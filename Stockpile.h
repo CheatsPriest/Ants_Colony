@@ -5,8 +5,7 @@
 enum Stockpiles {
 	FOOD_STOCK = 0,
 	MATERIAL_STOCK = 1, 
-	APHIT_STOCK = 2
-
+	APHID_STOCK = 2,
 	MAGGOT_STOCK = 3
 };
 
