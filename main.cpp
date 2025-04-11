@@ -26,92 +26,95 @@ void processingEntities() {
 
 	//Window* mainWindow = new Window(ultimateData); // Переписать класс на SFML
 
-	srand(time(0));
-	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
-	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1, 1);
+	//srand(time(0));
+	//ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
+	//ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1, 1);
 
-	ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
+	//ultimateData->CreateEntityFood(10, 20, 0, 0, 10, 10);
 
-	for (int i = 0; i < 100; i++) {
-		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1,1);
-	}
-	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2,1);
-	}
-	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(12, i, 0, 0, 3,1);
-	}
+	//for (int i = 0; i < 100; i++) {
+	//	ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1,1);
+	//}
+	//for (int i = 0; i < 50; i++) {
+	//	ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2,1);
+	//}
+	//for (int i = 0; i < 10; i++) {
+	//	ultimateData->CreateEntityAnt(12, i, 0, 0, 3,1);
+	//}
 
-	for (int i = 0; i < 200; i++) {
-		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
-		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
-	}
+	//for (int i = 0; i < 200; i++) {
+	//	ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
+	//	ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
+	//}
 
+
+	// не нужно ----
 	/*for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntity(rand() % 100 + 50, rand() % 100 + 50,5);
 	}*/
-
-	
-	
 	//ultimateData->entityList.insert({ 3, entity3 });
-
-	for (auto el : ultimateData->entityList) {
-		Entity* curr = el.second;
-		if (curr->getType() == Entities::ANT) {
-			Ant* currAnt = (Ant*)(curr->getPtr());
-			currAnt->info();
-			
-			
-			
-			
-		}
-		else if (curr->getType() == Entities::FOOD) {
-			Food* currFood = (Food*)(curr->getPtr());
-			currFood->info();
-		}
-	}
-	while (ultimateData->mainLoop) {
-		for (auto ent : ultimateData->entityList) {
-			Entity* curr = ent.second;
-			if(curr->getType() == Entities::ANT) {
-				
-				ultimateData->MoveEntity(ent.first);
+	// не нужно ----
 
 
-			}
-		}
+
+	//for (auto el : ultimateData->entityList) {
+	//	Entity* curr = el.second;
+	//	if (curr->getType() == Entities::ANT) {
+	//		Ant* currAnt = (Ant*)(curr->getPtr());
+	//		currAnt->info();
+	//		
+	//		
+	//		
+	//		
+	//	}
+	//	else if (curr->getType() == Entities::FOOD) {
+	//		Food* currFood = (Food*)(curr->getPtr());
+	//		currFood->info();
+	//	}
+	//}
+	//while (ultimateData->mainLoop) {
+	//	for (auto ent : ultimateData->entityList) {
+	//		Entity* curr = ent.second;
+	//		if(curr->getType() == Entities::ANT) {
+	//			
+	//			ultimateData->MoveEntity(ent.first);
 
 
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-1, 0);
-			for (int i = 0; i < 25; i++) {
-				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
-			}
-		}
-
-		// Санина камера
-
-		/*else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(1, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -1);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 1);
-		}*/
-
-		//mainWindow->NewFrame(); // Начало отрисовки??
-
-		//mainWindow->EndFrame(); // Конец отрисовки??
+	//		}
+	//	}
 
 
-	}
+	//	if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
+	//	{
+	//		ultimateData->MoveCam(-1, 0);
+	//		for (int i = 0; i < 25; i++) {
+	//			ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
+	//		}
+	//	}
 
-	
+	//	// Санина камера
+
+	//	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
+	//		ultimateData->MoveCam(1, 0);
+	//	}
+	//	else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
+	//		ultimateData->MoveCam(0, -1);
+	//	}
+	//	else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
+	//		ultimateData->MoveCam(0, 1);
+	//	}
+
+	//	//mainWindow->NewFrame(); // Начало отрисовки??
+
+	//	//mainWindow->EndFrame(); // Конец отрисовки??
+	//}
+
+	//
 	//delete mainWindow;
+	
 
+
+	// sfml test -----
 	sf::CircleShape circle(50.f);
 	circle.setPosition(300, 400);
 	while (window.isOpen())
@@ -128,6 +131,7 @@ void processingEntities() {
 		window.draw(circle);
 		window.display();
 	}
+	// sfml test -----
 }
 
 void draw() {
