@@ -449,21 +449,19 @@ bool InfoSpace::ChangeEntityPosition(unsigned int ind, int x, int y, int z) {
 	return false;
 }
 
-bool InfoSpace::TryToDrop(Ant* curAnt) {
-	if (curAnt->inventary == 0)return false;
-
+bool InfoSpace::TryToDrop(pair<int,int> cord, int id) {
+	
 	bool flag = false;
 
-	int x = curAnt->pos_x;
-	int y = curAnt->pos_y;
-	int z = curAnt->pos_z;
+	int x = cord.first;
+	int y = cord.second;
+	int z = 0;
 
-	for (int i = -2; i < 2 and !flag; i++) {
-		for (int j = -2; j < 2; j++) {
+	for (int i = -2; i <= 2 and !flag; i++) {
+		for (int j = -2; j <= 2; j++) {
 			if (i == 0 and j == 0)continue;
-			if (ChangeEntityPosition(curAnt->inventary, x+i, y+j, z)) {
+			if (ChangeEntityPosition(id, x+i, y+j, z)) {
 				flag = true;
-				curAnt->inventary = 0;
 				return true;
 			}
 		}
@@ -566,9 +564,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 			cout << "EAT" << endl;
 			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
-
 			ant->action = ant->paction;
-
 			ant->aim = ant->paim;
 		}
 	}
@@ -587,12 +583,22 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				Stockpile* stash = stock.second;
 				if (ant->inventary !=0 &&((stash->type==0 && entityList[ant->inventary]->getType() == Entities::FOOD) or (stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS)) and stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y) {
 					stash->TryToPut(ant, &entityList, ant->aim);
+					ant->action = 0;
+				}
+				else if (ant->inventary != 0 && stash->type == 2 && entityList[ant->inventary]->getType() == Entities::INSECT && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= (stash->size_x*stash->size_x)) {
+					if (TryToDrop(ant->aim, ant->inventary)) {
+						ant->inventary = 0;
+					}
+					ant->action = 0;
 				}
 				else if(ant->inventary != 0 && stash->type == 0 && entityList[ant->inventary]->getType() == Entities::FOOD) {
 					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
 				}
 				else if (ant->inventary != 0 && stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS) {
 					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
+				}
+				else if (ant->inventary != 0 && stash->type == 2 && entityList[ant->inventary]->getType() == Entities::INSECT) {
+					ant->aim = { stash->pos_x + stash->size_x/2,stash->pos_y + stash->size_y/2 };
 				}
 			}	
 		}
@@ -607,6 +613,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				ant->action = 4;
 				Stockpile* stock = stockpileList[ant->source];
 				ant->aim = { stock->pos_x + stock->food_collected % stock->size_x,stock->pos_y + stock->food_collected / stock->size_y };
+			}
+			else {
+				ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 };
 			}
 			
 		}
@@ -737,6 +746,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->action = 1;
 							
 						}
+						if (obj->getType() == Entities::INSECT) {
+							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
+							ant->action = 1;
+
+						}
 						if (obj->getType() == Entities::MATERIALS) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
@@ -777,19 +792,42 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				if (ant->pos_x + i >= 0 and ant->pos_x + i < field_size_x and ant->pos_y + j >= 0 and ant->pos_y + j < field_size_y) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
-						
-						if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action < 2) {
+
+						if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action < 2) {
+							ant->nearest_Mat = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+
+							if (ant->inventary == 0) {
+								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+							}
+							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
+							for (auto stock : stockpileList) {
+								if (stock.second->type == 1 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+									if (stock.second->food_collected < 0) {
+										na = { stock.second->pos_x + 0 % stock.second->size_x,stock.second->pos_y + 0 / stock.second->size_y };
+									}
+									else {
+										na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
+									}
+
+								}
+							}
+
+							if (ant->action != 6) {
+								ant->aim = na;
+								ant->action = 2;
+							}
+						}
+						else if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							if (ant->inventary == 0) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-								cout << "I picked food number " << ant->inventary << endl;//ןמהבמנ והû
 								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							}
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
 							for (auto stock : stockpileList) {
 								if (stock.second->type == 0 && stock.second->food_collected!= stock.second->size_x* stock.second->size_y) {
-									cout << "Illbeback" << endl;
 									if (stock.second->food_collected <0) {
 										na = { stock.second->pos_x + 0 % stock.second->size_x,stock.second->pos_y + 0 / stock.second->size_y };
 									}
@@ -802,32 +840,23 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->aim = na;
 							ant->action = 2;
 						}
-						else if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action < 2) {
-							ant->nearest_Mat = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+						else if (obj->getType() == Entities::INSECT && ant->type == 2 && ant->action < 2) {
+							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							if (ant->inventary == 0) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-								cout << "I picked Mat number " << ant->inventary << endl;//ןמהבמנ והû
 								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							}
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
 							for (auto stock : stockpileList) {
-								if (stock.second->type == 1 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
-									cout << "Illbeback" << endl;
-									if (stock.second->food_collected < 0) {
-										na = { stock.second->pos_x + 0 % stock.second->size_x,stock.second->pos_y + 0 / stock.second->size_y };
-									}
-									else {
-										na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
-									}
-
+								if (stock.second->type == 2 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+									na = { stock.second->pos_x + stock.second->size_x/2,stock.second->pos_y + stock.second->size_y/2 };
 								}
 							}
-							if (ant->action != 6) {
-								ant->aim = na;
-								ant->action = 2;
-							}
+							ant->aim = na;
+							ant->action = 2;
 						}
+						
 						else if (obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if ( ant->clan == smth->clan &&smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
