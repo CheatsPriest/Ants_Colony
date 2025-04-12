@@ -796,11 +796,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						if (obj->getType() == Entities::INSECT) {
 							Insect* smth = (Insect*)obj->getPtr();
-							if (smth->curState = 0) {
+							if (smth->curState == 0) {
 								ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 								ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 								ant->action = 1;
-							}
+							} 
 
 						}
 						if (obj->getType() == Entities::MATERIALS) {
@@ -897,8 +897,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						else if (obj->getType() == Entities::INSECT && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-
-							if (ant->inventary == 0) {
+							Insect* smth = (Insect*)obj->getPtr();
+							if (ant->inventary == 0 && smth->curState == 0) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							}
