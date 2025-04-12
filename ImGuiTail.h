@@ -5,7 +5,7 @@
 #include <d3d9.h>
 #include <tchar.h>
 #include "InfoSpace.h"
-#include "DrawField.h"
+//#include "DrawField.h"
 #include <string>
 using namespace std;
 

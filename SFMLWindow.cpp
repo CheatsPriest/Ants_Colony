@@ -1,5 +1,8 @@
 #include "SFMLWindow.h"
 #include "stdlib.h"
+#include <ctime>
+#include <cmath>
+#include <iostream>
 int c_x;
 int c_y;
 int max_x, max_y;
@@ -198,6 +201,7 @@ void Window_sfml::DrawMainScene_sfml() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1, 1, 1, 0.4));*/
     
     // ?
+
     cell_size = data->cell_size;
     c_x = data->x_cam / cell_size;
     c_y = data->y_cam / cell_size;
@@ -210,16 +214,25 @@ void Window_sfml::DrawMainScene_sfml() {
 
     while (mainWindow.isOpen())
     {
+        sf::Event event;
+        mainWindow.clear();
+        while (mainWindow.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                mainWindow.close();
+        }
         for (int x = c_x; x < max_x; x++) {
             for (int y = c_y; y < max_y; y++) {
                 draw_x = (x - c_x) * cell_size;
                 draw_y = (y - c_y) * cell_size;
 
-                
+
                 if (data->field->field[x][y][data->z_cam].cWall != 0) {
                     DrawWall_sfml(draw_x, draw_y, mainWindow);
                 }
-                if (field->field[x][y][data->z_cam].IDs[0] != 0) {
+
+                if (field->field[x][y][data->z_cam].IDs[0] != 0) 
+                {
 
                     cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
                     if (cur == NULL) continue;
@@ -270,9 +283,11 @@ void Window_sfml::DrawMainScene_sfml() {
 
                 }
 
+
             }
 
         }
+        std::cout << "Draw?" << "\n";
 
         Stockpile* curStock;
         for (auto el : data->stockpileList) {
@@ -333,6 +348,7 @@ void Window_sfml::DrawMainScene_sfml() {
             }
         }
 
+        mainWindow.display();
     }
 
 

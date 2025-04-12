@@ -1,5 +1,6 @@
 #include "includes.h"
-#include "ImGuiTail.h"
+//#include "ImGuiTail.h"
+#include "SFMLWindow.h"
 #include "Entity.h";
 #include "Collector.h"
 #include "unordered_map"
@@ -23,8 +24,6 @@ InfoSpace* ultimateData = new InfoSpace;
 
 void processingEntities() {
 	
-
-
 	srand(time(0));
 	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
 	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1, 1);
@@ -84,7 +83,7 @@ void processingEntities() {
 
 		// камера Сани
 
-		/*else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
+		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
 			ultimateData->MoveCam(1, 0);
 		}
 		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
@@ -92,11 +91,14 @@ void processingEntities() {
 		}
 		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
 			ultimateData->MoveCam(0, 1);
-		}*/
+		}
 
 		//mainWindow->NewFrame(); // Начало отрисовки
 		
 		//mainWindow->EndFrame(); // Конец отрисовки
+		Window_sfml* start = new Window_sfml(ultimateData);
+		start->DrawMainScene_sfml();
+		
 	}
 
 }

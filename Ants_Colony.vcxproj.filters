@@ -75,9 +75,6 @@
     <ClCompile Include="vendor\ImGui\backends\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiTail.cpp">
-      <Filter>Рисовальщик</Filter>
-    </ClCompile>
     <ClCompile Include="myfont.cpp">
       <Filter>Рисовальщик</Filter>
     </ClCompile>
@@ -95,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="Cell.cpp">
       <Filter>Поле</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawField.cpp">
-      <Filter>Рисовальщик</Filter>
     </ClCompile>
     <ClCompile Include="Stockpile.cpp">
       <Filter>Зоны</Filter>
@@ -167,9 +161,6 @@
     <ClInclude Include="vendor\ImGui\backends\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiTail.h">
-      <Filter>Рисовальщик</Filter>
-    </ClInclude>
     <ClInclude Include="myfont.h">
       <Filter>Рисовальщик</Filter>
     </ClInclude>
@@ -199,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="Food.h">
       <Filter>Еда</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawAnts.cpp">
-      <Filter>Рисовальщик</Filter>
     </ClInclude>
     <ClInclude Include="Materials.h">
       <Filter>Файлы заголовков</Filter>

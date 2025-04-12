@@ -35,7 +35,8 @@ public:
 
     sf::Texture food, material; // еда и материалы 
     Window_sfml(InfoSpace* data_p);
-    
+
+    void DrawMainScene_sfml (); 
 private:
 
     int wide, hight;
@@ -49,7 +50,7 @@ private:
                   sf::Texture soldier_texture, sf::Texture queen_texture, 
                   sf::Texture nurse_texture,   sf::Texture maggot_texture);
 
-    void DrawMainScene_sfml (); 
+    
 
     void DrawScout_sfml     (int x, int y, unsigned id, sf::RenderWindow& window);
     void DrawWorker_sfml    (int x, int y, unsigned id, sf::RenderWindow& window);
