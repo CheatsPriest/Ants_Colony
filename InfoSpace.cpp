@@ -19,6 +19,7 @@ bool InfoSpace::isFreeCell(pair<int, int> newPos2) {
 }
 
 void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* curr) {
+	if (field->field[newPos2.first][newPos2.second][0].cWall != 0 or abs(curr->pos_x-newPos2.first)>2 or abs(curr->pos_y - newPos2.second) > 2)return;
 	field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;
 	field->field[newPos2.first][newPos2.second][0].IDs[0] = id;
 	curr->pos_x = newPos2.first;
@@ -550,8 +551,9 @@ bool InfoSpace::Picked(unsigned int ind) {
 		Insect* curObj = (Insect*)curEnt->getPtr();
 
 		curObj->curState = 1;
-		curObj->isTriggered = true;
-
+		curObj->isTriggered = false;
+		curObj->isSlaver = true;
+		
 		return true;
 	}
 	return false;
@@ -973,9 +975,14 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 								}
 
-								ant->aim = na;
+								
 								ant->action = 2;
 							}
+							else {
+								ant->action = 0;
+
+							}
+							ant->aim = na;
 						}
 						
 						else if (obj->getType() == Entities::ANT) {

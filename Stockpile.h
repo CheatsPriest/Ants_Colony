@@ -40,8 +40,11 @@ public:
 		size_y = hight;
 		type = cur_type;
 
-		needWalled = true;
+		needWalled = false;
 		
+		if (type == APHID_STOCK) {
+			needWalled = true;
+		}
 		food_collected = -1;
 		id = cr_id;
 		stuff.resize(size_y);
