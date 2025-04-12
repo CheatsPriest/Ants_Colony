@@ -28,8 +28,6 @@ public:
 	vector<vector<unsigned int>> stuff;
 	
 	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id, int cr_clan) {
-
-		needWalled = false;
 		wall_len = 0;
 
 		pos_x = x;
@@ -42,9 +40,8 @@ public:
 		size_y = hight;
 		type = cur_type;
 
-		if (type == 2) {
-			needWalled = true;
-		}
+		needWalled = true;
+		
 		food_collected = -1;
 		id = cr_id;
 		stuff.resize(size_y);

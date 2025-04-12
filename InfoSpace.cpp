@@ -270,7 +270,7 @@ bool InfoSpace::BuildWall(Ant* cAnt) {
 		DeleteEntity(cAnt->inventary);
 		cAnt->inventary = 0;
 		field->field[cAnt->aim.first][cAnt->aim.second][cAnt->pos_z].CreateWall(1000.0, cAnt->clan);
-
+		return 1;
 	}
 
 }
@@ -542,11 +542,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			
 		}
 		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
-			BuildWall(ant);
-			if (ant->dest==0) { ant->action = 0; return; }
+			if (ant->dest == 0) { ant->action = 0; return; }
 			Stockpile* stash = stockpileList[ant->dest];
-			stash->wall_len += 1;
-			if (stash->wall_len==(stash->size_x + stash->size_y+2)*2) {
+			if (BuildWall(ant)) {
+				stash->wall_len += 1;
+			}
+			if (stash->wall_len==((stash->size_x + stash->size_y+2)*2)) {
 				stash->needWalled = false;
 			}
 			ant->action = 0;

@@ -20,10 +20,10 @@ void processingEntities() {
 
 	ultimateData->coloniesList[1] = new Colony(1);
 
-	
+	ultimateData->CreateStockpile(10, 50, 0, 30, 30, 2, 1);
 
 	ultimateData->CreateStockpile(24, 24, 0, 17, 17, 3, 1);
-	ultimateData->CreateStockpile(10, 50, 0, 30, 30, 2, 1);
+	
 	
 
 	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
@@ -56,7 +56,7 @@ void processingEntities() {
 	for (int i = 0; i < 50; i++) {
 		ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
-	for (int i = 0; i < 300; i++) {
+	for (int i = 0; i < 500; i++) {
 		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
 	}
