@@ -39,6 +39,7 @@ public:
 	
 	InfoSpace() {
 
+
 		
 
 		x_cam = 0;
