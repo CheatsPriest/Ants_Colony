@@ -53,7 +53,7 @@ void processingEntities() {
 	//}
 
 	//// тля вне загона(не рабы пока что)
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 10; i++) {
 		ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 	for (int i = 0; i < 500; i++) {

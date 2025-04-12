@@ -90,7 +90,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		}
 
 	}
-	else if (insect->isTriggered) {
+	else if (insect->curState) {
 		pair<int, int> newPos2 = { curr->pos_x, curr->pos_y };
 		if (field->field[insect->aim_pos.first][insect->aim_pos.second][0].IDs[0] != insect->aim_id) {
 			insect->isTriggered = false;
@@ -444,7 +444,7 @@ bool InfoSpace::ChangeEntityPosition(unsigned int ind, int x, int y, int z) {
 		curObj->pos_y = y;
 		curObj->pos_z = z;
 		
-		curObj->curState = 0;
+		curObj->curState = 2;
 		curObj->isTriggered = false;
 
 		field->field[x][y][z].IDs[0] = ind;
