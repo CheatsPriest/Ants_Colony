@@ -795,9 +795,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							
 						}
 						if (obj->getType() == Entities::INSECT) {
-							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-							ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
-							ant->action = 1;
+							Insect* smth = (Insect*)obj->getPtr();
+							if (smth->curState = 0) {
+								ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+								ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
+								ant->action = 1;
+							}
 
 						}
 						if (obj->getType() == Entities::MATERIALS) {
