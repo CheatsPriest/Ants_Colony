@@ -442,7 +442,7 @@ bool InfoSpace::ChangeEntityPosition(unsigned int ind, int x, int y, int z) {
 		curObj->pos_y = y;
 		curObj->pos_z = z;
 		
-		curObj->isInInventory = false;
+		curObj->curState = 0;
 		curObj->isTriggered = false;
 
 		field->field[x][y][z].IDs[0] = ind;
@@ -517,7 +517,7 @@ bool InfoSpace::Picked(unsigned int ind) {
 	else if (curEnt->getType() == INSECT) {
 		Insect* curObj = (Insect*)curEnt->getPtr();
 
-		curObj->isInInventory = true;
+		curObj->curState = 1;
 		curObj->isTriggered = true;
 
 		return true;

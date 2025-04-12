@@ -9,7 +9,7 @@ enum InsectTypes {
 class Insect
 {
 public:
-	bool isInInventory;
+	int curState;
 	static pair<int, pair<int,int>> nearlest;
 	static bool isSlaveZone;
 	InsectTypes type;
@@ -35,7 +35,7 @@ public:
 		aim_id = id;
 	}
 	Insect(InsectTypes type, int x, int y, int z) {
-		isInInventory = false;
+		curState = 0;
 		this->id = id;
 		this->type = type;
 		pos_x = x;
