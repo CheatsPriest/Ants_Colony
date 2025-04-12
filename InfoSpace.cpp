@@ -474,6 +474,32 @@ bool InfoSpace::TryToDrop(pair<int,int> cord, int id) {
 
 }
 
+bool InfoSpace::TryToDrop(Ant* ant) {
+
+	if (ant->inventary == 0)return false;
+	bool flag = false;
+	
+	unsigned int id = ant->inventary;
+
+	int x = ant->pos_x;
+	int y = ant->pos_y;
+	int z = ant->pos_z;
+
+	for (int i = -2; i <= 2 and !flag; i++) {
+		for (int j = -2; j <= 2; j++) {
+			if (i == 0 and j == 0)continue;
+			if (ChangeEntityPosition(id, x + i, y + j, z)) {
+				flag = true;
+				ant->inventary = 0;
+				return true;
+			}
+		}
+	}
+
+	return false;
+
+}
+
 double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);
 }

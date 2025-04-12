@@ -46,7 +46,7 @@ void processingEntities() {
 		ultimateData->CreateEntityAnt(22, i, 0, 0, 4, 1);
 	}
 
-	ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
+	//ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	// тля внутри загона
 	//for (int i = 0; i < 50; i++) {
 	//	ultimateData->CreateInsect(rand() % wallWidth + wallX, rand() % wallHeight + wallY, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, true);
