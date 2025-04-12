@@ -7,8 +7,16 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 	unsigned int food_ind;
 	int x, y;
 	cout <<endl<<"FOOD "<< food_collected << endl;
-	x = food_collected % size_x;
-	y = food_collected / size_x;
+
+	if (food_collected < size_x * size_y) {
+		x = food_collected % size_x;
+		y = food_collected / size_x;
+	}
+	else {
+		
+		x = size_x - 1;
+		y = size_y - 1;;
+	}
 
 	if (x >= 0 && y >= 0 && y < size_y && stuff[x][y] != 0 and food_collected>=0) {
 		Entity* targEnt = (*entityList)[stuff[x][y]];
@@ -32,8 +40,8 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 
 		}
 	}
-	else if(x>=0 and y>=0 and food_collected>0) {
-		//food_collected--;
+	else if(x>=0 and y>=0 and food_collected>0 and stuff[x][y]==0) {
+		food_collected--;
 	}
 	return 0;
 
@@ -43,13 +51,17 @@ unsigned int Stockpile::PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityLi
 	unsigned int food_ind;
 	int x, y;
 	
-	x = food_collected % size_x;
-	y = food_collected / size_x;
-	if (food_collected == 0) {
-		x = 0;
-		y = 0;
+	if (food_collected < size_x * size_y) {
+		x = food_collected % size_x;
+		y = food_collected / size_x;
 	}
-	if (x >= 0 and y >= 0 and y < size_y and stuff[x][y] != 0 and food_collected >= 0) {
+	else {
+
+		x = size_x - 1;
+		y = size_y - 1;;
+	}
+
+	if (x >= 0 && y >= 0 && y < size_y && stuff[x][y] != 0 and food_collected >= 0) {
 		Entity* targEnt = (*entityList)[stuff[x][y]];
 		
 		food_ind = stuff[x][y];
@@ -73,8 +85,8 @@ unsigned int Stockpile::PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityLi
 
 		}
 	}
-	else if (x >= 0 and y >= 0 and food_collected > 0) {
-		//food_collected--;
+	else if (x >= 0 and y >= 0 and food_collected > 0 and stuff[x][y] == 0) {
+		food_collected--;
 	}
 	return 0;
 

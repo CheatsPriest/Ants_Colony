@@ -473,7 +473,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
 			cout << "EAT" << endl;
 			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
+
 			ant->action = ant->paction;
+
 			ant->aim = ant->paim;
 		}
 	}
