@@ -31,7 +31,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 
 	Insect* insect = (Insect*)(curr->getPtr());
 	
-	if (insect->curState !=0 ) {
+	if (insect->curState ==1 ) {
 		return;
 	}
 
@@ -680,7 +680,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				else if (ant->inventary != 0 && stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS) {
 					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
 				}
-				else if (ant->inventary != 0 && stash->type == 2 && entityList[ant->inventary]->getType() == Entities::INSECT) {
+				else if (ant->inventary != 0 && stash->type == 2  && entityList[ant->inventary]->getType() == Entities::INSECT) {
 					ant->aim = { stash->pos_x + stash->size_x/2,stash->pos_y + stash->size_y/2 };
 				}
 			}	
@@ -954,21 +954,28 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->action = 2;
 						}
 						else if (obj->getType() == Entities::INSECT && ant->type == 2 && ant->action < 2) {
-							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-							Insect* smth = (Insect*)obj->getPtr();
-							if (ant->inventary == 0 && smth->curState == 0) {
-								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-								Picked(ant->inventary);
-								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
-							}
+
+							bool transporting_need = false;
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
 							for (auto stock : stockpileList) {
-								if (stock.second->type == 2 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
-									na = { stock.second->pos_x + stock.second->size_x/2,stock.second->pos_y + stock.second->size_y/2 };
+								if (stock.second->type == 2 and stock.second->needWalled==false && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+									na = { stock.second->pos_x + stock.second->size_x / 2,stock.second->pos_y + stock.second->size_y / 2 };
+									transporting_need = true;
 								}
 							}
-							ant->aim = na;
-							ant->action = 2;
+
+							if (transporting_need) {
+								ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+								Insect* smth = (Insect*)obj->getPtr();
+								if (ant->inventary == 0 && smth->curState == 0) {
+									ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+									Picked(ant->inventary);
+									//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+								}
+
+								ant->aim = na;
+								ant->action = 2;
+							}
 						}
 						
 						else if (obj->getType() == Entities::ANT) {
