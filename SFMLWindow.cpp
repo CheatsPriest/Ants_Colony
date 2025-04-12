@@ -15,9 +15,10 @@ void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned id, sf::RenderWindow& w
 
     sf::RectangleShape rect;
 
-
+    
     float size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
+    
 
     rect.setPosition(x + 1.f, y + 1.f); 
 
@@ -247,6 +248,11 @@ void Window::DrawMainScene() {
 
 }
 
+
+Window_sfml::Window_sfml(InfoSpace* data_p)
+{
+    data = data_p;
+}
 
 bool Window_sfml::isLoaded(sf::Texture scout_texture,   sf::Texture worker_texture,
                            sf::Texture soldier_texture, sf::Texture queen_texture, 

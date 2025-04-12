@@ -34,7 +34,7 @@ public:
         maggot_texture; // муравьи текстуры
 
     sf::Texture food, material; // еда и материалы 
-
+    Window_sfml(InfoSpace* data_p);
     
 private:
 
@@ -43,7 +43,8 @@ private:
 
     
 
-    InfoSpace* data = new InfoSpace;
+    InfoSpace* data;
+   
     bool isLoaded(sf::Texture scout_texture,   sf::Texture worker_texture, 
                   sf::Texture soldier_texture, sf::Texture queen_texture, 
                   sf::Texture nurse_texture,   sf::Texture maggot_texture);
@@ -65,7 +66,3 @@ private:
 
 };
 
-static int text_window_wide = 400;
-static int text_window_hight = 250;
-static sf::Color debug_text_color = sf::Color(0.9, 0.9, 0.9);
-static int text_size = 15;
