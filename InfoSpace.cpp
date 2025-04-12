@@ -94,23 +94,23 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		}
 
 	}
-	else if (insect->curState) {
+	else if (insect->isTriggered) {
 		pair<int, int> newPos2 = { insect->pos_x, insect->pos_y };
 		if (field->field[insect->aim_pos.first][insect->aim_pos.second][0].IDs[0] != insect->aim_id) {
 			insect->isTriggered = false;
 			insect->nearlest.first = 0;
 			return;
 		}
-		if (curr->pos_x < insect->aim_pos.first)
+		if (insect->pos_x < insect->aim_pos.first)
 			newPos2.first++;
 		else
 			newPos2.first--;
-		if (curr->pos_y < insect->aim_pos.second)
+		if (insect->pos_y < insect->aim_pos.second)
 			newPos2.second++;
 		else
 			newPos2.second--;
 		bool hasMoved = false;
-		pair<int, int> lastPos = { curr->pos_x, curr->pos_y };
+		pair<int, int> lastPos = { insect->pos_x, insect->pos_y };
 
 		if (isValidCell(newPos2) && isFreeCell(newPos2) && insect->isIndoors(newPos2.first, newPos2.second, field)) {
 			moveToCeil(newPos2, id, insect);
