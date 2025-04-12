@@ -907,17 +907,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Mat = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
-							if (ant->inventary == 0) {
-								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-								Picked(ant->inventary);
-
-								
-
-								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
-							}
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
+							bool transporting_need = false;
 							for (auto stock : stockpileList) {
-								if (stock.second->type == 1 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+								if (stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y) {
+									transporting_need = true;
 									if (stock.second->food_collected < 0) {
 										na = { stock.second->pos_x + 0 % stock.second->size_x,stock.second->pos_y + 0 / stock.second->size_y };
 									}
@@ -927,6 +921,16 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 								}
 							}
+
+							if (ant->inventary == 0 and transporting_need) {
+								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+								Picked(ant->inventary);
+
+								
+
+								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+							}
+							
 
 							if (ant->action != 6) {
 								ant->aim = na;
