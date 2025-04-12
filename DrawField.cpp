@@ -42,7 +42,7 @@ void Window::DrawScout(int x, int y, unsigned int id) {
 void Window::DrawWorker(int x, int y, unsigned int id) {
     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), White, 0.1f, 0);
     //ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "W");
-    //ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+    ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
 void Window::DrawSoldier(int x, int y, unsigned int id) {
     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Red, 0.1f, 0);

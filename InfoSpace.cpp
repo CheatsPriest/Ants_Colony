@@ -385,6 +385,8 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 
 bool InfoSpace::ChangeEntityPosition(unsigned int ind, int x, int y, int z) {
 
+	if (x < 0 or y < 0 or x>= field_size_x or y>= field_size_y)return false;
+
 	if (field->field[x][y][z].IDs[0] != 0)return false;
 
 	Entity* curEnt = entityList[ind];
@@ -702,6 +704,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		}
 		if (ant->action == 5 or (ant->dest!=0 && ant->action==6 && field->field[ant->aim.first][ant->aim.second]->cWall !=0) ) {
 			Stockpile* stock = stockpileList[ant->dest];
+			
 			int ch = 0;
 			for (int i = - 1; i <= stock->size_x; i++) {
 				for (int j = - 1; j <= stock->size_y; j++) {
@@ -715,10 +718,17 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					}
 				}
 			}
+			if (ch == 0) {
+				TryToDrop(ant);
+				ant->action = 0;
+			}
 			
 		}
 		if (ant->action == 6 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 8 && field->field[ant->pos_x][ant->pos_y]->cWall == 0) {
-			if (ant->dest == 0) { return; }
+			if (ant->dest == 0) {
+				TryToDrop(ant);
+				ant->action = 0;
+			}
 			else {
 				Stockpile* stash = stockpileList[ant->dest];
 				if (stash->needWalled == true &&(dist(ant->aim.first, ant->aim.second, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)<= dist(stash->pos_x + stash->size_x + 1, stash->pos_y + stash->size_y+1, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2))) {
@@ -731,10 +741,14 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					}
 				}
 				else {
+					TryToDrop(ant);
 					ant->action = 0;
 				}
 			}
 		
+		}
+		if (ant->action == 0 and ant->inventary!=0) {
+			TryToDrop(ant);
 		}
 		if (ant->action < 4) {
 			ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
