@@ -451,8 +451,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
 				if (stash->food_collected == stash->size_x * stash->size_y) {
-					aim_x += stash->size_x - 1;
-					aim_y -= 1;
+					aim_x = stash->pos_x + stash->size_x - 1;
+					aim_y = stash->pos_y + stash->size_y - 1;
 				}
 				ant->stashid = stash->id;
 				cout << stash->id;
