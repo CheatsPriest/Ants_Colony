@@ -8,7 +8,7 @@ const int max_unit_per_cell_cap = 1;
 
 class Cell {
 public:
-	Wall* cWall;
+	Wall* cWall = nullptr;
 	unsigned int IDs[max_unit_per_cell_cap];
 	Cell() { cWall = 0; IDs[0] = 0; }
 	//Удаляет и возвращает ID существа
