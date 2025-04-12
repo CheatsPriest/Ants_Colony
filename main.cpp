@@ -1,5 +1,4 @@
-#ifndef HHHH
-#define HHHH
+
 #include "includes.h"
 #include "ImGuiTail.h"
 #include "Entity.h";
@@ -175,4 +174,3 @@ int main() {
 	//Drow.join();
 	return 0;
 }
-#endif
