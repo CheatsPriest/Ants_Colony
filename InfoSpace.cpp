@@ -442,6 +442,9 @@ bool InfoSpace::ChangeEntityPosition(unsigned int ind, int x, int y, int z) {
 		curObj->pos_y = y;
 		curObj->pos_z = z;
 		
+		curObj->isInInventory = false;
+		curObj->isTriggered = false;
+
 		field->field[x][y][z].IDs[0] = ind;
 
 		return true;
@@ -475,7 +478,52 @@ double dist(int p1, int p2, int p3, int p4) {
 	return (p1 - p3) * (p1 - p3) + (p2 - p4) * (p2 - p4);
 }
 
+bool InfoSpace::Picked(unsigned int ind) {
 
+	
+	Entity* curEnt = entityList[ind];
+
+	if (curEnt == NULL)return false;
+
+	if (curEnt->getType() == ANT) {
+		Ant* curObj = (Ant*)curEnt->getPtr();
+
+		
+
+
+		return true;
+	}
+	else if (curEnt->getType() == FOOD) {
+		Food* curObj = (Food*)curEnt->getPtr();
+
+
+
+		return true;
+	}
+	else if (curEnt->getType() == MATERIALS) {
+		Materials* curObj = (Materials*)curEnt->getPtr();
+
+		
+
+		return true;
+	}
+	else if (curEnt->getType() == MAGGOTS) {
+		Maggot* curObj = (Maggot*)curEnt->getPtr();
+
+		
+
+		return true;
+	}
+	else if (curEnt->getType() == INSECT) {
+		Insect* curObj = (Insect*)curEnt->getPtr();
+
+		curObj->isInInventory = true;
+		curObj->isTriggered = true;
+
+		return true;
+	}
+	return false;
+}
 
 // MOVE
 
@@ -798,6 +846,10 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 							if (ant->inventary == 0) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+								Picked(ant->inventary);
+
+								
+
 								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							}
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };

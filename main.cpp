@@ -54,7 +54,7 @@ void processingEntities() {
 
 	//// тля вне загона(не рабы пока что)
 	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
+		//ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 	for (int i = 0; i < 500; i++) {
 		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
@@ -95,7 +95,9 @@ void processingEntities() {
 			}
 			else if (curr and curr->getType() == Entities::INSECT) {
 				Insect* insect = (Insect*)curr;
-				ultimateData->MoveInsect(ent.first);
+				if (true) {
+					ultimateData->MoveInsect(ent.first);
+				}
 				//insect->move(ultimateData->entityList, ent.first);
 			}
 		}

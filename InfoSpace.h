@@ -93,6 +93,7 @@ public:
 	void Hatching(Stockpile* curStock);
 	bool ChangeEntityPosition(unsigned int ind, int x, int y, int z);
 	bool TryToDrop(pair<int, int> stockPos, int id);
+	bool Picked(unsigned int ind);
 
 	void spawnEat(pair<int, int> position) {
 		double chaince = 0.001;
