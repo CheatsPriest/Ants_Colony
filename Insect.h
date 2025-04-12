@@ -14,9 +14,11 @@ public:
 	static bool isSlaveZone;
 	InsectTypes type;
 	int agressive;
+
 	int pos_x;
 	int pos_y;
 	int pos_z;
+
 	float max_hp;
 	float hp;
 	int id;

@@ -95,9 +95,9 @@ void processingEntities() {
 			}
 			else if (curr and curr->getType() == Entities::INSECT) {
 				Insect* insect = (Insect*)curr;
-				if (insect->curState==0) {
-					ultimateData->MoveInsect(ent.first);
-				}
+				
+				ultimateData->MoveInsect(ent.first);
+				
 				//insect->move(ultimateData->entityList, ent.first);
 			}
 		}

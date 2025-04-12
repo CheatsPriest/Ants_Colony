@@ -18,7 +18,7 @@ bool InfoSpace::isFreeCell(pair<int, int> newPos2) {
 	return field->field[newPos2.first][newPos2.second][0].IDs[0] == 0;
 }
 
-void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Entity* curr) {
+void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* curr) {
 	field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;
 	field->field[newPos2.first][newPos2.second][0].IDs[0] = id;
 	curr->pos_x = newPos2.first;
@@ -31,6 +31,10 @@ void InfoSpace::MoveInsect(unsigned int id) {
 
 	Insect* insect = (Insect*)(curr->getPtr());
 	
+	if (insect->curState !=0 ) {
+		return;
+	}
+
 	if (!insect->isTriggered) {
 		
 		if (insect->nearlest.first != 0 && (insect->isSlaveZone == insect->isSlaver)) {
@@ -40,7 +44,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		}
 		else {
 			
-			pair<int, int> p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 };
+			pair<int, int> p = { insect->pos_x + rand() % 3 - 1,insect->pos_y + rand() % 3 - 1 };
 			int counter = 0;
 			int flag = 1;
 			while (!(isValidCell(p) &&  insect->isIndoors(p.first, p.second, field) && isFreeCell(p))) {
@@ -53,12 +57,12 @@ void InfoSpace::MoveInsect(unsigned int id) {
 				}
 			}
 			if (flag) {
-				pair<int, int> lastPos = { curr->pos_x, curr->pos_y };
-				moveToCeil(p, id, curr);
+				pair<int, int> lastPos = { insect->pos_x, insect->pos_y };
+				moveToCeil(p, id, insect);
 				spawnEat(lastPos);
 
 			}
-			p = { curr->pos_x, curr->pos_y };
+			p = { insect->pos_x, insect->pos_y };
 			pair<int, pair<int, int>> prob = { 0, {p.first, p.second} };
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
@@ -91,7 +95,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 
 	}
 	else if (insect->curState) {
-		pair<int, int> newPos2 = { curr->pos_x, curr->pos_y };
+		pair<int, int> newPos2 = { insect->pos_x, insect->pos_y };
 		if (field->field[insect->aim_pos.first][insect->aim_pos.second][0].IDs[0] != insect->aim_id) {
 			insect->isTriggered = false;
 			insect->nearlest.first = 0;
@@ -109,14 +113,14 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		pair<int, int> lastPos = { curr->pos_x, curr->pos_y };
 
 		if (isValidCell(newPos2) && isFreeCell(newPos2) && insect->isIndoors(newPos2.first, newPos2.second, field)) {
-			moveToCeil(newPos2, id, curr);
+			moveToCeil(newPos2, id, insect);
 			hasMoved = true;
 		}
 		else {
 			pair<int, int> p;
 			int counter = 0;
 			int flag = 1;
-			while (!(isValidCell(p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 }) && isFreeCell(p) && insect->isIndoors(p.first, p.second, field))) {
+			while (!(isValidCell(p = { insect->pos_x + rand() % 3 - 1,insect->pos_y + rand() % 3 - 1 }) && isFreeCell(p) && insect->isIndoors(p.first, p.second, field))) {
 				counter++;
 				if (counter == 15) {
 					flag = 0;
@@ -125,7 +129,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 				}
 			}
 			if (flag) {
-				moveToCeil(p, id, curr);
+				moveToCeil(p, id, insect);
 				hasMoved = true;
 			}
 		}
@@ -133,7 +137,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 			spawnEat(lastPos);
 		}
 
-		float vec = pow(insect->aim_pos.first - curr->pos_x, 2) + pow(insect->aim_pos.second - curr->pos_y, 2);
+		float vec = pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2);
 		if (0.95 < vec && vec < 1.1) {
 			Materials* currTarget = (Materials*)(entityList[insect->aim_id]->getPtr());
 			if (currTarget->hp > 1) {
@@ -462,8 +466,8 @@ bool InfoSpace::TryToDrop(pair<int,int> cord, int id) {
 	int y = cord.second;
 	int z = 0;
 
-	for (int i = -2; i <= 2 and !flag; i++) {
-		for (int j = -2; j <= 2; j++) {
+	for (int i = -4; i <= 4 and !flag; i++) {
+		for (int j = -4; j <= 4; j++) {
 			if (i == 0 and j == 0)continue;
 			if (ChangeEntityPosition(id, x+i, y+j, z)) {
 				flag = true;
@@ -487,8 +491,8 @@ bool InfoSpace::TryToDrop(Ant* ant) {
 	int y = ant->pos_y;
 	int z = ant->pos_z;
 
-	for (int i = -2; i <= 2 and !flag; i++) {
-		for (int j = -2; j <= 2; j++) {
+	for (int i = -4; i <= 4 and !flag; i++) {
+		for (int j = -4; j <= 4; j++) {
 			if (i == 0 and j == 0)continue;
 			if (ChangeEntityPosition(id, x + i, y + j, z)) {
 				flag = true;
@@ -666,6 +670,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						ant->inventary = 0;
 					}
 					ant->action = 0;
+					ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 };
+					return;
+					break;
 				}
 				else if(ant->inventary != 0 && stash->type == 0 && entityList[ant->inventary]->getType() == Entities::FOOD) {
 					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
@@ -679,8 +686,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}	
 		}
 		
+		else if (ant->inventary == 0 && ant->action == 2) {
+			ant->action = 0;
+			ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 };
+		}
 
-		if (ant->action == 0 or (ant->dest != 0 && stockpileList[ant->dest]->needWalled == false)) {
+		else if (ant->action == 0 or (ant->dest != 0 && stockpileList[ant->dest]->needWalled == false)) {
 			pair<int, int> stocks = searchmat();
 			ant->source = stocks.first;
 			ant->dest = stocks.second;
@@ -692,6 +703,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 			else {
 				ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 };
+
 			}
 			
 		}
@@ -755,10 +767,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			ant->action = 0;
 		}
 	}
-
 	// warriors >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	else if (ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+	else if ((ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2)) {
 		ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		ant->action = 0;
 	}
@@ -947,6 +958,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							Insect* smth = (Insect*)obj->getPtr();
 							if (ant->inventary == 0 && smth->curState == 0) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+								Picked(ant->inventary);
 								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							}
 							pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };

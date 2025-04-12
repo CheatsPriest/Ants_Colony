@@ -84,7 +84,7 @@ public:
 	void MoveCam(int x, int y);
 	void MoveEntity(unsigned int id);
 	void ProcessAnt(Ant* curAnt);
-	void moveToCeil(pair<int, int> newPos2, unsigned int id, Entity* ent);
+	void moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* ent);
 	void MoveInsect(unsigned int id);
 
 	bool BornNewAnts(Ant* Queen);
