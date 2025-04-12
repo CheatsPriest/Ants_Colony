@@ -12,12 +12,12 @@ int draw_x, draw_y;
 unsigned int work_id;
 Entity* cur;
 
-// ???
 Window_sfml::Window_sfml(InfoSpace* data_p)
 {
     data = data_p;
+    
 }
-// ???
+
 
 void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow& window)
 {
@@ -35,6 +35,8 @@ void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
+    window.display();
+
 
     //// текст
     //sf::Text qText;
@@ -70,6 +72,8 @@ void Window_sfml::DrawQueen_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
+    window.display();
+
 }
 
 void Window_sfml::DrawNurse_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -87,6 +91,8 @@ void Window_sfml::DrawNurse_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
+    window.display();
+
 }
 
 void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -104,6 +110,8 @@ void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
+    window.display();
+
 }
 
 void Window_sfml::DrawWorker_sfml   (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -121,6 +129,8 @@ void Window_sfml::DrawWorker_sfml   (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
+    window.display();
+
 }
 
 void Window_sfml::DrawSoldier_sfml  (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -138,6 +148,8 @@ void Window_sfml::DrawSoldier_sfml  (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
+    window.display();
+
 }
 
 void Window_sfml::DrawFood_sfml     (int x, int y, sf::RenderWindow& window)
@@ -155,6 +167,8 @@ void Window_sfml::DrawFood_sfml     (int x, int y, sf::RenderWindow& window)
 
 
     window.draw(rect);
+    window.display();
+
 }
 
 void Window_sfml::DrawMaterial_sfml (int x, int y, sf::RenderWindow& window)
@@ -172,6 +186,8 @@ void Window_sfml::DrawMaterial_sfml (int x, int y, sf::RenderWindow& window)
 
 
     window.draw(rect);
+    window.display();
+
 }
 
 void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
@@ -189,18 +205,11 @@ void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
 
 
     window.draw(rect);
+    window.display();
+
 }
 
-void Window_sfml::DrawMainScene_sfml() {
-
-
-    // ?
-
-    /*ImGui::SetNextWindowSize(ImVec2(data->main_window_wide, data->main_window_hight));
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1, 1, 1, 0.4));*/
-    
-    // ?
+void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
 
     cell_size = data->cell_size;
     c_x = data->x_cam / cell_size;
@@ -209,148 +218,134 @@ void Window_sfml::DrawMainScene_sfml() {
     max_x = c_x + data->main_window_wide / cell_size;
     max_y = c_y + data->main_window_hight / cell_size;
 
-    sf::RenderWindow mainWindow(sf::VideoMode(data->main_window_wide, data->main_window_hight), "Ant Colony");
+   
+    for (int x = c_x; x < max_x; x++) {
+        for (int y = c_y; y < max_y; y++) {
+            draw_x = (x - c_x) * cell_size;
+            draw_y = (y - c_y) * cell_size;
 
 
-    while (mainWindow.isOpen())
-    {
-        sf::Event event;
-        mainWindow.clear();
-        while (mainWindow.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                mainWindow.close();
-        }
-        for (int x = c_x; x < max_x; x++) {
-            for (int y = c_y; y < max_y; y++) {
-                draw_x = (x - c_x) * cell_size;
-                draw_y = (y - c_y) * cell_size;
+            if (data->field->field[x][y][data->z_cam].cWall != 0) {
+                DrawWall_sfml(draw_x, draw_y, mainWindow);
+            }
+            std::cout << "Draw?" << "\n";
+
+            if (field->field[x][y][data->z_cam].IDs[0] != 0)
+            {
+                std::cout << "Draw?" << "\n";
+
+                cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
+                if (cur == NULL) continue;
+                if (cur->getType() == Entities::ANT) {
+                    Ant* curAnt = (Ant*)(cur->getPtr());
+                    // Отрисовка векторов направления 
+
+                    /*if (data->draw_debug_move_lines and curAnt->inventary != 0 and data->entityList[curAnt->inventary]->getType() == MATERIALS) {
+
+                        ImGui::GetBackgroundDrawList()->AddLine(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), ImVec2((curAnt->aim.first - c_x) * cell_size + cell_size / 2, (curAnt->aim.second - c_y) * cell_size + cell_size / 2), Red, 1.f);
+                        ImGui::GetBackgroundDrawList()->AddCircleFilled(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), 3.f, Red);
 
 
-                if (data->field->field[x][y][data->z_cam].cWall != 0) {
-                    DrawWall_sfml(draw_x, draw_y, mainWindow);
-                }
+                    }*/
 
-                if (field->field[x][y][data->z_cam].IDs[0] != 0) 
-                {
-
-                    cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
-                    if (cur == NULL) continue;
-                    if (cur->getType() == Entities::ANT) {
-                        Ant* curAnt = (Ant*)(cur->getPtr());
-                        // Отрисовка векторов направления 
-
-                        /*if (data->draw_debug_move_lines and curAnt->inventary != 0 and data->entityList[curAnt->inventary]->getType() == MATERIALS) {
-
-                            ImGui::GetBackgroundDrawList()->AddLine(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), ImVec2((curAnt->aim.first - c_x) * cell_size + cell_size / 2, (curAnt->aim.second - c_y) * cell_size + cell_size / 2), Red, 1.f);
-                            ImGui::GetBackgroundDrawList()->AddCircleFilled(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), 3.f, Red);
-
-
-                        }*/
-
-                        if (curAnt->type == 1) {
-                            DrawScout_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
-                        }
-                        else if (curAnt->type == 2) {
-                            DrawWorker_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
-                        }
-                        else if (curAnt->type == 3) {
-                            DrawSoldier_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
-                        }
-                        else if (curAnt->type == 4) {
-                            DrawNurse_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
-                        }
-                        else if (curAnt->type == 0) {
-                            DrawQueen_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
-                        }
-
+                    if (curAnt->type == 1) {
+                        DrawScout_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
-                    else if (cur->getType() == Entities::FOOD) {
-                        Food* curFood = (Food*)(cur->getPtr());
-                        DrawFood_sfml(draw_x, draw_y, mainWindow);
-
+                    else if (curAnt->type == 2) {
+                        DrawWorker_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
-                    else if (cur->getType() == Entities::MATERIALS) {
-                        Materials* curMat = (Materials*)(cur->getPtr());
-                        DrawMaterial_sfml(draw_x, draw_y, mainWindow);
-                        //DrawMaterial_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]); // С текстом
-
+                    else if (curAnt->type == 3) {
+                        DrawSoldier_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
-                    else if (cur->getType() == Entities::MAGGOTS) {
-                        Maggot* curMat = (Maggot*)(cur->getPtr());
-                        DrawMaggot_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                    else if (curAnt->type == 4) {
+                        DrawNurse_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                    }
+                    else if (curAnt->type == 0) {
+                        DrawQueen_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
 
                 }
+                else if (cur->getType() == Entities::FOOD) {
+                    Food* curFood = (Food*)(cur->getPtr());
+                    DrawFood_sfml(draw_x, draw_y, mainWindow);
 
+                }
+                else if (cur->getType() == Entities::MATERIALS) {
+                    Materials* curMat = (Materials*)(cur->getPtr());
+                    DrawMaterial_sfml(draw_x, draw_y, mainWindow);
+                    //DrawMaterial_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]); // С текстом
+
+                }
+                else if (cur->getType() == Entities::MAGGOTS) {
+                    Maggot* curMat = (Maggot*)(cur->getPtr());
+                    DrawMaggot_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                }
 
             }
 
-        }
-        std::cout << "Draw?" << "\n";
-
-        Stockpile* curStock;
-        for (auto el : data->stockpileList) {
-            curStock = el.second;
-            //ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x) * cell_size - data->x_cam, (curStock->pos_y) * cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x) * cell_size - data->x_cam, (curStock->pos_y + curStock->size_y) * cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
-            // Обводка склада
-            if (curStock->type == FOOD_STOCK) {
-                for (int i = 0; i < curStock->size_y; i++) {
-                    for (int j = 0; j < curStock->size_x; j++) {
-
-                        work_id = curStock->stuff[i][j];
-                        if (work_id != 0) {
-                            cur = data->entityList[work_id];
-                            Food* curFood = (Food*)(cur->getPtr());
-
-                            draw_x = (curFood->pos_x - c_x) * cell_size;
-                            draw_y = (curFood->pos_y - c_y) * cell_size;
-                            DrawFood_sfml(draw_x, draw_y, mainWindow); // Здесь с текстом (work_id)
-                            //DrawFood(draw_x, draw_y, work_id);
-                        }
-                    }
-                }
-            }
-            else if (curStock->type == MATERIAL_STOCK) {
-                for (int i = 0; i < curStock->size_y; i++) {
-                    for (int j = 0; j < curStock->size_x; j++) {
-
-                        work_id = curStock->stuff[i][j];
-                        if (work_id != 0) {
-                            cur = data->entityList[work_id];
-                            Materials* curMat = (Materials*)(cur->getPtr());
-
-                            draw_x = (curMat->pos_x - c_x) * cell_size;
-                            draw_y = (curMat->pos_y - c_y) * cell_size;
-                            DrawMaterial_sfml(draw_x, draw_y, mainWindow); // Здесь с текстом (work_id)
-                            //DrawMaterial(draw_x, draw_y, work_id);
-                        }
-                    }
-                }
-            }
-            else if (curStock->type == MAGGOT_STOCK) {
-                data->Hatching(curStock);
-                for (int i = 0; i < curStock->size_y; i++) {
-                    for (int j = 0; j < curStock->size_x; j++) {
-
-                        work_id = curStock->stuff[i][j];
-                        if (work_id != 0) {
-                            cur = data->entityList[work_id];
-                            Maggot* curMat = (Maggot*)(cur->getPtr());
-
-                            draw_x = (curStock->pos_x + i - c_x) * cell_size;
-                            draw_y = (curStock->pos_y + j - c_y) * cell_size;
-                            DrawMaggot_sfml(draw_x, draw_y, work_id, mainWindow);
-                            //DrawMaggot(draw_x, draw_y, work_id);
-                        }
-                    }
-                }
-            }
+            std::cout << "Draw?" << "\n";
         }
 
-        mainWindow.display();
     }
 
+    Stockpile* curStock;
+    for (auto el : data->stockpileList) {
+        curStock = el.second;
+        //ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x) * cell_size - data->x_cam, (curStock->pos_y) * cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x) * cell_size - data->x_cam, (curStock->pos_y + curStock->size_y) * cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
+        // Обводка склада
+        if (curStock->type == FOOD_STOCK) {
+            for (int i = 0; i < curStock->size_y; i++) {
+                for (int j = 0; j < curStock->size_x; j++) {
+
+                    work_id = curStock->stuff[i][j];
+                    if (work_id != 0) {
+                        cur = data->entityList[work_id];
+                        Food* curFood = (Food*)(cur->getPtr());
+
+                        draw_x = (curFood->pos_x - c_x) * cell_size;
+                        draw_y = (curFood->pos_y - c_y) * cell_size;
+                        DrawFood_sfml(draw_x, draw_y, mainWindow); // Здесь с текстом (work_id)
+                        //DrawFood(draw_x, draw_y, work_id);
+                    }
+                }
+            }
+        }
+        else if (curStock->type == MATERIAL_STOCK) {
+            for (int i = 0; i < curStock->size_y; i++) {
+                for (int j = 0; j < curStock->size_x; j++) {
+
+                    work_id = curStock->stuff[i][j];
+                    if (work_id != 0) {
+                        cur = data->entityList[work_id];
+                        Materials* curMat = (Materials*)(cur->getPtr());
+
+                        draw_x = (curMat->pos_x - c_x) * cell_size;
+                        draw_y = (curMat->pos_y - c_y) * cell_size;
+                        DrawMaterial_sfml(draw_x, draw_y, mainWindow); // Здесь с текстом (work_id)
+                        //DrawMaterial(draw_x, draw_y, work_id);
+                    }
+                }
+            }
+        }
+        else if (curStock->type == MAGGOT_STOCK) {
+            data->Hatching(curStock);
+            for (int i = 0; i < curStock->size_y; i++) {
+                for (int j = 0; j < curStock->size_x; j++) {
+
+                    work_id = curStock->stuff[i][j];
+                    if (work_id != 0) {
+                        cur = data->entityList[work_id];
+                        Maggot* curMat = (Maggot*)(cur->getPtr());
+
+                        draw_x = (curStock->pos_x + i - c_x) * cell_size;
+                        draw_y = (curStock->pos_y + j - c_y) * cell_size;
+                        DrawMaggot_sfml(draw_x, draw_y, work_id, mainWindow);
+                        //DrawMaggot(draw_x, draw_y, work_id);
+                    }
+                }
+            }
+        }
+    }
 
 }
 

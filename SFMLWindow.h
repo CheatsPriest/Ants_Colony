@@ -3,7 +3,7 @@
 #include "InfoSpace.h"
 using namespace std;
 
-static sf::Color Green      = sf::Color(0.2f, 0.6f, 0.2f);
+static sf::Color Green      = sf::Color::Green;
 static sf::Color Blue       = sf::Color(0.4f, 0.4f, 0.9f);
 static sf::Color WhiteBlue  = sf::Color(0.4f, 0.1f, 0.9f);
 
@@ -16,8 +16,8 @@ static sf::Color Brown      = sf::Color(0.8f, 0.4f, 0.1f);
 static sf::Color Purple     = sf::Color(0.8f, 0.1f, 0.9f);
 
 static sf::Color Black      = sf::Color(0.01f, 0.01f, 0.01f);
-static sf::Color White      = sf::Color(0.8f, 0.8f, 0.8f);
-static sf::Color Red        = sf::Color(0.8f, 0.1f, 0.1f);
+static sf::Color White      = sf::Color::White;
+static sf::Color Red        = sf::Color::Red;
 
 class Window_sfml {
 public:
@@ -36,7 +36,7 @@ public:
     sf::Texture food, material; // еда и материалы 
     Window_sfml(InfoSpace* data_p);
 
-    void DrawMainScene_sfml (); 
+    void DrawMainScene_sfml (sf::RenderWindow& mainWindow); 
 private:
 
     int wide, hight;

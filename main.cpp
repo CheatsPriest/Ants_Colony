@@ -97,7 +97,26 @@ void processingEntities() {
 		
 		//mainWindow->EndFrame(); // Конец отрисовки
 		Window_sfml* start = new Window_sfml(ultimateData);
-		start->DrawMainScene_sfml();
+		sf::RenderWindow mainWindow(sf::VideoMode(ultimateData->main_window_wide, 
+								ultimateData->main_window_hight), "Ant Colony");
+
+		while (mainWindow.isOpen())
+		{
+			sf::Event event;
+
+			while (mainWindow.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					mainWindow.close();
+			}
+			std::cout << "Hello?" << "\n";
+			mainWindow.clear();
+			start->DrawMainScene_sfml(mainWindow);
+			mainWindow.display();
+		}
+
+		
+
 		
 	}
 
