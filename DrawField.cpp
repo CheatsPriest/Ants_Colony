@@ -20,6 +20,7 @@ void Window::DrawQueen(int x, int y, unsigned int id) {
     ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
 void Window::DrawNurse(int x, int y, unsigned int id) {
+
     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), Pink, 0.1f, 0);
     ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black , "N");
     ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
