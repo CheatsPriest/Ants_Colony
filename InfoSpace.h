@@ -91,6 +91,9 @@ public:
 	bool FeedTheQueen(Ant* curAnt);
 	bool CreateEntityMaggot(int x, int y, int z, int clan);
 	void Hatching(Stockpile* curStock);
+	bool ChangeEntityPosition(unsigned int ind, int x, int y, int z);
+	bool TryToDrop(Ant* curAnt);
+
 	void spawnEat(pair<int, int> position) {
 		double chaince = 0.001;
 		if ( ((double)(rand() % 10000) / 10000) <= chaince) {

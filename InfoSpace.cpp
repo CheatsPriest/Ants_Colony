@@ -5,6 +5,9 @@
 using namespace std;
 
 
+
+
+
 bool InfoSpace::isValidCell(pair<int, int> newPos) {
 	//return !(newPos.first >= field_size_x || newPos.second >= field_size_y
 	//	|| newPos.first < 0 || newPos.second < 0);
@@ -378,6 +381,96 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 			}
 		}
 	}
+}
+
+bool InfoSpace::ChangeEntityPosition(unsigned int ind, int x, int y, int z) {
+
+	if (field->field[x][y][z].IDs[0] != 0)return false;
+
+	Entity* curEnt = entityList[ind];
+
+	if (curEnt==NULL)return false;
+
+	if (curEnt->getType() == ANT) {
+		Ant* curObj = (Ant*)curEnt->getPtr();
+
+		curObj->pos_x = x;
+		curObj->pos_y = y;
+		curObj->pos_z = z;
+
+		field->field[x][y][z].IDs[0] = ind;
+
+		return true;
+	}
+	else if (curEnt->getType() == FOOD) {
+		Food* curObj = (Food*)curEnt->getPtr();
+
+		curObj->pos_x = x;
+		curObj->pos_y = y;
+		curObj->pos_z = z;
+
+		field->field[x][y][z].IDs[0] = ind;
+
+		return true;
+	}
+	else if (curEnt->getType() == MATERIALS) {
+		Materials* curObj = (Materials*)curEnt->getPtr();
+
+		curObj->pos_x = x;
+		curObj->pos_y = y;
+		curObj->pos_z = z;
+
+		field->field[x][y][z].IDs[0] = ind;
+
+		return true;
+	}
+	else if (curEnt->getType() == MAGGOTS) {
+		Maggot* curObj = (Maggot*)curEnt->getPtr();
+
+		/*curObj->pos_x = x;
+		curObj->pos_y = y;
+		curObj->pos_z = z;*/
+
+		field->field[x][y][z].IDs[0] = ind;
+
+		return true;
+	}
+	else if (curEnt->getType() == INSECT) {
+		Insect* curObj = (Insect*)curEnt->getPtr();
+
+		curObj->pos_x = x;
+		curObj->pos_y = y;
+		curObj->pos_z = z;
+		
+		field->field[x][y][z].IDs[0] = ind;
+
+		return true;
+	}
+	return false;
+}
+
+bool InfoSpace::TryToDrop(Ant* curAnt) {
+	if (curAnt->inventary == 0)return false;
+
+	bool flag = false;
+
+	int x = curAnt->pos_x;
+	int y = curAnt->pos_y;
+	int z = curAnt->pos_z;
+
+	for (int i = -2; i < 2 and !flag; i++) {
+		for (int j = -2; j < 2; j++) {
+			if (i == 0 and j == 0)continue;
+			if (ChangeEntityPosition(curAnt->inventary, x+i, y+j, z)) {
+				flag = true;
+				curAnt->inventary = 0;
+				return true;
+			}
+		}
+	}
+	
+	return false;
+
 }
 
 double dist(int p1, int p2, int p3, int p4) {
