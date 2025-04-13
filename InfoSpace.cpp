@@ -840,7 +840,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				ant->action = 3;
 
 
-				if (stash->food_collected == stash->size_x * stash->size_y) {
+				if (stash->type == 0 and stash->food_collected == stash->size_x * stash->size_y) {
 				}
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
 				int aim_y = stash->pos_y + stash->food_collected / stash->size_x;
@@ -851,7 +851,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				
 
 
-				if (!relevant or dist(ant->aim.first, ant->aim.second, ant->pos_x, ant->pos_y)> dist(aim_x, aim_y, ant->pos_x, ant->pos_y)) {
+				if (stash->type == 0 and (!relevant or dist(ant->aim.first, ant->aim.second, ant->pos_x, ant->pos_y)> dist(aim_x, aim_y, ant->pos_x, ant->pos_y))) {
 					
 					ant->stashid = stash->id;
 					cout << stash->id;
