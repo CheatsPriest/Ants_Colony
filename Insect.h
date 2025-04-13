@@ -11,6 +11,8 @@ class Insect
 {
 public:
 	int curState;
+	bool goToBase;
+	
 	static pair<int, pair<int,int>> nearlest;
 	static bool isSlaveZone;
 	InsectTypes type;
@@ -45,6 +47,7 @@ public:
 		pos_y = y;
 		pos_z = z;
 		isTriggered = false;
+		goToBase = false;
 	}
 	void info() {
 		cout << "I am INSECT" << "\n";

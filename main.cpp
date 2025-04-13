@@ -62,8 +62,8 @@ void processingEntities() {
 		ultimateData->CreateInsect(rand() % 50+ start_x-100, rand() % 50+ start_y-100, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 
-	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateInsect(rand() % 50 + start_x, rand() % 50 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
+	for (int i = 0; i < 500; i++) {
+		ultimateData->CreateInsect(rand() % 50 + 50 + start_x, rand() % 50 + 50 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
 	}
 
 
@@ -132,11 +132,11 @@ void processingEntities() {
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
 		{
 			ultimateData->MoveCam(-1, 0);
-			for (int i = 0; i < 25; i++) {
-				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
+			//for (int i = 0; i < 25; i++) {
+	/*			ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
 			}
 			ultimateData->ReCalculateTheColony();
-			ultimateData->coloniesList[1];
+			ultimateData->coloniesList[1];*/
 		}
 		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
 			ultimateData->MoveCam(1, 0);

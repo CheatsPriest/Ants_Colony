@@ -25,8 +25,58 @@ void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* curr
 	curr->pos_x = newPos2.first;
 	curr->pos_y = newPos2.second;
 }
+void InfoSpace::RandomMove(pair<int, int> newPos2, unsigned int id, Insect* insect) {
+
+
+	pair<int, int> expectedPoint = newPos2;
+	if (isValidCell(expectedPoint) && isFreeCell(expectedPoint) && insect->isIndoors(expectedPoint.first, expectedPoint.second, field)) {
+		moveToCeil(expectedPoint, id, insect);
+		return;
+	}
+	else {
+		int k = 0;
+		pair<int, int> p;
+		while (k <= 10) {
+			p.first = insect->pos_x + rand() % 3 - 1;
+			p.second = insect->pos_y + rand() % 3 - 1;
+			if (isValidCell(p) && isFreeCell(p) && insect->isIndoors(p.first, p.second, field)) {
+				moveToCeil(p, id, insect);
+				break;
+			}
+			k++;
+		}
+	}
+
+
+}
+
+
+
 
 void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
+	if (insect->goToBase) {
+
+		if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
+			insect->goToBase = false;
+			return;
+		}
+		pair<int, int> direct = { 0,0 };
+		if (insect->pos_x < insect->aim_pos.first) {
+			direct.first = 1;
+		}
+		else {
+			direct.first = -1;
+		}
+		if (insect->pos_y < insect->aim_pos.second) {
+			direct.second = 1;
+		}
+		else {
+			direct.second = -1;
+		}
+		RandomMove({ insect->pos_x + direct.first, insect->pos_y + direct.second }, id, insect);
+		return;
+	}
+
 	if (!insect->isTriggered) {
 		if (free_stockpile_key == 0) return;
 		
@@ -35,40 +85,46 @@ void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
 		insect->aim_id = targetId;
 		insect->aim_pos = { stockpile->pos_x, stockpile->pos_y };
 		insect->isTriggered = true;
+		
 	}
 	else if(insect->isTriggered){
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (i == j && j == 0) continue;
+				if (!isValidCell({ insect->pos_x + i, insect->pos_y + j })) continue;
+				if (field->field[insect->pos_x + i][insect->pos_y + j][0].cWall != 0) {
+					insect->goToBase = true;
+					insect->isTriggered = false;
+					insect->aim_pos = { 300, 240 };
+					return;
+				}
+				if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
+					insect->goToBase = true;
+					insect->isTriggered = false;
+					insect->aim_pos = { 500, 240 };
+					return;
+				}
+			}
+		}
+
 		pair<int, int> direct = { 0,0 };
 		if (insect->pos_x < insect->aim_pos.first) {
 			direct.first = 1;
 		}
-		else if (insect->pos_x > insect->aim_pos.first) {
+		else {
 			direct.first = -1;
 		}
 		if (insect->pos_y < insect->aim_pos.second) {
 			direct.second = 1;
 		}
-		else if (insect->pos_y > insect->aim_pos.second) {
+		else  {
 			direct.second = -1;
 		}
+		RandomMove({ insect->pos_x + direct.first , insect->pos_y + direct.second}, id, insect);
 
-		pair<int, int> expectedPoint = { insect->pos_x + direct.first, insect->pos_y + direct.second };
-		if (isValidCell(expectedPoint) && isFreeCell(expectedPoint) && insect->isIndoors(expectedPoint.first, expectedPoint.second, field)) {
-			moveToCeil(expectedPoint, id, insect);
-			return;
-		}
-		else {
-			for (int i = -1; i <= 1; i++) {
-				for (int j = 0; j <= 1; j++) {
-					if (i == j && i == 0) continue;
-					expectedPoint = { insect->pos_x + i, insect->pos_y + j };
-					if (isValidCell(expectedPoint) && isFreeCell(expectedPoint) && insect->isIndoors(expectedPoint.first, expectedPoint.second, field)) {
-						moveToCeil(expectedPoint, id, insect);
-						return;
-					}
-				}
-			}
-		}	
 	}
+
+	
 }
 
 void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
@@ -196,6 +252,9 @@ void InfoSpace::MoveInsect(unsigned int id) {
 	Entity* curr = entityList[id];
 
 	Insect* insect = (Insect*)(curr->getPtr());
+	if (insect->type == InsectTypes::LADYBUG) {
+		MoveLadybug(id, insect);
+	}
 
 	if (insect->curState == 1) {
 		return;
@@ -204,9 +263,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 	if (insect->type == InsectTypes::APHID) {
 		MoveAphid(id, insect);
 	}
-	else if (insect->type == InsectTypes::LADYBUG) {
-		MoveLadybug(id, insect);
-	}
+	
 
 
 	
