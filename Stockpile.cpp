@@ -46,6 +46,36 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 	return 0;
 
 }
+
+unsigned int Stockpile::PickUpWithoutAnt() {
+
+	unsigned int food_ind;
+	int x, y;
+
+	if (food_collected < size_x * size_y) {
+		x = food_collected % size_x;
+		y = food_collected / size_x;
+	}
+	else {
+
+		x = size_x - 1;
+		y = size_y - 1;;
+	}
+
+	if (x >= 0 && y >= 0 && y < size_y && stuff[x][y] != 0 and food_collected >= 0) {
+
+			food_collected--;
+			stuff[x][y] = 0;
+		
+	}
+	else if (x >= 0 and y >= 0 and food_collected > 0 and stuff[x][y] == 0) {
+		food_collected--;
+	}
+	return 0;
+
+
+
+}
 unsigned int Stockpile::PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityList) {
 
 	unsigned int food_ind;

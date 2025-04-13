@@ -38,7 +38,7 @@ void processingEntities() {
 
 	ultimateData->CreateEntityAnt(210, 230, 0, 0, 0, 1);
 
-	for (int i = 0; i < 200; i++) {
+	for (int i = 0; i < 300; i++) {
 		ultimateData->CreateEntityAnt(210, 2 * i+200, 0, 0, 1,1);
 	}
 	for (int i = 0; i < 150; i++) {
@@ -58,16 +58,16 @@ void processingEntities() {
 	//}
 
 	//// тля вне загона(не рабы пока что)
-	for (int i = 0; i < 80; i++) {
+	for (int i = 0; i < 200; i++) {
 		ultimateData->CreateInsect(rand() % 50+ start_x-100, rand() % 50+ start_y-100, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 
-	for (int i = 0; i < 500; i++) {
-		ultimateData->CreateInsect(rand() % 50 + 50 + start_x, rand() % 50 + 50 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
+	for (int i = 0; i < 300; i++) {
+		ultimateData->CreateInsect(rand() % 50 + 100 + start_x, rand() % 50 + 100 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
 	}
 
 
-	for (int i = 0; i < 15000; i++) {
+	for (int i = 0; i < 20000; i++) {
 		ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 10);
 	}

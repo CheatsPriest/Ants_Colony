@@ -36,6 +36,7 @@ public:
 	pair<int, int> stockPos;
 	pair<int, int> stockSize;
 	bool isSlaver = false;
+	static pair<int, int> baseCoords;
 	void setAimId(unsigned int id) {
 		aim_id = id;
 	}
@@ -52,6 +53,11 @@ public:
 	void info() {
 		cout << "I am INSECT" << "\n";
 	}
+	void updateBaseCoords() {
+		baseCoords.first = rand() % 600 + 1;
+		baseCoords.second = rand() % 600 + 1;
+	}
+	
 	bool isIndoors(int x, int y, Field* field) {
 	/*	return( stockPos.first < x) && (x < stockPos.first + stockSize.first)
 			&& (stockPos.second < y) &&( y < stockPos.second + stockSize.second);*/

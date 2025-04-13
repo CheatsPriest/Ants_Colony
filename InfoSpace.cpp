@@ -46,38 +46,156 @@ void InfoSpace::RandomMove(pair<int, int> newPos2, unsigned int id, Insect* inse
 			k++;
 		}
 	}
+}
 
 
+pair<bool, Stockpile*> InfoSpace::IndoorsStockpile(pair<int, int> p) {
+	for (int i = 1; i < free_stockpile_key; i++) {
+		Stockpile* stock = stockpileList[i];
+		if (p.first > stock->pos_x && p.first < stock->pos_x + stock->size_x
+			&& p.second > stock->pos_y && p.second < stock->pos_y + stock->size_x) {
+			return { true, stock };
+		}
+	}
+	return { false, nullptr };
+}
+
+void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
+	insect->updateBaseCoords();
+	//возвращение на базу какую нибудь
+if (insect->goToBase) {
+	if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
+		insect->goToBase = false;
+		return;
+	}
+
+	pair<int, int> direct = { 0,0 };
+	if (insect->pos_x < insect->aim_pos.first) {
+		direct.first = 1;
+	}
+	else {
+		direct.first = -1;
+	}
+	if (insect->pos_y < insect->aim_pos.second) {
+		direct.second = 1;
+	}
+	else {
+		direct.second = -1;
+	}
+
+	pair<int, int> expectedPoint = { insect->pos_x + direct.first, insect->pos_y + direct.second };
+
+	if (isValidCell(expectedPoint) && isFreeCell(expectedPoint)) {
+		moveToCeil(expectedPoint, id, insect);
+		return;
+	}
+	else {
+		int k = 0;
+		pair<int, int> p;
+		while (k <= 10) {
+			p.first = insect->pos_x + rand() % 3 - 1;
+			p.second = insect->pos_y + rand() % 3 - 1;
+			if (isValidCell(p) && isFreeCell(p)) {
+				moveToCeil(p, id, insect);
+				break;
+			}
+			k++;
+		}
+	}
+
+
+
+	RandomMove(expectedPoint, id, insect);
+	
+	return;
 }
 
 
 
 
-void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
-	if (insect->goToBase) {
+//если оказались в зоне любого склада
+pair<bool, Stockpile*> ps = IndoorsStockpile({ insect->pos_x, insect->pos_y });
+bool detectedFood = false;
+bool detectedMaterial = false;
+bool detectedAphid = false;
+bool detectedMaggot = false;
+Food* food;
+Materials* material;
+Insect* aphid;
+Maggot* maggot;
+pair<int, int> detectedCoord = { 0, 0 };
+if (ps.first) {
+	if (ps.second->type == 0) {
+		ps.second->PickUpWithoutAnt();
 
-		if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
-			insect->goToBase = false;
-			return;
-		}
-		pair<int, int> direct = { 0,0 };
-		if (insect->pos_x < insect->aim_pos.first) {
-			direct.first = 1;
-		}
-		else {
-			direct.first = -1;
-		}
-		if (insect->pos_y < insect->aim_pos.second) {
-			direct.second = 1;
-		}
-		else {
-			direct.second = -1;
-		}
-		RandomMove({ insect->pos_x + direct.first, insect->pos_y + direct.second }, id, insect);
+		insect->goToBase = true;
+		insect->isTriggered = false;
+		insect->aim_pos = insect->baseCoords;
 		return;
 	}
+	else if (ps.second->type == 1) {
+		
+		ps.second->PickUpWithoutAnt();
 
-	if (!insect->isTriggered) {
+		insect->goToBase = true;
+		insect->isTriggered = false;
+		insect->aim_pos = insect->baseCoords;
+		return;
+	}
+	else if (ps.second->type == 2) {
+		
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (j == i && j == 0) continue;
+				unsigned int currEntityId = field->field[insect->pos_x + i][insect->pos_y + j][0].IDs[0];
+				if (currEntityId != 0 && entityList[currEntityId]->getType() == Entities::INSECT
+					&& (aphid = (Insect*)entityList[currEntityId]->getPtr())->type == InsectTypes::APHID) {
+					detectedAphid= true;
+					detectedCoord = { insect->pos_x + i, insect->pos_y + j };
+					//нашли тлю на складе
+				}
+			}
+		}
+	}
+	else if (ps.second->type == 3) {
+		ps.second->PickUpWithoutAnt();
+		insect->goToBase = true;
+		insect->isTriggered = false;
+		insect->aim_pos = insect->baseCoords;
+		return;
+	}
+	
+
+	if (detectedAphid) {
+		unsigned int id_ = field->field[detectedCoord.first][detectedCoord.second][0].IDs[0];
+		field->field[detectedCoord.first][detectedCoord.second][0].IDs[0] = 0;
+		entityList.erase(id_);
+
+		insect->goToBase = true;
+		insect->isTriggered = false;
+		insect->aim_pos = insect->baseCoords;
+
+	} else if (detectedMaggot) {
+		unsigned int id_ = field->field[detectedCoord.first][detectedCoord.second][0].IDs[0];
+		field->field[detectedCoord.first][detectedCoord.second][0].IDs[0] = 0;
+		entityList.erase(id_);
+
+		insect->goToBase = true;
+		insect->isTriggered = false;
+		insect->aim_pos = insect->baseCoords;
+	}
+	else {
+		// ищем цель на складе
+		RandomMove({ insect->pos_x, insect->pos_y }, id, insect);
+	}
+	return;
+}
+
+
+
+
+//если не на складе
+if (!insect->isTriggered) {
 		if (free_stockpile_key == 0) return;
 		
 		int targetId = rand() % (free_stockpile_key - 1) + 1;
@@ -95,13 +213,13 @@ void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
 				if (field->field[insect->pos_x + i][insect->pos_y + j][0].cWall != 0) {
 					insect->goToBase = true;
 					insect->isTriggered = false;
-					insect->aim_pos = { 300, 240 };
+					insect->aim_pos = insect->baseCoords;
 					return;
 				}
 				if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
 					insect->goToBase = true;
 					insect->isTriggered = false;
-					insect->aim_pos = { 500, 240 };
+					insect->aim_pos = insect->baseCoords;
 					return;
 				}
 			}
@@ -123,6 +241,117 @@ void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
 		RandomMove({ insect->pos_x + direct.first , insect->pos_y + direct.second}, id, insect);
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//if (insect->goToBase) {
+
+	//	if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
+	//		insect->goToBase = false;
+	//		return;
+	//	}
+	//	pair<int, int> direct = { 0,0 };
+	//	if (insect->pos_x < insect->aim_pos.first) {
+	//		direct.first = 1;
+	//	}
+	//	else {
+	//		direct.first = -1;
+	//	}
+	//	if (insect->pos_y < insect->aim_pos.second) {
+	//		direct.second = 1;
+	//	}
+	//	else {
+	//		direct.second = -1;
+	//	}
+	//	RandomMove({ insect->pos_x + direct.first, insect->pos_y + direct.second }, id, insect);
+	//	return;
+	//}
+
+	//if (!insect->isTriggered) {
+	//	if (free_stockpile_key == 0) return;
+	//	
+	//	int targetId = rand() % (free_stockpile_key - 1) + 1;
+	//	Stockpile* stockpile = stockpileList[targetId];
+	//	insect->aim_id = targetId;
+	//	insect->aim_pos = { stockpile->pos_x, stockpile->pos_y };
+	//	insect->isTriggered = true;
+	//	
+	//}
+	//else if(insect->isTriggered){
+	//	for (int i = -1; i <= 1; i++) {
+	//		for (int j = -1; j <= 1; j++) {
+	//			if (i == j && j == 0) continue;
+	//			if (!isValidCell({ insect->pos_x + i, insect->pos_y + j })) continue;
+	//			if (field->field[insect->pos_x + i][insect->pos_y + j][0].cWall != 0) {
+	//				insect->goToBase = true;
+	//				insect->isTriggered = false;
+	//				insect->aim_pos = { 400, 200 + rand() % 100 + 1};
+	//				return;
+	//			}
+	//			if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
+	//				insect->goToBase = true;
+	//				insect->isTriggered = false;
+	//				insect->aim_pos = { 400, 200 + rand() % 100 + 1};
+	//				return;
+	//			}
+	//		}
+	//	}
+
+	//	pair<int, int> direct = { 0,0 };
+	//	if (insect->pos_x < insect->aim_pos.first) {
+	//		direct.first = 1;
+	//	}
+	//	else {
+	//		direct.first = -1;
+	//	}
+	//	if (insect->pos_y < insect->aim_pos.second) {
+	//		direct.second = 1;
+	//	}
+	//	else  {
+	//		direct.second = -1;
+	//	}
+	//	RandomMove({ insect->pos_x + direct.first , insect->pos_y + direct.second}, id, insect);
+
+	//}
 
 	
 }
