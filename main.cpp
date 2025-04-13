@@ -58,13 +58,18 @@ void processingEntities() {
 	//}
 
 	//// тл€ вне загона(не рабы пока что)
-	for (int i = 0; i < 30; i++) {
-		ultimateData->CreateInsect(rand() % 50+ start_x, rand() % 50+ start_y, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
+	for (int i = 0; i < 80; i++) {
+		ultimateData->CreateInsect(rand() % 50+ start_x-100, rand() % 50+ start_y-100, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 	for (int i = 0; i < 15000; i++) {
 		ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 10);
 	}
+	//for (int i = 0; i < 600; i++) {
+
+	//	//ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
+	//	ultimateData->CreateEntityMaterial(rand() % 50+start_x+20, rand() % 50+start_y+20, 0, 0, 10);
+	//}
 
 
 	//ѕриветствие
@@ -86,6 +91,7 @@ void processingEntities() {
 		}
 	}
 
+	
 
 	while (ultimateData->mainLoop) {
 
@@ -94,6 +100,8 @@ void processingEntities() {
 			ultimateData->BuildNewStockpile(el.second);
 
 		}
+		
+		ultimateData->RecountAphid();
 
 		for (auto ent : ultimateData->entityList) {
 

@@ -108,6 +108,7 @@ public:
 
 	void ReCalculateTheColony();
 	void BuildNewStockpile(Colony* curColony);
+	void RecountAphid();
 
 	~InfoSpace() {
 		delete field;

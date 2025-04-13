@@ -173,7 +173,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 	
 }
 
-//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
+//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 4 = Nurse, 0 = Queen
 bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, int clan) {
 	
 	if (field->field[x][y][z].IDs[0] != 0)return false;
@@ -394,7 +394,26 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 				if (entityList[ind]->getType() != MAGGOTS)continue;
 				Maggot* curMaggot = (Maggot*)entityList[ind]->getPtr();
 				if (curMaggot->release_timer <= 0) {
-					CreateEntityAnt(i + curStock->pos_x, j + curStock->pos_y, curStock->pos_z, 0, 1, curMaggot->clan);
+
+					int whoWillBorn=0;
+					int rock = rand() % 100;
+
+					if (rock < 3) {
+						whoWillBorn = NURSE;
+					}
+					else if (rock >= 3 and rock < 15) {
+						whoWillBorn = WORKER;
+					}
+					else if (rock >= 15 and rock < 55) {
+						whoWillBorn = WORKER;
+					}
+					else if (rock >= 55) {
+						whoWillBorn = SCOUT;
+					}
+					if (rand() % 100 > 90) {
+						coloniesList[curMaggot->clan]->base_radius++;
+					}
+					CreateEntityAnt(i + curStock->pos_x, j + curStock->pos_y, curStock->pos_z, 0, whoWillBorn, curMaggot->clan);
 
 					curStock->stuff[i][j] = 0;
 
@@ -713,7 +732,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 
 			x = curColony->base_x + rand() % (curColony->base_radius) - curColony->base_radius / 2;
 			y = curColony->base_y + rand() % (curColony->base_radius) - curColony->base_radius / 2;
-			if (CreateStockpile(x, y, 0, 25, 25, APHID_STOCK, curColony->clan)) {
+			if (CreateStockpile(x, y, 0, 30, 30, APHID_STOCK, curColony->clan)) {
 				curColony->needNewAphidStock = false;
 				break;
 			}
@@ -725,6 +744,39 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 
 	}
 
+}
+
+void InfoSpace::RecountAphid()
+{
+	Stockpile* curStock;
+	unsigned int id;
+	for (auto el : stockpileList) {
+		curStock = el.second;
+
+		if (curStock->type == APHID_STOCK) {
+			curStock->food_collected = 0;
+
+			for (int x = curStock->pos_x; x < curStock->pos_x + curStock->size_x; x++) {
+				for (int y = curStock->pos_y; y < curStock->pos_y + curStock->size_y; y++) {
+					bool fl = false;
+					id = field->field[x][y][curStock->pos_z].IDs[0];
+					if (id != 0 and entityList[id]->getType() == INSECT) {
+						curStock->food_collected+=1;
+						if (rand() % 100 > 90) {
+
+							cout << "HERE " << curStock->food_collected << endl;
+							fl = true;
+						}
+					}
+					if (fl)
+						cout << "HERE1 " << curStock->food_collected << endl;
+
+				}
+			}
+
+		}
+
+	}
 }
 
 
@@ -842,6 +894,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				}
 				else if (ant->inventary != 0 && stash->type == 2 && entityList[ant->inventary]->getType() == Entities::INSECT && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= (stash->size_x*stash->size_x)) {
 					if (TryToDrop(ant->aim, ant->inventary)) {
+
+						stash->food_collected++;
+
 						ant->inventary = 0;
 					}
 					ant->action = 0;
@@ -1161,7 +1216,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 								if (stock.second->type == 2 and stock.second->needWalled == true) {
 									isPrepearing = true;
 								}
-								if (stock.second->type == 2 and stock.second->needWalled==false && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+								if (stock.second->type == 2 and stock.second->needWalled==false && stock.second->food_collected < stock.second->size_x/2) {
 									na = { stock.second->pos_x + stock.second->size_x / 2,stock.second->pos_y + stock.second->size_y / 2 };
 									transporting_need = true;
 									isPrepearing = false;
