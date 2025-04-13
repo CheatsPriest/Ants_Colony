@@ -3,6 +3,8 @@
 #include <ctime>
 #include <cmath>
 #include <iostream>
+#include <cstdlib>
+
 int c_x;
 int c_y;
 int max_x, max_y;
@@ -36,24 +38,6 @@ void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow
     window.draw(rect);
     window.display();
 
-
-    //// текст
-    //sf::Text qText;
-    //qText.setFont(font); // Еще шрифт подгрузить 
-    //qText.setString("Q");
-    //qText.setCharacterSize(12); 
-    //qText.setFillColor(sf::Color::Black);
-    //qText.setPosition(x + 1.f, y + 1.f);
-    //window.draw(qText);
-
-    //// id
-    //sf::Text idText;
-    //idText.setFont(font);
-    //idText.setString(std::to_string(id));
-    //idText.setCharacterSize(12); 
-    //idText.setFillColor(sf::Color::Black);
-    //idText.setPosition(x + 1.f, y + 11.f); 
-    //window.draw(idText);
 }
 
 void Window_sfml::DrawQueen_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -200,6 +184,29 @@ void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
 
 }
 
+bool Window_sfml::DrawPlace_sfml    (int x, int y, sf::RenderWindow& window)
+{
+    sf::Texture place;
+    if (!place.loadFromFile("X://Repositories/Ants_Colony/images/back.JPG")) {
+        return EXIT_FAILURE;
+    }
+
+    sf::Sprite backGround(place);
+    float targetSize = data->cell_size - 2.0f; 
+
+    // Получаем исходный размер текстуры
+    sf::Vector2u textureSize = place.getSize();
+    float scaleX = targetSize / textureSize.x;
+    float scaleY = targetSize / textureSize.y;
+    backGround.setScale(scaleX, scaleY);
+
+    // Позиция с учетом смещения (если x и y уже в пикселях)
+    backGround.setPosition(x + 1.f, y + 1.f);
+
+    window.draw(backGround);
+}
+
+
 void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
 
     cell_size = data->cell_size;
@@ -215,7 +222,6 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
         for (int y = c_y; y < max_y; y++) {
             draw_x = (x - c_x) * cell_size;
             draw_y = (y - c_y) * cell_size;
-
 
             if (data->field->field[x][y][data->z_cam].cWall != 0) {
                 DrawWall_sfml(draw_x, draw_y, mainWindow);
@@ -256,7 +262,6 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
                 else if (cur->getType() == Entities::MATERIALS) {
                     Materials* curMat = (Materials*)(cur->getPtr());
                     DrawMaterial_sfml(draw_x, draw_y, mainWindow);
-                    //DrawMaterial_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]); // С текстом
 
                 }
                 else if (cur->getType() == Entities::MAGGOTS) {
@@ -286,8 +291,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
 
                         draw_x = (curFood->pos_x - c_x) * cell_size;
                         draw_y = (curFood->pos_y - c_y) * cell_size;
-                        DrawFood_sfml(draw_x, draw_y, mainWindow); // Здесь с текстом (work_id)
-                        //DrawFood(draw_x, draw_y, work_id);
+                        DrawFood_sfml(draw_x, draw_y, mainWindow); 
                     }
                 }
             }
@@ -303,8 +307,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
 
                         draw_x = (curMat->pos_x - c_x) * cell_size;
                         draw_y = (curMat->pos_y - c_y) * cell_size;
-                        DrawMaterial_sfml(draw_x, draw_y, mainWindow); // Здесь с текстом (work_id)
-                        //DrawMaterial(draw_x, draw_y, work_id);
+                        DrawMaterial_sfml(draw_x, draw_y, mainWindow); 
                     }
                 }
             }
@@ -322,7 +325,6 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
                         draw_x = (curStock->pos_x + i - c_x) * cell_size;
                         draw_y = (curStock->pos_y + j - c_y) * cell_size;
                         DrawMaggot_sfml(draw_x, draw_y, work_id, mainWindow);
-                        //DrawMaggot(draw_x, draw_y, work_id);
                     }
                 }
             }

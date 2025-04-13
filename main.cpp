@@ -62,19 +62,90 @@ void processingEntities() {
 		}
 	}
 
+
+
+	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+	sf::RenderWindow mainWindow(desktopMode, "Ant Colony", sf::Style::Fullscreen);
+
 	Window_sfml* start = new Window_sfml(ultimateData);
-	sf::RenderWindow mainWindow(sf::VideoMode(ultimateData->main_window_wide,
-		ultimateData->main_window_hight), "Ant Colony");
+
+	//sf::RenderWindow mainWindow(	sf::VideoMode(ultimateData->main_window_wide,
+	//	ultimateData->main_window_hight), "Ant Colony");
+
+	// BackGround
+	sf::Texture place;
+	if (!place.loadFromFile("images/back.jpeg"))
+		return;
+	sf::Sprite back(place);
+
+	float scaleX = static_cast<float>(desktopMode.width) / place.getSize().x;
+	float scaleY = static_cast<float>(desktopMode.height) / place.getSize().y;
+	float scale = std::max(scaleX, scaleY);
+	back.setScale(scale, scale);
+
+	back.setPosition(
+		(desktopMode.width - back.getGlobalBounds().width) / 2,
+		(desktopMode.height - back.getGlobalBounds().height) / 2
+	);
+	// BackGround
+
+
+	// Camera
+	sf::View view = mainWindow.getDefaultView();
+	float currentZoom = 1.0f;
+	const float zoomSpeed = 0.1f;
+	const float moveSpeed = 500.0f;
+	
+	float scale_X = desktopMode.width / place.getSize().x;
+	float scale_Y = desktopMode.height / place.getSize().y;
+	currentZoom = std::min(scale_X, scale_Y);
+	view.zoom(1.0f / currentZoom);
+	view.setCenter(place.getSize().x / 2, place.getSize().y / 2);
+	// Camera
+	sf::Clock clock;
 
 	while (mainWindow.isOpen())
 	{
+
 		sf::Event event;
 
 		while (mainWindow.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if ((event.type == sf::Event::Closed) ||
+				(event.type == sf::Event::KeyPressed &&
+					event.key.code == sf::Keyboard::Escape))
 				mainWindow.close();
+
+
+			// Обработка зума колесом мыши
+			if (event.type == sf::Event::MouseWheelScrolled)
+			{
+				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+				{
+					float delta = event.mouseWheelScroll.delta;
+					currentZoom *= (1.0f - delta * zoomSpeed);
+					currentZoom = std::max(0.1f, std::min(currentZoom, 10.0f));
+					view.setSize(desktopMode.width, desktopMode.height);
+					view.zoom(1.0f / currentZoom);
+				}
+			}
 		}
+		
+		float deltaTime = clock.restart().asSeconds();
+		sf::Vector2f movement(0, 0);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			movement.y -= moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			movement.y += moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			movement.x -= moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			movement.x += moveSpeed * deltaTime;
+
+		// Применяем перемещение с учётом текущего зума
+		view.move(movement * currentZoom);
+		mainWindow.setView(view);
 
 		mainWindow.clear();
 
@@ -88,6 +159,7 @@ void processingEntities() {
 
 			}
 		}
+		mainWindow.draw(back);
 		start->DrawMainScene_sfml(mainWindow);
 		mainWindow.display();
 	}
