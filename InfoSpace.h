@@ -40,13 +40,13 @@ public:
 	InfoSpace() {
 
 
-		
+		cam_speed = 4;
 
-		x_cam = 0;
-		y_cam = 0;
+		x_cam = 200 * cam_speed;
+		y_cam = 200 * cam_speed;
 		z_cam = 0;
 
-		cam_speed = 5;
+		
 		cell_size = cam_speed;
 
 		main_window_wide = 1000;
@@ -103,6 +103,9 @@ public:
 			CreateEntityFood(position.first, position.second, 0, 0, 2000, 10);
 		}
 	}
+
+	void ReCalculateTheColony();
+	void BuildNewStockpile(Colony* curColony);
 
 	~InfoSpace() {
 		delete field;

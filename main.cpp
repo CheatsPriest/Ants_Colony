@@ -18,32 +18,37 @@ void processingEntities() {
 
 	srand(time(0));
 
-	ultimateData->coloniesList[1] = new Colony(1);
+	
 
-	ultimateData->CreateStockpile(10, 50, 0, 30, 30, 2, 1);
+	int start_x = 200;
+	int start_y = 200;
 
-	ultimateData->CreateStockpile(24, 24, 0, 17, 17, 3, 1);
+	ultimateData->coloniesList[1] = new Colony(1, start_x+20, start_y+20, 0);
+
+	//ultimateData->CreateStockpile(start_x, start_y, 0, 30, 30, 2, 1);
+
+	ultimateData->CreateStockpile(start_x+40, start_y+40, 0, 17, 17, 3, 1);
 	
 	
 
-	ultimateData->CreateStockpile(60, 10, 0, 17, 17, 0, 1);
-	ultimateData->CreateStockpile(60, 60, 0, 17, 17, 1, 1);
+	//ultimateData->CreateStockpile(start_x+40, start_y, 0, 17, 17, 0, 1);
+	//ultimateData->CreateStockpile(start_x+30, start_y+40, 0, 17, 17, 1, 1);
+	//ultimateData->CreateStockpile(start_x+30, start_y + 90, 0, 17, 17, 1, 1);
 
 
-
-	ultimateData->CreateEntityAnt(15, 15, 0, 0, 0, 1);
+	ultimateData->CreateEntityAnt(210, 230, 0, 0, 0, 1);
 
 	for (int i = 0; i < 100; i++) {
-		ultimateData->CreateEntityAnt(15, 2 * i, 0, 0, 1,1);
+		ultimateData->CreateEntityAnt(210, 2 * i+200, 0, 0, 1,1);
 	}
 	for (int i = 0; i < 50; i++) {
-		ultimateData->CreateEntityAnt(10, 2*i, 0, 0, 2,1);
+		ultimateData->CreateEntityAnt(220, 2*i+200, 0, 0, 2,1);
 	}
 	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(12, i, 0, 0, 3,1);
+		ultimateData->CreateEntityAnt(230, i+200, 0, 0, 3,1);
 	}
 	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(22, i, 0, 0, 4, 1);
+		ultimateData->CreateEntityAnt(240, i+200, 0, 0, 4, 1);
 	}
 
 	//ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
@@ -53,12 +58,12 @@ void processingEntities() {
 	//}
 
 	//// тля вне загона(не рабы пока что)
-	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateInsect(rand() % 50, rand() % 50, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
+	for (int i = 0; i < 30; i++) {
+		ultimateData->CreateInsect(rand() % 50+ start_x, rand() % 50+ start_y, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
-	for (int i = 0; i < 500; i++) {
-		ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 2000, 10);
-		ultimateData->CreateEntityMaterial(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10);
+	for (int i = 0; i < 15000; i++) {
+		ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
+		ultimateData->CreateEntityMaterial(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 10);
 	}
 
 
@@ -83,6 +88,13 @@ void processingEntities() {
 
 
 	while (ultimateData->mainLoop) {
+
+		for (auto el : ultimateData->coloniesList) {
+
+			ultimateData->BuildNewStockpile(el.second);
+
+		}
+
 		for (auto ent : ultimateData->entityList) {
 
 			Entity* curr = ent.second;
@@ -109,6 +121,8 @@ void processingEntities() {
 			for (int i = 0; i < 25; i++) {
 				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
 			}
+			ultimateData->ReCalculateTheColony();
+			ultimateData->coloniesList[1];
 		}
 		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
 			ultimateData->MoveCam(1, 0);
