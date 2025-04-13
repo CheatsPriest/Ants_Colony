@@ -61,6 +61,12 @@ void processingEntities() {
 	for (int i = 0; i < 30; i++) {
 		ultimateData->CreateInsect(rand() % 50+ start_x, rand() % 50+ start_y, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
+
+	for (int i = 0; i < 50; i++) {
+		ultimateData->CreateInsect(rand() % 50 + start_x, rand() % 50 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
+	}
+
+
 	for (int i = 0; i < 15000; i++) {
 		ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 10);

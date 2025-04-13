@@ -27,7 +27,48 @@ void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* curr
 }
 
 void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
+	if (!insect->isTriggered) {
+		if (free_stockpile_key == 0) return;
+		
+		int targetId = rand() % (free_stockpile_key - 1) + 1;
+		Stockpile* stockpile = stockpileList[targetId];
+		insect->aim_id = targetId;
+		insect->aim_pos = { stockpile->pos_x, stockpile->pos_y };
+		insect->isTriggered = true;
+	}
+	else if(insect->isTriggered){
+		pair<int, int> direct = { 0,0 };
+		if (insect->pos_x < insect->aim_pos.first) {
+			direct.first = 1;
+		}
+		else if (insect->pos_x > insect->aim_pos.first) {
+			direct.first = -1;
+		}
+		if (insect->pos_y < insect->aim_pos.second) {
+			direct.second = 1;
+		}
+		else if (insect->pos_y > insect->aim_pos.second) {
+			direct.second = -1;
+		}
 
+		pair<int, int> expectedPoint = { insect->pos_x + direct.first, insect->pos_y + direct.second };
+		if (isValidCell(expectedPoint) && isFreeCell(expectedPoint) && insect->isIndoors(expectedPoint.first, expectedPoint.second, field)) {
+			moveToCeil(expectedPoint, id, insect);
+			return;
+		}
+		else {
+			for (int i = -1; i <= 1; i++) {
+				for (int j = 0; j <= 1; j++) {
+					if (i == j && i == 0) continue;
+					expectedPoint = { insect->pos_x + i, insect->pos_y + j };
+					if (isValidCell(expectedPoint) && isFreeCell(expectedPoint) && insect->isIndoors(expectedPoint.first, expectedPoint.second, field)) {
+						moveToCeil(expectedPoint, id, insect);
+						return;
+					}
+				}
+			}
+		}	
+	}
 }
 
 void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
