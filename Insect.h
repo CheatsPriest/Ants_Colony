@@ -4,7 +4,8 @@
 #include "Entity.h"
 
 enum InsectTypes {
-	APHID = 1
+	APHID = 1,
+	LADYBUG = 2
 };
 class Insect
 {

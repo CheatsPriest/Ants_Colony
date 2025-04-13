@@ -20,36 +20,31 @@ bool InfoSpace::isFreeCell(pair<int, int> newPos2) {
 
 void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* curr) {
 	if (field->field[newPos2.first][newPos2.second][0].cWall != 0 or abs(curr->pos_x-newPos2.first)>2 or abs(curr->pos_y - newPos2.second) > 2)return;
-	field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;
+	field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;	
 	field->field[newPos2.first][newPos2.second][0].IDs[0] = id;
 	curr->pos_x = newPos2.first;
 	curr->pos_y = newPos2.second;
 }
 
-void InfoSpace::MoveInsect(unsigned int id) {
+void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
 
-	Entity* curr = entityList[id];
+}
 
-	Insect* insect = (Insect*)(curr->getPtr());
-	
-	if (insect->curState ==1 ) {
-		return;
-	}
-
+void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
 	if (!insect->isTriggered) {
-		
+
 		if (insect->nearlest.first != 0 && (insect->isSlaveZone == insect->isSlaver)) {
 			insect->aim_id = insect->nearlest.first;
 			insect->aim_pos = insect->nearlest.second;
 			insect->isTriggered = true;
 		}
 		else {
-			
+
 			pair<int, int> p = { insect->pos_x + rand() % 3 - 1,insect->pos_y + rand() % 3 - 1 };
 			int counter = 0;
 			int flag = 1;
-			while (!(isValidCell(p) &&  insect->isIndoors(p.first, p.second, field) && isFreeCell(p))) {
-				p = { curr->pos_x + rand() % 3 - 1,curr->pos_y + rand() % 3 - 1 };
+			while (!(isValidCell(p) && insect->isIndoors(p.first, p.second, field) && isFreeCell(p))) {
+				p = { insect->pos_x + rand() % 3 - 1,insect->pos_y + rand() % 3 - 1 };
 				counter++;
 				if (counter == 5) {
 					flag = 0;
@@ -72,7 +67,7 @@ void InfoSpace::MoveInsect(unsigned int id) {
 						continue;
 					}
 					else {
-						
+
 					}
 					if ((i == j && i == 0) || !insect->isIndoors(prob.second.first, prob.second.second, field) || isFreeCell(prob.second)) continue;
 					if (entityList[field->field[prob.second.first][prob.second.second][0].IDs[0]]->getType() == Entities::MATERIALS) {
@@ -155,6 +150,28 @@ void InfoSpace::MoveInsect(unsigned int id) {
 		}
 	}
 }
+void InfoSpace::MoveInsect(unsigned int id) {
+
+	Entity* curr = entityList[id];
+
+	Insect* insect = (Insect*)(curr->getPtr());
+
+	if (insect->curState == 1) {
+		return;
+	}
+
+	if (insect->type == InsectTypes::APHID) {
+		MoveAphid(id, insect);
+	}
+	else if (insect->type == InsectTypes::LADYBUG) {
+		MoveLadybug(id, insect);
+	}
+
+
+	
+
+	
+}
 
 //type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
 bool InfoSpace::CreateEntityAnt(int x, int y, int z, int type, int under_class, int clan) {
@@ -225,17 +242,30 @@ bool InfoSpace::CreateEntityMaterial(int x, int y, int z, int type, int weight) 
 bool InfoSpace::CreateInsect(int x,int y, int z, InsectTypes type, pair<int, int> stockPos, pair<int, int> stockSize, bool isSlaver)
 {	
 	if (field->field[x][y][0].IDs[0] != 0)return false;
-	Insect* insect = new Insect(type, x, y, z);
-	insect->isSlaver = isSlaver;
-	insect->stockPos = stockPos;
-	insect->stockSize = stockSize;
-	Entity* new_ent = new Entity(insect, Entities::INSECT);
-	new_ent->pos_x = x;
-	new_ent->pos_y = y;
-	insect->id = free_key;
-	entityList.insert({ free_key, new_ent });
-	field->field[insect->pos_x][insect->pos_y][insect->pos_z].IDs[0] = free_key;
-	free_key++;
+	if (type == InsectTypes::APHID) {
+		Insect* insect = new Insect(type, x, y, z);
+		insect->isSlaver = isSlaver;
+		insect->stockPos = stockPos;
+		insect->stockSize = stockSize;
+		Entity* new_ent = new Entity(insect, Entities::INSECT);
+		new_ent->pos_x = x;
+		new_ent->pos_y = y;
+		insect->id = free_key;
+		entityList.insert({ free_key, new_ent });
+		field->field[insect->pos_x][insect->pos_y][insect->pos_z].IDs[0] = free_key;
+		free_key++;
+	}
+	else if (type == InsectTypes::LADYBUG){
+		Insect* insect = new Insect(type, x, y, z);
+		Entity* new_ent = new Entity(insect, Entities::INSECT);
+		new_ent->pos_x = x;
+		new_ent->pos_y = y;
+		insect->id = free_key;
+		entityList.insert({ free_key, new_ent });
+		field->field[insect->pos_x][insect->pos_y][insect->pos_z].IDs[0] = free_key;
+		free_key++;
+	}
+	
 	return true;
 
 }

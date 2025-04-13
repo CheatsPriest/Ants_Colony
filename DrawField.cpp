@@ -28,8 +28,15 @@ void Window::DrawNurse(int x, int y, unsigned int id) {
     //ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
 
-void Window::DrawInsect(int x, int y, unsigned int id) {
+void Window::DrawAphid(int x, int y, unsigned int id) {
     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), BLACK_TLYA, 0.1f, 0);
+    //ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "I");
+   // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
+}
+
+
+void Window::DrawLadybug(int x, int y, unsigned int id) {
+    ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size - 1.0f, y + data->cell_size - 1.0f), REDD_LADYBUG, 0.1f, 0);
     //ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "I");
    // ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 11.f), Black, std::to_string((unsigned int)id).c_str());
 }
@@ -134,9 +141,14 @@ void Window::DrawMainScene() {
                         DrawMaterial(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
                     }
                     else if (cur->getType() == Entities::INSECT) {
-          
                         Insect* insect = (Insect*)(cur->getPtr());
-                        DrawInsect(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+                        if (insect->type == InsectTypes::APHID) {
+                            DrawAphid(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+                        }
+                        else if (insect->type == InsectTypes::LADYBUG) {
+                            DrawLadybug(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
+                        }
+                      
                     }
                     else if (cur->getType() == Entities::MAGGOTS) {
                         Maggot* curMat = (Maggot*)(cur->getPtr());

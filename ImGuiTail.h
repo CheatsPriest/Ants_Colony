@@ -28,7 +28,7 @@ static ImColor Red = ImColor(0.8f, 0.1f, 0.1f);
 
 
 static ImColor BLACK_TLYA = ImColor(0.2f, 0.99f, 0.2f);
-
+static ImColor REDD_LADYBUG = ImColor(255, 0, 0);
 
 class Window {
 public:
@@ -48,7 +48,8 @@ private:
     InfoSpace* data;
     ImGuiIO& Create();
     void DrawMainScene();
-    void DrawInsect(int x, int y, unsigned int id);
+    void DrawAphid(int x, int y, unsigned int id);
+    void DrawLadybug(int x, int y, unsigned int id);
     void DrawScout(int x, int y, unsigned int id);
     void DrawWorker(int x, int y, unsigned int id);
     void DrawSoldier(int x, int y, unsigned int id);
