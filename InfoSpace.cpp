@@ -680,19 +680,19 @@ void InfoSpace::ReCalculateTheColony()
 //Действия муравейника
 
 void InfoSpace::BuildNewStockpile(Colony* curColony) {
-
+	int tri = rand() % 20 + 2;
 	if (curColony->needNewFoodStock) {
 
 		int x, y, z;
-		int tries = 6;
-
+		int tries = tri;
+		int sz = rand() % 20 + 10;
 		for (; tries > 0; tries--) {
 			
 			x = curColony->base_x + rand() % (curColony->base_radius) - curColony->base_radius/2;
 			y= curColony->base_y + rand() % (curColony->base_radius) - curColony->base_radius / 2;
-			if (CreateStockpile(x, y, 0, 25, 25, 0, curColony->clan)) {
+			if (CreateStockpile(x, y, 0, sz, sz, 0, curColony->clan)) {
 				curColony->needNewFoodStock = false;
-				break;
+				
 			}
 			
 		}
@@ -705,15 +705,15 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 	if (curColony->needNewMatStock) {
 
 		int x, y, z;
-		int tries = 6;
-
+		int tries = tri;
+		int sz = rand() % 20 + 10;
 		for (; tries > 0; tries--) {
 
 			x = curColony->base_x + rand() % (curColony->base_radius) - curColony->base_radius / 2;
 			y = curColony->base_y + rand() % (curColony->base_radius) - curColony->base_radius / 2;
-			if (CreateStockpile(x, y, 0, 25, 25, MATERIAL_STOCK, curColony->clan)) {
+			if (CreateStockpile(x, y, 0, sz, sz, MATERIAL_STOCK, curColony->clan)) {
 				curColony->needNewMatStock = false;
-				break;
+				
 			}
 			
 		}
@@ -726,13 +726,13 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 	if (curColony->needNewAphidStock) {
 
 		int x, y, z;
-		int tries = 6;
-
+		int tries = tri;
+		int sz = rand() % 40 + 20;
 		for (; tries > 0; tries--) {
 
 			x = curColony->base_x + rand() % (curColony->base_radius) - curColony->base_radius / 2;
 			y = curColony->base_y + rand() % (curColony->base_radius) - curColony->base_radius / 2;
-			if (CreateStockpile(x, y, 0, 30, 30, APHID_STOCK, curColony->clan)) {
+			if (CreateStockpile(x, y, 0, sz, sz, APHID_STOCK, curColony->clan)) {
 				curColony->needNewAphidStock = false;
 				break;
 			}
@@ -856,13 +856,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					ant->stashid = stash->id;
 					cout << stash->id;
 
-					if (ant->type == 3) {
-						ant->nearest_En = { aim_x,aim_y };
-						ant->aim = { aim_x,aim_y };
-					}
-					else {
-						ant->aim = { aim_x,aim_y };
-					}
+					ant->aim = { aim_x,aim_y };
+					
 					relevant = true;
 				}
 				
@@ -930,7 +925,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 		}
 
-		else if (ant->action == 0 or (ant->dest != 0 && stockpileList[ant->dest]->needWalled == false)) {
+		else if ((ant->action == 0 and rand()%10 < 3) or (ant->dest > 0 && ant->dest<stockpileList.size() && stockpileList[ant->dest]->needWalled == false)) {
 			pair<int, int> stocks = searchmat();
 			ant->source = stocks.first;
 			ant->dest = stocks.second;
