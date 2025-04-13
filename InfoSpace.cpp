@@ -762,14 +762,9 @@ void InfoSpace::RecountAphid()
 					id = field->field[x][y][curStock->pos_z].IDs[0];
 					if (id != 0 and entityList[id]->getType() == INSECT) {
 						curStock->food_collected+=1;
-						if (rand() % 100 > 90) {
-
-							cout << "HERE " << curStock->food_collected << endl;
-							fl = true;
-						}
+						
 					}
-					if (fl)
-						cout << "HERE1 " << curStock->food_collected << endl;
+					
 
 				}
 			}
@@ -837,11 +832,14 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		ant->paction = ant->action;
 		ant->paim = ant->aim;
 		
+		bool relevant = false;
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
 			
 			if (stash->type == 0 and stash->food_collected>=0) {
 				ant->action = 3;
+
+
 				if (stash->food_collected == stash->size_x * stash->size_y) {
 				}
 				int aim_x = stash->pos_x + stash->food_collected % stash->size_x;
@@ -850,16 +848,23 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					aim_x = stash->pos_x + stash->size_x - 1;
 					aim_y = stash->pos_y + stash->size_y - 1;
 				}
-				ant->stashid = stash->id;
-				cout << stash->id;
-				if (ant->type == 3) {
-					ant->nearest_En = { aim_x,aim_y };
-					ant->aim = { aim_x,aim_y };
-				}
-				else {
-					ant->aim = { aim_x,aim_y };
-				}
 				
+
+
+				if (!relevant or dist(ant->aim.first, ant->aim.second, ant->pos_x, ant->pos_y)> dist(aim_x, aim_y, ant->pos_x, ant->pos_y)) {
+					
+					ant->stashid = stash->id;
+					cout << stash->id;
+
+					if (ant->type == 3) {
+						ant->nearest_En = { aim_x,aim_y };
+						ant->aim = { aim_x,aim_y };
+					}
+					else {
+						ant->aim = { aim_x,aim_y };
+					}
+					relevant = true;
+				}
 				
 			}
 		}
@@ -977,7 +982,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 			else {
 				Stockpile* stash = stockpileList[ant->dest];
-				if (stash->needWalled == true &&(dist(ant->aim.first, ant->aim.second, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)<= dist(stash->pos_x + stash->size_x + 1, stash->pos_y + stash->size_y+1, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2))) {
+				if (stash->needWalled == true &&(dist(ant->aim.first, ant->aim.second, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)<= 3*dist(stash->pos_x + stash->size_x + 1, stash->pos_y + stash->size_y+1, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2))) {
 					if (BuildWall(ant)) {
 						stash->wall_len += 1;
 						if (stash->wall_len == ((stash->size_x + stash->size_y + 2) * 2)) {
@@ -1149,13 +1154,16 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 							for (auto stock : stockpileList) {
 								if (stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y) {
+									
+									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
+										if (stock.second->food_collected < 0) {
+											na = { stock.second->pos_x ,stock.second->pos_y };
+										}
+										else {
+											na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
+										}
+									}
 									transporting_need = true;
-									if (stock.second->food_collected < 0) {
-										na = { stock.second->pos_x ,stock.second->pos_y };
-									}
-									else {
-										na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
-									}
 
 								}
 							}
@@ -1182,13 +1190,15 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							bool transporting_need = false;
 							for (auto stock : stockpileList) {
 								if (stock.second->type == 0 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
-									if (stock.second->food_collected < 0) {
-										na = { stock.second->pos_x + 0 % stock.second->size_x,stock.second->pos_y + 0 / stock.second->size_y };
+									
+									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
+										if (stock.second->food_collected < 0) {
+											na = { stock.second->pos_x ,stock.second->pos_y };
+										}
+										else {
+											na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
+										}
 									}
-									else {
-										na = { stock.second->pos_x + stock.second->food_collected % stock.second->size_x,stock.second->pos_y + stock.second->food_collected / stock.second->size_y };
-									}
-
 									transporting_need = true;
 
 								}
