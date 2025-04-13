@@ -61,63 +61,71 @@ void processingEntities() {
 			currFood->info();
 		}
 	}
-	while (ultimateData->mainLoop) {
-		for (auto ent : ultimateData->entityList) {
+
+	Window_sfml* start = new Window_sfml(ultimateData);
+	sf::RenderWindow mainWindow(sf::VideoMode(ultimateData->main_window_wide,
+		ultimateData->main_window_hight), "Ant Colony");
+
+	while (mainWindow.isOpen())
+	{
+		sf::Event event;
+
+		while (mainWindow.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				mainWindow.close();
+		}
+		mainWindow.clear();
+		for (auto ent : ultimateData->entityList) 
+		{
 			Entity* curr = ent.second;
-			if(curr->getType() == Entities::ANT) {
-				
-				ultimateData->MoveEntity(ent.first);
-
-
-			}
-		}
-
-		
-
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-1, 0);
-			for (int i = 0; i < 25; i++) {
-				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
-			}
-		}
-
-		// камера Сани
-
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(1, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -1);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 1);
-		}
-
-		
-		Window_sfml* start = new Window_sfml(ultimateData);
-		sf::RenderWindow mainWindow(sf::VideoMode(ultimateData->main_window_wide, 
-								ultimateData->main_window_hight), "Ant Colony");
-
-		while (mainWindow.isOpen())
-		{
-			sf::Event event;
-
-			while (mainWindow.pollEvent(event))
+			if(curr->getType() == Entities::ANT) 
 			{
-				if (event.type == sf::Event::Closed)
-					mainWindow.close();
+			
+			ultimateData->MoveEntity(ent.first);
+
 			}
-			std::cout << "Hello?" << "\n";
-			mainWindow.clear();
-			start->DrawMainScene_sfml(mainWindow);
-			mainWindow.display();
 		}
-
-		
-
-		
+		start->DrawMainScene_sfml(mainWindow);
+		mainWindow.display();
 	}
+
+	//while (ultimateData->mainLoop && mainWindow.isOpen()) 
+	//{
+	//	for (auto ent : ultimateData->entityList) 
+	//	{
+	//		Entity* curr = ent.second;
+	//		if(curr->getType() == Entities::ANT) 
+	//		{
+	//			
+	//			ultimateData->MoveEntity(ent.first);
+
+	//		}
+	//	}
+
+	//	
+
+	//	if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
+	//	{
+	//		ultimateData->MoveCam(-1, 0);
+	//		for (int i = 0; i < 25; i++) {
+	//			ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
+	//		}
+	//	}
+
+	//	// камера Сани
+
+	//	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
+	//		ultimateData->MoveCam(1, 0);
+	//	}
+	//	else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
+	//		ultimateData->MoveCam(0, -1);
+	//	}
+	//	else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
+	//		ultimateData->MoveCam(0, 1);
+	//	}
+	//
+	//}
 
 }
 

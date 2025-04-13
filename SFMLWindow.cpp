@@ -15,7 +15,6 @@ Entity* cur;
 Window_sfml::Window_sfml(InfoSpace* data_p)
 {
     data = data_p;
-    
 }
 
 
@@ -72,7 +71,6 @@ void Window_sfml::DrawQueen_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -91,7 +89,6 @@ void Window_sfml::DrawNurse_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -110,7 +107,6 @@ void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -129,7 +125,6 @@ void Window_sfml::DrawWorker_sfml   (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -148,7 +143,6 @@ void Window_sfml::DrawSoldier_sfml  (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -167,7 +161,6 @@ void Window_sfml::DrawFood_sfml     (int x, int y, sf::RenderWindow& window)
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -186,7 +179,6 @@ void Window_sfml::DrawMaterial_sfml (int x, int y, sf::RenderWindow& window)
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -205,7 +197,6 @@ void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
 
 
     window.draw(rect);
-    window.display();
 
 }
 
@@ -215,10 +206,11 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
     c_x = data->x_cam / cell_size;
     c_y = data->y_cam / cell_size;
 
-    max_x = c_x + data->main_window_wide / cell_size;
-    max_y = c_y + data->main_window_hight / cell_size;
+    max_x = c_x + data->main_window_wide / data->cell_size;
+    max_y = c_y + data->main_window_hight / data->cell_size;
 
-   
+
+        
     for (int x = c_x; x < max_x; x++) {
         for (int y = c_y; y < max_y; y++) {
             draw_x = (x - c_x) * cell_size;
@@ -228,13 +220,13 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
             if (data->field->field[x][y][data->z_cam].cWall != 0) {
                 DrawWall_sfml(draw_x, draw_y, mainWindow);
             }
-            std::cout << "Draw?" << "\n";
 
             if (data->field->field[x][y][data->z_cam].IDs[0] != 0)
             {
-                std::cout << "Draw?" << "\n";
 
-                cur = data->entityList[field->field[x][y][data->z_cam].IDs[0]];
+                cur = data->entityList[data->field->field[x][y][data->z_cam].IDs[0]];
+
+
                 if (cur == NULL) continue;
                 if (cur->getType() == Entities::ANT) {
                     Ant* curAnt = (Ant*)(cur->getPtr());
@@ -249,19 +241,19 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
                     }*/
 
                     if (curAnt->type == 1) {
-                        DrawScout_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawScout_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
                     else if (curAnt->type == 2) {
-                        DrawWorker_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawWorker_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
                     else if (curAnt->type == 3) {
-                        DrawSoldier_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawSoldier_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
                     else if (curAnt->type == 4) {
-                        DrawNurse_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawNurse_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
                     else if (curAnt->type == 0) {
-                        DrawQueen_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawQueen_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
                     }
 
                 }
@@ -278,15 +270,15 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
                 }
                 else if (cur->getType() == Entities::MAGGOTS) {
                     Maggot* curMat = (Maggot*)(cur->getPtr());
-                    DrawMaggot_sfml(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                    DrawMaggot_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
                 }
 
             }
 
-            std::cout << "Draw?" << "\n";
         }
 
     }
+    std::cout << "Hello?" << "\n";
 
     Stockpile* curStock;
     for (auto el : data->stockpileList) {
@@ -346,7 +338,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
             }
         }
     }
-
+    
 }
 
 
