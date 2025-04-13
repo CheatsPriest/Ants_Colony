@@ -1137,12 +1137,16 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						if (obj->getType() == Entities::INSECT) {
 							Insect* smth = (Insect*)obj->getPtr();
-							if (smth->curState == 0) {
-								ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-								//ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
-								ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
-								ant->action = 1;
-							} 
+
+							if (smth->type == APHID) {
+								if (smth->curState == 0) {
+									ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+									//ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
+									ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
+									ant->action = 1;
+								}
+							}
+							
 
 						}
 						if (obj->getType() == Entities::MATERIALS) {
@@ -1262,38 +1266,41 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							bool transporting_need = false;
 							bool isPrepearing = false;
 
-							pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
-							for (auto stock : stockpileList) {
-								if (stock.second->type == 2 and stock.second->needWalled == true) {
-									isPrepearing = true;
-								}
-								if (stock.second->type == 2 and stock.second->needWalled==false && stock.second->food_collected < stock.second->size_x/2) {
-									na = { stock.second->pos_x + stock.second->size_x / 2,stock.second->pos_y + stock.second->size_y / 2 };
-									transporting_need = true;
-									isPrepearing = false;
-								}
-								
-							}
+							Insect* smth = (Insect*)obj->getPtr();
+							if (smth->type == APHID) {
+								pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
+								for (auto stock : stockpileList) {
+									if (stock.second->type == 2 and stock.second->needWalled == true) {
+										isPrepearing = true;
+									}
+									if (stock.second->type == 2 and stock.second->needWalled == false && stock.second->food_collected < stock.second->size_x / 2) {
+										na = { stock.second->pos_x + stock.second->size_x / 2,stock.second->pos_y + stock.second->size_y / 2 };
+										transporting_need = true;
+										isPrepearing = false;
+									}
 
-							if (transporting_need) {
-								ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
-								Insect* smth = (Insect*)obj->getPtr();
-								if (ant->inventary == 0 && smth->curState == 0) {
-									ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
-									Picked(ant->inventary);
-									//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 								}
 
-								
-								ant->action = 2;
-							}
-							else {
-								ant->action = 0;
-								if (isPrepearing == false) {
-									curColony->needNewAphidStock = true;
+								if (transporting_need) {
+									ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+
+									if (ant->inventary == 0 && smth->curState == 0) {
+										ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
+										Picked(ant->inventary);
+										//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
+									}
+
+
+									ant->action = 2;
 								}
+								else {
+									ant->action = 0;
+									if (isPrepearing == false) {
+										curColony->needNewAphidStock = true;
+									}
+								}
+								ant->aim = na;
 							}
-							ant->aim = na;
 						}
 						
 						else if (obj->getType() == Entities::ANT) {
