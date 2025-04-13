@@ -230,15 +230,6 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
                 if (cur == NULL) continue;
                 if (cur->getType() == Entities::ANT) {
                     Ant* curAnt = (Ant*)(cur->getPtr());
-                    // Отрисовка векторов направления 
-
-                    /*if (data->draw_debug_move_lines and curAnt->inventary != 0 and data->entityList[curAnt->inventary]->getType() == MATERIALS) {
-
-                        ImGui::GetBackgroundDrawList()->AddLine(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), ImVec2((curAnt->aim.first - c_x) * cell_size + cell_size / 2, (curAnt->aim.second - c_y) * cell_size + cell_size / 2), Red, 1.f);
-                        ImGui::GetBackgroundDrawList()->AddCircleFilled(ImVec2(draw_x + cell_size / 2, draw_y + cell_size / 2), 3.f, Red);
-
-
-                    }*/
 
                     if (curAnt->type == 1) {
                         DrawScout_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
@@ -278,7 +269,6 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
         }
 
     }
-    std::cout << "Hello?" << "\n";
 
     Stockpile* curStock;
     for (auto el : data->stockpileList) {

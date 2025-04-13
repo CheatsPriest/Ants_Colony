@@ -75,7 +75,9 @@ void processingEntities() {
 			if (event.type == sf::Event::Closed)
 				mainWindow.close();
 		}
+
 		mainWindow.clear();
+
 		for (auto ent : ultimateData->entityList) 
 		{
 			Entity* curr = ent.second;
@@ -90,42 +92,6 @@ void processingEntities() {
 		mainWindow.display();
 	}
 
-	//while (ultimateData->mainLoop && mainWindow.isOpen()) 
-	//{
-	//	for (auto ent : ultimateData->entityList) 
-	//	{
-	//		Entity* curr = ent.second;
-	//		if(curr->getType() == Entities::ANT) 
-	//		{
-	//			
-	//			ultimateData->MoveEntity(ent.first);
-
-	//		}
-	//	}
-
-	//	
-
-	//	if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-	//	{
-	//		ultimateData->MoveCam(-1, 0);
-	//		for (int i = 0; i < 25; i++) {
-	//			ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
-	//		}
-	//	}
-
-	//	// камера Сани
-
-	//	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-	//		ultimateData->MoveCam(1, 0);
-	//	}
-	//	else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-	//		ultimateData->MoveCam(0, -1);
-	//	}
-	//	else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-	//		ultimateData->MoveCam(0, 1);
-	//	}
-	//
-	//}
 
 }
 
