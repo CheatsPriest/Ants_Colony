@@ -95,13 +95,20 @@ void processingEntities() {
 	float currentZoom = 1.0f;
 	const float zoomSpeed = 0.1f;
 	const float moveSpeed = 500.0f;
-	
+
+	const float minZoom = 0.5f; // Приближаем в 2 раза макс
+	const float maxZoom = 2.0f; // Отдаляем в 2 раза макс
+
 	float scale_X = desktopMode.width / place.getSize().x;
 	float scale_Y = desktopMode.height / place.getSize().y;
+
 	currentZoom = std::min(scale_X, scale_Y);
+	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
+
 	view.zoom(1.0f / currentZoom);
 	view.setCenter(place.getSize().x / 2, place.getSize().y / 2);
 	// Camera
+
 	sf::Clock clock;
 
 	while (mainWindow.isOpen())
@@ -116,15 +123,13 @@ void processingEntities() {
 					event.key.code == sf::Keyboard::Escape))
 				mainWindow.close();
 
-
-			// Обработка зума колесом мыши
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
 				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
 				{
 					float delta = event.mouseWheelScroll.delta;
 					currentZoom *= (1.0f - delta * zoomSpeed);
-					currentZoom = std::max(0.1f, std::min(currentZoom, 10.0f));
+					currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
 					view.setSize(desktopMode.width, desktopMode.height);
 					view.zoom(1.0f / currentZoom);
 				}
@@ -143,7 +148,6 @@ void processingEntities() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			movement.x += moveSpeed * deltaTime;
 
-		// Применяем перемещение с учётом текущего зума
 		view.move(movement * currentZoom);
 		mainWindow.setView(view);
 
