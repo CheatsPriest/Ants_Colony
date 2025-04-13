@@ -230,7 +230,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
             }
             std::cout << "Draw?" << "\n";
 
-            if (field->field[x][y][data->z_cam].IDs[0] != 0)
+            if (data->field->field[x][y][data->z_cam].IDs[0] != 0)
             {
                 std::cout << "Draw?" << "\n";
 

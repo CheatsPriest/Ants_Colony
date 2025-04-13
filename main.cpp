@@ -72,6 +72,7 @@ void processingEntities() {
 			}
 		}
 
+		
 
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
 		{
@@ -93,9 +94,7 @@ void processingEntities() {
 			ultimateData->MoveCam(0, 1);
 		}
 
-		//mainWindow->NewFrame(); // Начало отрисовки
 		
-		//mainWindow->EndFrame(); // Конец отрисовки
 		Window_sfml* start = new Window_sfml(ultimateData);
 		sf::RenderWindow mainWindow(sf::VideoMode(ultimateData->main_window_wide, 
 								ultimateData->main_window_hight), "Ant Colony");
