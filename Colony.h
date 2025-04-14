@@ -10,6 +10,8 @@ public:
 	int base_x, base_y, base_z;
 	
 	int scouts_courage;
+	int delta_stock;
+
 
 	int base_radius;
 
@@ -30,6 +32,9 @@ public:
 		numSoldier,
 		numNurses;
 
+	//other stats
+	unsigned int died;
+
 	Ant* Queen;
 	
 	Colony(int _clan, int x, int y, int z) {
@@ -47,9 +52,12 @@ public:
 		curFoodAmount = 0;
 		curMaterialAmount = 0;
 		curAphidAmount = 0;
+		
+		died = 0;
 
 		//динамические статы
-		scouts_courage = 5;
+		scouts_courage = 2;
+		delta_stock = 15;
 
 		//флаги
 		needNewFoodStock = false;

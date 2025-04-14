@@ -289,7 +289,7 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 
 	for (auto el : stockpileList) {
 		target = el.second;
-		if (abs(target->pos_x-x)<max(wide, target->size_x) and abs(target->pos_y - y) < max(hight, target->size_y))return false;
+		if (abs(target->pos_x-x)<max(wide, target->size_x)+2 and abs(target->pos_y - y) < max(hight, target->size_y)+2)return false;
 	}
 
 	for (int i = x-1; i <= x + wide; i++) {
@@ -680,12 +680,13 @@ void InfoSpace::ReCalculateTheColony()
 //Действия муравейника
 
 void InfoSpace::BuildNewStockpile(Colony* curColony) {
-	int tri = rand() % 20 + 2;
+	int tri = rand() % 20 + 4;
+	
 	if (curColony->needNewFoodStock) {
 
 		int x, y, z;
 		int tries = tri;
-		int sz = rand() % 20 + 10;
+		int sz = rand() % 20 + 12;
 		for (; tries > 0; tries--) {
 			
 			x = curColony->base_x + rand() % (curColony->base_radius) - curColony->base_radius/2;
@@ -697,7 +698,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 			
 		}
 		if (tries == 0 and curColony->needNewFoodStock) {
-			curColony->base_radius += 50;
+			curColony->base_radius += curColony->delta_stock;
 		}
 
 	}
@@ -706,7 +707,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 
 		int x, y, z;
 		int tries = tri;
-		int sz = rand() % 20 + 10;
+		int sz = rand() % 20 + 12;
 		for (; tries > 0; tries--) {
 
 			x = curColony->base_x + rand() % (curColony->base_radius) - curColony->base_radius / 2;
@@ -718,7 +719,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 			
 		}
 		if (tries == 0 and curColony->needNewMatStock) {
-			curColony->base_radius += 50;
+			curColony->base_radius += curColony->delta_stock;
 		}
 
 	}
@@ -739,7 +740,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 			
 		}
 		if (tries == 0 and curColony->needNewAphidStock) {
-			curColony->base_radius += 50;
+			curColony->base_radius += curColony->delta_stock;
 		}
 
 	}
@@ -820,10 +821,18 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 	// hungrys >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	ant->saturation -= 0.02; // randommmmmmmmmmmmm
+	ant->saturation -= 0.01; // randommmmmmmmmmmmm
 
 	if (ant->saturation < 0) {
-		cout << "dead" << ant->type<< endl;
+		ant->HP -= 0.1;
+	}
+
+	if (ant->HP < 0) {
+		
+		field->field[ant->pos_x][ant->pos_y][ant->pos_z].CutEntity(0);
+		DeleteEntity(id);
+		return;
+
 	}
 
 	
@@ -1091,7 +1100,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						if (obj->getType() == Entities::INSECT) {
 							Insect* smth = (Insect*)obj->getPtr();
-							if (smth->curState == 0) {
+							if (smth->curState == 0 and smth->type==APHID and smth->curState==0) {
 								ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 								//ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 								ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
@@ -1304,6 +1313,7 @@ bool InfoSpace::DeleteEntity(unsigned int id) {
 	else if (curEnt->getType() == ANT) {//еда
 		Ant* curAnt = (Ant*)(curEnt->getPtr());
 
+		coloniesList[curAnt->clan]->died++;
 
 		delete curAnt;
 		

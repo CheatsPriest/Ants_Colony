@@ -15,6 +15,7 @@ Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defens
     this->pos_z = z;
     this->type = type;
     this->max_HP = max_HP;
+    this->HP = max_HP;
     this->smell_Rad = smell_Rad;
     this->defense = defense;
     this->max_Saturation = max_Saturation;

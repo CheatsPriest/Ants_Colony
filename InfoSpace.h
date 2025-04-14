@@ -42,8 +42,8 @@ public:
 
 		cam_speed = 4;
 
-		x_cam = 200 * cam_speed;
-		y_cam = 200 * cam_speed;
+		x_cam = 1000 * cam_speed;
+		y_cam = 1000 * cam_speed;
 		z_cam = 0;
 
 		
@@ -60,7 +60,7 @@ public:
 
 		field = new Field;
 
-		draw_debug_move_lines = true;
+		draw_debug_move_lines = false;
 	}
 
 	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen

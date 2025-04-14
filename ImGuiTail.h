@@ -57,6 +57,7 @@ private:
     void DrawMaterial(int x, int y, unsigned int id);
     void DrawQueen(int x, int y, unsigned int id);
     void DrawNurse(int x, int y, unsigned int id);
+    void DrawBase();
     void DrawMaggot(int x, int y, unsigned int id);
 
     Field* field;

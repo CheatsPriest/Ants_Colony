@@ -11,6 +11,11 @@ unsigned int work_id;
 
 Entity* cur;
 
+void Window::DrawBase() {
+    
+   
+}
+
 void Window::DrawMaggot(int x, int y, unsigned int id) {
     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x + 1.f, y + 1.f), ImVec2(x + data->cell_size  - 1.0f, y + data->cell_size  - 1.0f), WhiteBlue, 0.1f, 0);
     //ImGui::GetBackgroundDrawList()->AddText(ImVec2(x + 1.f, y + 1.f), Black, "Q");
@@ -84,6 +89,18 @@ void Window::DrawMainScene() {
     
     if (ImGui::Begin("Main Scene", 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
     {
+        
+
+        Colony* curColony;
+        for (auto el : data->coloniesList) {
+            curColony = el.second;
+            draw_x = (curColony->base_x - c_x) * cell_size;
+            draw_y = (curColony->base_y - c_y) * cell_size;
+            ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(draw_x, draw_y), (float)(curColony->base_radius * cell_size), Red, 0, 1.2f);
+            ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(draw_x, draw_y), (float)(curColony->base_radius * curColony->scouts_courage * cell_size), Red, 0, 1.2f);
+        }
+
+
         //for (int x = 0; x < data->field_size_x; x++) {
         //    for (int y = 0; y < data->field_size_y; y++){//�����������������
         for (int x = c_x; x < max_x; x++) {
