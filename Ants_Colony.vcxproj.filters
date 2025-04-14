@@ -37,14 +37,8 @@
     <Filter Include="Еда">
       <UniqueIdentifier>{f47b1ce6-4fdc-4b62-bb55-03e569ad392c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Colony">
-      <UniqueIdentifier>{4eab4f1e-e2c1-43e1-9e4d-420d99731162}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Ant.cpp">
       <Filter>Муравьи</Filter>
     </ClCompile>
@@ -81,9 +75,6 @@
     <ClCompile Include="vendor\ImGui\backends\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiTail.cpp">
-      <Filter>Рисовальщик</Filter>
-    </ClCompile>
     <ClCompile Include="myfont.cpp">
       <Filter>Рисовальщик</Filter>
     </ClCompile>
@@ -102,9 +93,6 @@
     <ClCompile Include="Cell.cpp">
       <Filter>Поле</Filter>
     </ClCompile>
-    <ClCompile Include="DrawField.cpp">
-      <Filter>Рисовальщик</Filter>
-    </ClCompile>
     <ClCompile Include="Stockpile.cpp">
       <Filter>Зоны</Filter>
     </ClCompile>
@@ -117,14 +105,20 @@
     <ClCompile Include="walls.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Colony.cpp">
-      <Filter>Colony</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Nurse.cpp">
-      <Filter>Муравьи</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Maggot.cpp">
-      <Filter>Муравьи</Filter>
+    <ClCompile Include="SFMLWindow.h">
+      <Filter>Рисовальщик</Filter>
+    </ClCompile>
+    <ClCompile Include="SFMLWindow.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Colony.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +164,6 @@
     <ClInclude Include="vendor\ImGui\backends\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiTail.h">
-      <Filter>Рисовальщик</Filter>
-    </ClInclude>
     <ClInclude Include="myfont.h">
       <Filter>Рисовальщик</Filter>
     </ClInclude>
@@ -203,23 +194,112 @@
     <ClInclude Include="Food.h">
       <Filter>Еда</Filter>
     </ClInclude>
-    <ClInclude Include="DrawAnts.cpp">
-      <Filter>Рисовальщик</Filter>
-    </ClInclude>
     <ClInclude Include="Materials.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="walls.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Colony.h">
-      <Filter>Colony</Filter>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\BlendMode.hpp">
+      <Filter>Исходные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Nurse.h">
-      <Filter>Муравьи</Filter>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\CircleShape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Color.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\ConvexShape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Drawable.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Export.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Font.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glsl.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glyph.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Image.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\PrimitiveType.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Rect.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RectangleShape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderStates.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTarget.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTexture.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderWindow.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shader.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shape.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Sprite.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Text.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Texture.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transform.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transformable.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Vertex.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexArray.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexBuffer.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\View.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Colony.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Maggot.h">
-      <Filter>Муравьи</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Nurse.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Glsl.inl">
+      <Filter>Исходные файлы</Filter>
+    </None>
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Rect.inl">
+      <Filter>Исходные файлы</Filter>
+    </None>
   </ItemGroup>
 </Project>

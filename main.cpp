@@ -1,23 +1,27 @@
 
 #include "includes.h"
-#include "ImGuiTail.h"
+//#include "ImGuiTail.h"
+#include "SFMLWindow.h"
 #include "Entity.h";
 #include "Collector.h"
 #include "unordered_map"
 #include <thread>
 #include <conio.h>
-#include <Windows.h>
 #include <random>
+#include <Windows.h>
+#include "SFML/Graphics.hpp"
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+#include <iostream>
+#define NOMINMAX
+
+
 
 InfoSpace* ultimateData = new InfoSpace;
 
 
 void processingEntities() {
-	Window* mainWindow = new Window(ultimateData);
-
-
-	srand(time(0));
-
 	
 
 	int start_x = 1000;
@@ -54,12 +58,12 @@ void processingEntities() {
 	}
 
 	//ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
-	// тля внутри загона
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	//for (int i = 0; i < 50; i++) {
 	//	ultimateData->CreateInsect(rand() % wallWidth + wallX, rand() % wallHeight + wallY, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, true);
 	//}
 
-	//// тля вне загона(не рабы пока что)
+	//// пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ)
 	for (int i = 0; i < 500; i++) {
 		ultimateData->CreateInsect(rand() % 50 + 100  + start_x, rand() % 50 + 100 + start_y, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
@@ -80,7 +84,7 @@ void processingEntities() {
 	//}
 
 
-	//Приветствие
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	for (auto el : ultimateData->entityList) {
 		break;
 		Entity* curr = el.second;
@@ -101,116 +105,128 @@ void processingEntities() {
 	}
 
 	
+	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+	sf::RenderWindow mainWindow(desktopMode, "Ant Colony", sf::Style::Fullscreen);
 
-	while (ultimateData->mainLoop) {
+	Window_sfml* start = new Window_sfml(ultimateData);
 
-		if (tick++ > 200) {
+	//sf::RenderWindow mainWindow(	sf::VideoMode(ultimateData->main_window_wide,
+	//	ultimateData->main_window_hight), "Ant Colony");
+
+
+
+
+	// Camera
+	sf::View view = mainWindow.getDefaultView();
+	float currentZoom = 1.0f;
+	const float zoomSpeed = 0.1f;
+	const float moveSpeed = 500.0f;
+
+	const float minZoom = 0.5f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 2 пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+	const float maxZoom = 2.0f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 2 пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+
+	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
+
+	view.zoom(1.0f / currentZoom);
+	view.setCenter(desktopMode.width / 2, desktopMode.height / 2);
+	// Camera
+
+	sf::Clock clock;
+
+	while (mainWindow.isOpen())
+	{
+
+		sf::Event event;
+
+		while (mainWindow.pollEvent(event))
+		{
+			if ((event.type == sf::Event::Closed) ||
+				(event.type == sf::Event::KeyPressed &&
+					event.key.code == sf::Keyboard::Escape))
+				mainWindow.close();
+
+			if (event.type == sf::Event::MouseWheelScrolled)
+			{
+				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+				{
+					float delta = event.mouseWheelScroll.delta;
+					currentZoom *= (1.0f - delta * zoomSpeed);
+					currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
+					view.setSize(desktopMode.width, desktopMode.height);
+					view.zoom(1.0f / currentZoom);
+				}
+			}
+		}
+		
+		float deltaTime = clock.restart().asSeconds();
+		sf::Vector2f movement(0, 0);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			movement.y -= moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			movement.y += moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			movement.x -= moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			movement.x += moveSpeed * deltaTime;
+
+		view.move(movement * currentZoom);
+		mainWindow.setView(view);
+
+		mainWindow.clear();
+
+		if (tick++ > 200) 
+		{
 			tick = 1;
 		}
-		for (auto el : ultimateData->coloniesList) {
 
+		for (auto el : ultimateData->coloniesList) 
+		{
 			ultimateData->BuildNewStockpile(el.second);
-
 		}
-		
-		if (tick % 5 == 0) {
+
+		if (tick % 5 == 0) 
+		{
 			ultimateData->RecountAphid();
 		}
-		
 
-		for (auto ent : ultimateData->entityList) {
+
+		for (auto ent : ultimateData->entityList)
+		{
+
 
 			Entity* curr = ent.second;
-			if(curr && curr->getType() == Entities::ANT) {
-				
+			if (curr && curr->getType() == Entities::ANT)
+			{
+
 				ultimateData->MoveEntity(ent.first);
 
-				
 
 			}
-			else if (curr and curr->getType() == Entities::INSECT) {
+			else if (curr and curr->getType() == Entities::INSECT)
+			{
 				Insect* insect = (Insect*)curr;
-				
+
 				ultimateData->MoveInsect(ent.first);
-				
+
 				//insect->move(ultimateData->entityList, ent.first);
 			}
 		}
-
-
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-5, 0);
-			/*for (int i = 0; i < 25; i++) {
-				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
-			}*/
-			
-		}
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(5, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -5);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 5);
-		}
-		else if (GetAsyncKeyState(VK_SPACE) & 0x8000 != 0) { 
-			ultimateData->ReCalculateTheColony();
-    			ultimateData->coloniesList[1];
-		}
-
-		
-		mainWindow->NewFrame();
-
-		mainWindow->EndFrame();
-		
-		
-
-
-	}
-	delete mainWindow;
-}
-
-void draw() {
-	
-	Window* mainWindow = new Window(ultimateData);
-
-	
-
-
-	
-
-	while (ultimateData->mainLoop) {
-		
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-1, 0);
-		}
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(1, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -1);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 1);
-		}
-		
-		mainWindow->NewFrame();
-
-		mainWindow->EndFrame();
+		start->DrawMainScene_sfml(mainWindow);
+		mainWindow.display();
 	}
 
-	mainWindow->Cleanup();
-	delete mainWindow;
+
 }
+
+
+
 int main() {
 
 	
-	//поток обработки Entity
+	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Entity
 	thread ProcessingEntity(processingEntities);
-	//поток отрисовки
+	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	//thread Drow(draw);
 	
 

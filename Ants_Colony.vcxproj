@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\vendor\ImGui\backends;$(ProjectDir)\vendor\ImGui;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\vendor\ImGui\backends;$(ProjectDir)\vendor\ImGui;$(ProjectDir)SFML-2.6.2;$(ProjectDir)images</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)\vendor\ImGui\backends;$(ProjectDir)\vendor\ImGui;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\vendor\ImGui\backends;$(ProjectDir)\vendor\ImGui;$(ProjectDir)SFML-2.6.2;$(ProjectDir)images</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -108,14 +108,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>Default</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)SFML-2.6.2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)SFML-2.6.2\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -124,35 +125,36 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)SFML-2.6.2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)SFML-2.6.2\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ant.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Colony.cpp" />
-    <ClCompile Include="DrawField.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Food.cpp" />
-    <ClCompile Include="ImGuiTail.cpp" />
     <ClCompile Include="InfoSpace.cpp" />
     <ClCompile Include="Insect.cpp" />
-    <ClCompile Include="Maggot.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Materials.cpp" />
     <ClCompile Include="myfont.cpp" />
     <ClCompile Include="Nurse.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Scout.cpp" />
+    <ClCompile Include="SFMLWindow.cpp" />
+    <ClCompile Include="SFMLWindow.h" />
     <ClCompile Include="Soldier.cpp" />
     <ClCompile Include="Stockpile.cpp" />
     <ClCompile Include="vendor\ImGui\backends\imgui_impl_dx9.cpp" />
@@ -171,7 +173,6 @@
     <ClInclude Include="Collector.h" />
     <ClInclude Include="Colony.h" />
     <ClInclude Include="DrawField.h" />
-    <ClInclude Include="DrawAnts.cpp" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Food.h" />
@@ -180,11 +181,38 @@
     <ClInclude Include="Maggot.h" />
     <ClInclude Include="Materials.h" />
     <ClInclude Include="myfont.h" />
-    <ClInclude Include="ImGuiTail.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Nurse.h" />
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Scout.h" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\BlendMode.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\CircleShape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Color.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\ConvexShape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Drawable.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Export.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Font.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glsl.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Glyph.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Image.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\PrimitiveType.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Rect.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RectangleShape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderStates.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTarget.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderTexture.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\RenderWindow.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shader.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Shape.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Sprite.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Text.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Texture.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transform.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Transformable.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\Vertex.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexArray.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\VertexBuffer.hpp" />
+    <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\View.hpp" />
     <ClInclude Include="Soldier.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="vendor\ImGui\backends\imgui_impl_dx9.h" />
@@ -197,6 +225,10 @@
     <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
     <ClInclude Include="walls.h" />
     <ClInclude Include="Worker.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Glsl.inl" />
+    <None Include="SFML-2.6.2\include\SFML\Graphics\Rect.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

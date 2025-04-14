@@ -5,10 +5,9 @@
 #include <d3d9.h>
 #include <tchar.h>
 #include "InfoSpace.h"
-#include "DrawField.h"
+//#include "DrawField.h"
 #include <string>
 using namespace std;
-
 
 static ImColor Green = ImColor(0.2f, 0.6f, 0.2f);
 static ImColor Blue = ImColor(0.4f, 0.4f, 0.9f);
@@ -33,7 +32,7 @@ static ImColor REDD_LADYBUG = ImColor(255, 0, 0);
 class Window {
 public:
 
-
+        
     bool isValid;
     void NewFrame();
     void EndFrame();
