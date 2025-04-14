@@ -72,22 +72,7 @@ void processingEntities() {
 	//sf::RenderWindow mainWindow(	sf::VideoMode(ultimateData->main_window_wide,
 	//	ultimateData->main_window_hight), "Ant Colony");
 
-	// BackGround
-	sf::Texture place;
-	if (!place.loadFromFile("images/back.jpeg"))
-		return;
-	sf::Sprite back(place);
 
-	float scaleX = static_cast<float>(desktopMode.width) / place.getSize().x;
-	float scaleY = static_cast<float>(desktopMode.height) / place.getSize().y;
-	float scale = std::max(scaleX, scaleY);
-	back.setScale(scale, scale);
-
-	back.setPosition(
-		(desktopMode.width - back.getGlobalBounds().width) / 2,
-		(desktopMode.height - back.getGlobalBounds().height) / 2
-	);
-	// BackGround
 
 
 	// Camera
@@ -99,14 +84,10 @@ void processingEntities() {
 	const float minZoom = 0.5f; // Приближаем в 2 раза макс
 	const float maxZoom = 2.0f; // Отдаляем в 2 раза макс
 
-	float scale_X = desktopMode.width / place.getSize().x;
-	float scale_Y = desktopMode.height / place.getSize().y;
-
-	currentZoom = std::min(scale_X, scale_Y);
 	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
 
 	view.zoom(1.0f / currentZoom);
-	view.setCenter(place.getSize().x / 2, place.getSize().y / 2);
+	view.setCenter(desktopMode.width / 2, desktopMode.height / 2);
 	// Camera
 
 	sf::Clock clock;
@@ -163,7 +144,6 @@ void processingEntities() {
 
 			}
 		}
-		mainWindow.draw(back);
 		start->DrawMainScene_sfml(mainWindow);
 		mainWindow.display();
 	}
