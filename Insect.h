@@ -11,6 +11,8 @@ class Insect
 {
 public:
 	int curState;
+	bool goToBase;
+	
 	static pair<int, pair<int,int>> nearlest;
 	static bool isSlaveZone;
 	InsectTypes type;
@@ -34,6 +36,7 @@ public:
 	pair<int, int> stockPos;
 	pair<int, int> stockSize;
 	bool isSlaver = false;
+	static pair<int, int> baseCoords;
 	void setAimId(unsigned int id) {
 		aim_id = id;
 	}
@@ -45,10 +48,16 @@ public:
 		pos_y = y;
 		pos_z = z;
 		isTriggered = false;
+		goToBase = false;
 	}
 	void info() {
 		cout << "I am INSECT" << "\n";
 	}
+	void updateBaseCoords(int x_size, int y_size) {
+		baseCoords.first = rand() % x_size;
+		baseCoords.second = rand() % y_size;
+	}
+	
 	bool isIndoors(int x, int y, Field* field) {
 	/*	return( stockPos.first < x) && (x < stockPos.first + stockSize.first)
 			&& (stockPos.second < y) &&( y < stockPos.second + stockSize.second);*/

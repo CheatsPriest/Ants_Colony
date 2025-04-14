@@ -59,5 +59,6 @@ public:
 
 	bool TryToPut(Ant* ant, map<unsigned int, Entity*>* entityList, pair<int,int>where);
 	unsigned int AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* entityList);
+	unsigned int PickUpWithoutAnt();
 	unsigned int PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityList);
 };

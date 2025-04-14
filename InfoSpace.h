@@ -85,8 +85,10 @@ public:
 	void MoveEntity(unsigned int id);
 	void ProcessAnt(Ant* curAnt);
 	void moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* ent);
+	void RandomMove(pair<int, int> newPos2, unsigned int id, Insect* curr);
 	void MoveInsect(unsigned int id);
 	void MoveAphid(unsigned int id, Insect* insect);
+	pair<bool, Stockpile*> IndoorsStockpile(pair<int, int> p);
 	void MoveLadybug(unsigned int id, Insect* insect);
 
 	bool BornNewAnts(Ant* Queen);
