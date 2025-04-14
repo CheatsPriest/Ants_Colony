@@ -9,8 +9,7 @@ using namespace std;
 
 
 bool InfoSpace::isValidCell(pair<int, int> newPos) {
-	//return !(newPos.first >= field_size_x || newPos.second >= field_size_y
-	//	|| newPos.first < 0 || newPos.second < 0);
+
 	return !(newPos.first >= field_size_x || newPos.second >= field_size_y
 		|| newPos.first < 0 || newPos.second < 0);
 }
@@ -61,10 +60,10 @@ pair<bool, Stockpile*> InfoSpace::IndoorsStockpile(pair<int, int> p) {
 }
 
 void InfoSpace::MoveLadybug(unsigned int id, Insect* insect) {
-	insect->updateBaseCoords();
+	
 	//возвращение на базу какую нибудь
 if (insect->goToBase) {
-	if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
+	if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 200) {
 		insect->goToBase = false;
 		return;
 	}
@@ -110,40 +109,29 @@ if (insect->goToBase) {
 	return;
 }
 
-
-
-
 //если оказались в зоне любого склада
 pair<bool, Stockpile*> ps = IndoorsStockpile({ insect->pos_x, insect->pos_y });
-bool detectedFood = false;
-bool detectedMaterial = false;
 bool detectedAphid = false;
-bool detectedMaggot = false;
-Food* food;
-Materials* material;
 Insect* aphid;
-Maggot* maggot;
 pair<int, int> detectedCoord = { 0, 0 };
 if (ps.first) {
 	if (ps.second->type == 0) {
 		ps.second->PickUpWithoutAnt();
-
 		insect->goToBase = true;
 		insect->isTriggered = false;
+		insect->updateBaseCoords(field_size_x, field_size_y);
 		insect->aim_pos = insect->baseCoords;
 		return;
 	}
 	else if (ps.second->type == 1) {
-		
 		ps.second->PickUpWithoutAnt();
-
 		insect->goToBase = true;
 		insect->isTriggered = false;
+		insect->updateBaseCoords(field_size_x, field_size_y);
 		insect->aim_pos = insect->baseCoords;
 		return;
 	}
 	else if (ps.second->type == 2) {
-		
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (j == i && j == 0) continue;
@@ -161,11 +149,12 @@ if (ps.first) {
 		ps.second->PickUpWithoutAnt();
 		insect->goToBase = true;
 		insect->isTriggered = false;
+		insect->updateBaseCoords(field_size_x, field_size_y);
 		insect->aim_pos = insect->baseCoords;
+
 		return;
 	}
 	
-
 	if (detectedAphid) {
 		unsigned int id_ = field->field[detectedCoord.first][detectedCoord.second][0].IDs[0];
 		field->field[detectedCoord.first][detectedCoord.second][0].IDs[0] = 0;
@@ -173,25 +162,15 @@ if (ps.first) {
 
 		insect->goToBase = true;
 		insect->isTriggered = false;
+		insect->updateBaseCoords(field_size_x, field_size_y);
 		insect->aim_pos = insect->baseCoords;
 
-	} else if (detectedMaggot) {
-		unsigned int id_ = field->field[detectedCoord.first][detectedCoord.second][0].IDs[0];
-		field->field[detectedCoord.first][detectedCoord.second][0].IDs[0] = 0;
-		entityList.erase(id_);
-
-		insect->goToBase = true;
-		insect->isTriggered = false;
-		insect->aim_pos = insect->baseCoords;
-	}
-	else {
+	} else {
 		// ищем цель на складе
 		RandomMove({ insect->pos_x, insect->pos_y }, id, insect);
 	}
 	return;
 }
-
-
 
 
 //если не на складе
@@ -201,7 +180,7 @@ if (!insect->isTriggered) {
 		int targetId = rand() % (free_stockpile_key - 1) + 1;
 		Stockpile* stockpile = stockpileList[targetId];
 		insect->aim_id = targetId;
-		insect->aim_pos = { stockpile->pos_x, stockpile->pos_y };
+		insect->aim_pos = { stockpile->pos_x + stockpile->size_x / 2, stockpile->pos_y + stockpile->size_x / 2 };
 		insect->isTriggered = true;
 		
 	}
@@ -216,12 +195,7 @@ if (!insect->isTriggered) {
 					insect->aim_pos = insect->baseCoords;
 					return;
 				}
-				if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
-					insect->goToBase = true;
-					insect->isTriggered = false;
-					insect->aim_pos = insect->baseCoords;
-					return;
-				}
+	
 			}
 		}
 
@@ -241,118 +215,6 @@ if (!insect->isTriggered) {
 		RandomMove({ insect->pos_x + direct.first , insect->pos_y + direct.second}, id, insect);
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//if (insect->goToBase) {
-
-	//	if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
-	//		insect->goToBase = false;
-	//		return;
-	//	}
-	//	pair<int, int> direct = { 0,0 };
-	//	if (insect->pos_x < insect->aim_pos.first) {
-	//		direct.first = 1;
-	//	}
-	//	else {
-	//		direct.first = -1;
-	//	}
-	//	if (insect->pos_y < insect->aim_pos.second) {
-	//		direct.second = 1;
-	//	}
-	//	else {
-	//		direct.second = -1;
-	//	}
-	//	RandomMove({ insect->pos_x + direct.first, insect->pos_y + direct.second }, id, insect);
-	//	return;
-	//}
-
-	//if (!insect->isTriggered) {
-	//	if (free_stockpile_key == 0) return;
-	//	
-	//	int targetId = rand() % (free_stockpile_key - 1) + 1;
-	//	Stockpile* stockpile = stockpileList[targetId];
-	//	insect->aim_id = targetId;
-	//	insect->aim_pos = { stockpile->pos_x, stockpile->pos_y };
-	//	insect->isTriggered = true;
-	//	
-	//}
-	//else if(insect->isTriggered){
-	//	for (int i = -1; i <= 1; i++) {
-	//		for (int j = -1; j <= 1; j++) {
-	//			if (i == j && j == 0) continue;
-	//			if (!isValidCell({ insect->pos_x + i, insect->pos_y + j })) continue;
-	//			if (field->field[insect->pos_x + i][insect->pos_y + j][0].cWall != 0) {
-	//				insect->goToBase = true;
-	//				insect->isTriggered = false;
-	//				insect->aim_pos = { 400, 200 + rand() % 100 + 1};
-	//				return;
-	//			}
-	//			if (pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2) <= 10) {
-	//				insect->goToBase = true;
-	//				insect->isTriggered = false;
-	//				insect->aim_pos = { 400, 200 + rand() % 100 + 1};
-	//				return;
-	//			}
-	//		}
-	//	}
-
-	//	pair<int, int> direct = { 0,0 };
-	//	if (insect->pos_x < insect->aim_pos.first) {
-	//		direct.first = 1;
-	//	}
-	//	else {
-	//		direct.first = -1;
-	//	}
-	//	if (insect->pos_y < insect->aim_pos.second) {
-	//		direct.second = 1;
-	//	}
-	//	else  {
-	//		direct.second = -1;
-	//	}
-	//	RandomMove({ insect->pos_x + direct.first , insect->pos_y + direct.second}, id, insect);
-
-	//}
-
 	
 }
 

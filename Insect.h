@@ -53,9 +53,9 @@ public:
 	void info() {
 		cout << "I am INSECT" << "\n";
 	}
-	void updateBaseCoords() {
-		baseCoords.first = rand() % 600 + 1;
-		baseCoords.second = rand() % 600 + 1;
+	void updateBaseCoords(int x_size, int y_size) {
+		baseCoords.first = rand() % x_size;
+		baseCoords.second = rand() % y_size;
 	}
 	
 	bool isIndoors(int x, int y, Field* field) {
