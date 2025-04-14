@@ -221,7 +221,8 @@ if (!insect->isTriggered) {
 void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
 	if (!insect->isTriggered) {
 
-		if (insect->nearlest.first != 0 && (insect->isSlaveZone == insect->isSlaver)) {
+		if (insect->nearlest.first != 0 && (insect->isSlaveZone == insect->isSlaver) 
+			&& (pow(insect->pos_x - insect->nearlest.second.first, 2) + pow(insect->pos_y - insect->nearlest.second.second, 2) <= 700 )) {
 			insect->aim_id = insect->nearlest.first;
 			insect->aim_pos = insect->nearlest.second;
 			insect->isTriggered = true;
