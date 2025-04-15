@@ -44,17 +44,17 @@ void processingEntities() {
 
 	ultimateData->CreateEntityAnt(start_x+50, start_y+50, 0, 0, 0, 1);
 
-	for (int i = 0; i < 200; i++) {
+	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+10, 2 * i+ start_y, 0, 0, 1,1);
 	}
-	for (int i = 0; i < 150; i++) {
+	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+20, 2*i+ start_y, 0, 0, 2,1);
 	}
+	//for (int i = 0; i < 100; i++) {
+	//	ultimateData->CreateEntityAnt(start_x+30, i+ start_y, 0, 0, 3,1);
+	//}
 	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(start_x+30, i+ start_y, 0, 0, 3,1);
-	}
-	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(start_x+40, i+ start_y, 0, 0, 4, 1);
+		//ultimateData->CreateEntityAnt(start_x+40, i+ start_y, 0, 0, 4, 1);
 	}
 
 	//ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
@@ -69,11 +69,11 @@ void processingEntities() {
 	}
 
 	for (int i = 0; i < 100; i++) {
-		ultimateData->CreateInsect(rand() % 50 + 100 + start_x, rand() % 50 + 100 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
+		//ultimateData->CreateInsect(rand() % 50 + 100 + start_x, rand() % 50 + 100 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
 	}
 
 
-	for (int i = 0; i < 20000; i++) {
+	for (int i = 0; i < 10000; i++) {
 		ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 10);
 	}
@@ -173,20 +173,17 @@ void processingEntities() {
 		view.move(movement * currentZoom);
 		mainWindow.setView(view);
 
-		mainWindow.clear();
 
-		if (tick++ > 200) 
-		{
+		if (tick++ > 200) {
 			tick = 1;
 		}
+		for (auto el : ultimateData->coloniesList) {
 
-		for (auto el : ultimateData->coloniesList) 
-		{
 			ultimateData->BuildNewStockpile(el.second);
+
 		}
 
-		if (tick % 5 == 0) 
-		{
+		if (tick % 5 == 0) {
 			ultimateData->RecountAphid();
 		}
 
@@ -194,12 +191,12 @@ void processingEntities() {
 		for (auto ent : ultimateData->entityList)
 		{
 
-
 			Entity* curr = ent.second;
 			if (curr && curr->getType() == Entities::ANT)
 			{
 
 				ultimateData->MoveEntity(ent.first);
+
 
 
 			}
@@ -211,7 +208,10 @@ void processingEntities() {
 
 				//insect->move(ultimateData->entityList, ent.first);
 			}
+
 		}
+		
+		mainWindow.clear();
 		start->DrawMainScene_sfml(mainWindow);
 		mainWindow.display();
 	}

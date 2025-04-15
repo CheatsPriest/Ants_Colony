@@ -36,8 +36,7 @@ void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
-    window.display();
-
+    
 }
 
 void Window_sfml::DrawQueen_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -194,13 +193,13 @@ bool Window_sfml::DrawPlace_sfml    (int x, int y, sf::RenderWindow& window)
     sf::Sprite backGround(place);
     float targetSize = data->cell_size - 2.0f; 
 
-    // Получаем исходный размер текстуры
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     sf::Vector2u textureSize = place.getSize();
     float scaleX = targetSize / textureSize.x;
     float scaleY = targetSize / textureSize.y;
     backGround.setScale(scaleX, scaleY);
 
-    // Позиция с учетом смещения (если x и y уже в пикселях)
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ x пїЅ y пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
     backGround.setPosition(x + 1.f, y + 1.f);
 
     window.draw(backGround);
@@ -279,7 +278,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
     for (auto el : data->stockpileList) {
         curStock = el.second;
         //ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x) * cell_size - data->x_cam, (curStock->pos_y) * cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x) * cell_size - data->x_cam, (curStock->pos_y + curStock->size_y) * cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
-        // Обводка склада
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         if (curStock->type == FOOD_STOCK) {
             for (int i = 0; i < curStock->size_y; i++) {
                 for (int j = 0; j < curStock->size_x; j++) {
