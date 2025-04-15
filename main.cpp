@@ -27,16 +27,8 @@ void processingEntities() {
 
 	ultimateData->coloniesList[1] = new Colony(1, start_x+20, start_y+20, 0);
 
-	//ultimateData->CreateStockpile(start_x, start_y, 0, 30, 30, 2, 1);
-
 	ultimateData->CreateStockpile(start_x+40, start_y+40, 0, 17, 17, 3, 1);
 	
-	
-
-	//ultimateData->CreateStockpile(start_x+40, start_y, 0, 17, 17, 0, 1);
-	//ultimateData->CreateStockpile(start_x+30, start_y+40, 0, 17, 17, 1, 1);
-	//ultimateData->CreateStockpile(start_x+30, start_y + 90, 0, 17, 17, 1, 1);
-
 
 	ultimateData->CreateEntityAnt(start_x+50, start_y+50, 0, 0, 0, 1);
 
@@ -136,31 +128,6 @@ void processingEntities() {
 				//insect->move(ultimateData->entityList, ent.first);
 			}
 		}
-
-
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-5, 0);
-			/*for (int i = 0; i < 25; i++) {
-				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
-			}*/
-			
-		}
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(5, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -5);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 5);
-		}
-		else if (GetAsyncKeyState(VK_SPACE) & 0x8000 != 0) { 
-			ultimateData->ReCalculateTheColony();
-    			ultimateData->coloniesList[1];
-		}
-
-		
 		mainWindow->NewFrame();
 
 		mainWindow->EndFrame();
@@ -172,50 +139,10 @@ void processingEntities() {
 	delete mainWindow;
 }
 
-void draw() {
-	
-	Window* mainWindow = new Window(ultimateData);
-
-	
-
-
-	
-
-	while (ultimateData->mainLoop) {
-		
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-1, 0);
-		}
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(1, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -1);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 1);
-		}
-		
-		mainWindow->NewFrame();
-
-		mainWindow->EndFrame();
-	}
-
-	mainWindow->Cleanup();
-	delete mainWindow;
-}
 int main() {
-
-	
-	//поток обработки Entity
 	thread ProcessingEntity(processingEntities);
-	//поток отрисовки
-	//thread Drow(draw);
-	
-
 
 	ProcessingEntity.join();
-	//Drow.join();
+
 	return 0;
 }
