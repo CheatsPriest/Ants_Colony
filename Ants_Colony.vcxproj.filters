@@ -221,5 +221,8 @@
     <ClInclude Include="Maggot.h">
       <Filter>Муравьи</Filter>
     </ClInclude>
+    <ClInclude Include="DrawSFML.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

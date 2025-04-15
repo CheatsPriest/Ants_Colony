@@ -172,6 +172,7 @@
     <ClInclude Include="Colony.h" />
     <ClInclude Include="DrawField.h" />
     <ClInclude Include="DrawAnts.cpp" />
+    <ClInclude Include="DrawSFML.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Food.h" />
