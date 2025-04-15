@@ -511,10 +511,11 @@ bool InfoSpace::BuildWall(Ant* cAnt) {
 }
 
 
-pair<int, int> InfoSpace::searchmat() {
+pair<int, int> InfoSpace::searchmat(int clan) {
 	int source = 0;
 	int dest = 0;
 	for (auto stock : stockpileList) {
+		if (stock.second->clan != clan)continue;
 		Stockpile* stash = stock.second;
 		if (stash->needWalled == true) {
 			dest = stash->id;
@@ -1064,7 +1065,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		for (auto stock : stockpileList) {
 			Stockpile* stash = stock.second;
 			
-			if (stash->type == 0 and stash->food_collected>=0) {
+			if (stash->type == 0 and stash->food_collected>=0 and stash->clan==ant->clan) {
 				ant->action = 3;
 
 
@@ -1115,6 +1116,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		if (ant->inventary != 0 && ant->action<5) {
 			for (auto stock : stockpileList) {
 				Stockpile* stash = stock.second;
+
+				if (stash->clan != ant->clan)continue;
+
 				bool isValidStock = stash->pos_x <= ant->aim.first and ant->aim.first <= stash->pos_x + stash->size_x and stash->pos_y <= ant->aim.second and ant->aim.second <= stash->pos_y + stash->size_y;
 				if (ant->inventary !=0 &&((stash->type==0 && entityList[ant->inventary]->getType() == Entities::FOOD) or (stash->type == 1 && entityList[ant->inventary]->getType() == Entities::MATERIALS)) and isValidStock) {
 					stash->TryToPut(ant, &entityList, ant->aim);
@@ -1154,7 +1158,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		}
 
 		else if ((ant->action == 0 and rand()%10 < 3) or (ant->dest > 0 && ant->dest<stockpileList.size() && stockpileList[ant->dest]->needWalled == false)) {
-			pair<int, int> stocks = searchmat();
+			pair<int, int> stocks = searchmat(ant->clan);
 			ant->source = stocks.first;
 			ant->dest = stocks.second;
 			
@@ -1250,12 +1254,27 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		Entity* mem = entityList[field->field[Mom->pos_x][Mom->pos_y + 1]->IDs[0]];
 		if (Mom->saturation <= Mom->max_Saturation * 0.7) {
 			if (ant->inventary == 0) {
-				int source = 0;
+				unsigned int source = 0;
+
+				
+				int distance = INT_MAX;
+				int new_distance;
+
 				for (auto stock : stockpileList) {
+					if (stock.second->clan != ant->clan or stock.first<=0)continue;
+
+					
+
 					Stockpile* stash = stock.second;
+					
 					if (stash->type == 0 && stash->food_collected > 0) {
-						source = stash->id;
+						new_distance = dist(ant->pos_x, ant->pos_y, stash->pos_x, stash->pos_y);
+						if (new_distance < distance) {
+							distance = new_distance;
+							source = stash->id;
+						}
 					}
+					
 
 				}
 				ant->source = source;

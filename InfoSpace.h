@@ -77,7 +77,7 @@ public:
 
 	bool BuildWall(Ant* cAnt);
 
-	pair<int, int> searchmat();
+	pair<int, int> searchmat(int clan);
 	
 
 	bool DeleteEntity(unsigned int id);

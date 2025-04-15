@@ -35,6 +35,9 @@ public:
 	//other stats
 	unsigned int died;
 
+	bool momyClosestStock;
+	unsigned int closestStockToQueen;
+
 	Ant* Queen;
 	
 	Colony(int _clan, int x, int y, int z) {
@@ -64,6 +67,8 @@ public:
 		needNewMatStock = false;
 		needNewAphidStock = false;
 		needNewMaggotStock = false;
+
+		
 
 	}
 
