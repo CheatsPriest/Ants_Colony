@@ -17,8 +17,8 @@ Entity* cur;
 Window_sfml::Window_sfml(InfoSpace* data_p)
 {
     data = data_p;
+    
 }
-
 
 void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow& window)
 {
@@ -36,6 +36,8 @@ void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow
 
 
     window.draw(rect);
+
+    
     
 }
 

@@ -113,7 +113,7 @@ void processingEntities() {
 	//sf::RenderWindow mainWindow(	sf::VideoMode(ultimateData->main_window_wide,
 	//	ultimateData->main_window_hight), "Ant Colony");
 
-
+	
 
 
 	// Camera
@@ -122,15 +122,15 @@ void processingEntities() {
 	const float zoomSpeed = 0.1f;
 	const float moveSpeed = 500.0f;
 
-	const float minZoom = 0.5f; // ���������� � 2 ���� ����
-	const float maxZoom = 2.0f; // �������� � 2 ���� ����
+	const float minZoom = 0.5f; 
+	const float maxZoom = 10.0f; 
 
 	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
 
 	view.zoom(1.0f / currentZoom);
 	view.setCenter(desktopMode.width / 2, desktopMode.height / 2);
 	// Camera
-
+	
 	sf::Clock clock;
 
 	while (mainWindow.isOpen())

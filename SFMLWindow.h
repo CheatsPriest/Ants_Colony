@@ -23,7 +23,6 @@ class Window_sfml {
 public:
 
     Window_sfml(InfoSpace* data_p);
-
     void DrawMainScene_sfml (sf::RenderWindow& mainWindow); 
 
 private:
@@ -31,7 +30,12 @@ private:
     int wide, hight;
     
 
-    
+    sf::Texture scout_texture, worker_texture, soldier_texture,
+        queen_texture, nurse_texture, maggot_texture,
+        aphid_texture, ladybug_texutre;
+    sf::Texture wall_texture, food_texture, material_texture;
+
+
 
     InfoSpace* data;
    
@@ -48,6 +52,8 @@ private:
     void DrawWall_sfml      (int x, int y, sf::RenderWindow& window);
     void DrawFood_sfml      (int x, int y, sf::RenderWindow& window);
     void DrawMaterial_sfml  (int x, int y, sf::RenderWindow& window);
+
+
 
     Field* field;
 
