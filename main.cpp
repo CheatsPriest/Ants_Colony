@@ -74,7 +74,7 @@ void processingEntities() {
 	}
 
 
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 50000; i++) {
 		ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 10);
 	}
@@ -156,6 +156,11 @@ void processingEntities() {
 					view.zoom(1.0f / currentZoom);
 				}
 			}
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::B)
+			{
+				view.setCenter(start_x * ultimateData->cell_size, start_y * ultimateData->cell_size);
+			}
+
 		}
 		
 		float deltaTime = clock.restart().asSeconds();
@@ -170,7 +175,7 @@ void processingEntities() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			movement.x += moveSpeed * deltaTime;
 
-		view.move(movement * currentZoom);
+		view.move(movement / currentZoom);
 		mainWindow.setView(view);
 
 
@@ -214,7 +219,7 @@ void processingEntities() {
 		sf::Vector2f viewHalfSize = view.getSize() / 2.0f;
 
 		sf::FloatRect visibleArea(
-			(viewCenter.x - viewHalfSize.x),
+			viewCenter.x - viewHalfSize.x,
 			viewCenter.y - viewHalfSize.y,
 			view.getSize().x,
 			view.getSize().y
