@@ -11,7 +11,9 @@ public:
 	Wall* cWall = nullptr;
 	unsigned int IDs[max_unit_per_cell_cap];
 	unsigned int stockID;
-	Cell() { cWall = 0; IDs[0] = 0; }
+	Cell() {
+		cWall = 0; IDs[0] = 0; stockID = 0;
+	}
 	//Удаляет и возвращает ID существа
 	unsigned int CutEntity(int ind);
 	void DeleteEntity(int ind);
