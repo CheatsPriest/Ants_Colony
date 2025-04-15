@@ -40,7 +40,7 @@ public:
 	InfoSpace() {
 
 
-		cam_speed = 4;
+		cam_speed = 5;
 
 		x_cam = 1000 * cam_speed;
 		y_cam = 1000 * cam_speed;

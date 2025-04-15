@@ -1150,6 +1150,10 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				}
 			}	
 		}
+		else if (ant->action == 6 and ant->type == WORKER and ant->stashid != 0 and stockpileList[ant->stashid]->needWalled == false) {
+			TryToDrop(ant);
+			ant->action = 0;
+		}
 		
 		else if (ant->inventary == 0 && ant->action == 2) {
 			ant->action = 0;
@@ -1209,7 +1213,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 			else {
 				Stockpile* stash = stockpileList[ant->dest];
-				if (stash->needWalled == true &&(dist(ant->aim.first, ant->aim.second, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)<= 3*dist(stash->pos_x + stash->size_x + 1, stash->pos_y + stash->size_y+1, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2))) {
+				if (stash->needWalled == true &&(dist(ant->aim.first, ant->aim.second, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)<= 3*dist(stash->pos_x + stash->size_x + 1, stash->pos_y + stash->size_y+1, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)+8)) {
 					if (BuildWall(ant)) {
 						stash->wall_len += 1;
 						if (stash->wall_len == ((stash->size_x + stash->size_y + 2) * 2)) {
@@ -1217,6 +1221,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						ant->action = 0;
 					}
+
 				}
 				else {
 					TryToDrop(ant);
@@ -1407,7 +1412,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							bool transporting_need = false;
 
 							for (auto stock : stockpileList) {
-								if (stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y) {
+								if (stock.second->clan==ant->clan and stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y) {
 									
 									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
 										if (stock.second->food_collected < 0) {
@@ -1443,7 +1448,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 							bool transporting_need = false;
 							for (auto stock : stockpileList) {
-								if (stock.second->type == 0 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+								if (stock.second->clan == ant->clan and stock.second->type == 0 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
 									
 									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
 										if (stock.second->food_collected < 0) {
@@ -1479,7 +1484,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							if (smth->type == APHID) {
 								pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 								for (auto stock : stockpileList) {
-									if (stock.second->type == 2 and stock.second->needWalled == true) {
+									if (stock.second->clan == ant->clan and stock.second->type == 2 and stock.second->needWalled == true) {
 										isPrepearing = true;
 									}
 									if (stock.second->type == 2 and stock.second->needWalled == false && stock.second->food_collected < stock.second->size_x / 2) {

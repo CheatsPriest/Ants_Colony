@@ -26,6 +26,7 @@ Ant::Ant(int x, int y,int z, int type, float max_HP, int smell_Rad, float defens
     nearest_Mat = { this->pos_x,this->pos_y };
     nearest_Fd = { this->pos_x,this->pos_y };
     this->inventary = 0;
+    this->stashid = 0;
 }
 
 bool Ant::isAlive()
