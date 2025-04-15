@@ -75,6 +75,23 @@ void Window_sfml::DrawNurse_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 }
 
+void Window_sfml::DrawAphid_sfml(int x, int y, unsigned id, sf::RenderWindow& window)
+{
+    sf::RectangleShape rect;
+
+
+    float size = data->cell_size - 2.0f;
+    rect.setSize(sf::Vector2f(size, size));
+
+
+    rect.setPosition(x + 1.f, y + 1.f);
+
+    rect.setFillColor(Red);
+
+
+    window.draw(rect);
+}
+
 void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
 {
     sf::RectangleShape rect;
@@ -91,6 +108,23 @@ void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
     window.draw(rect);
 
+}
+
+void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned id, sf::RenderWindow& window)
+{
+    sf::RectangleShape rect;
+
+
+    float size = data->cell_size - 2.0f;
+    rect.setSize(sf::Vector2f(size, size));
+
+
+    rect.setPosition(x + 1.f, y + 1.f);
+
+    rect.setFillColor(Red);
+
+
+    window.draw(rect);
 }
 
 void Window_sfml::DrawWorker_sfml   (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -183,27 +217,6 @@ void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
 
 }
 
-bool Window_sfml::DrawPlace_sfml    (int x, int y, sf::RenderWindow& window)
-{
-    sf::Texture place;
-    if (!place.loadFromFile("X://Repositories/Ants_Colony/images/back.JPG")) {
-        return EXIT_FAILURE;
-    }
-
-    sf::Sprite backGround(place);
-    float targetSize = data->cell_size - 2.0f; 
-
-    // �������� �������� ������ ��������
-    sf::Vector2u textureSize = place.getSize();
-    float scaleX = targetSize / textureSize.x;
-    float scaleY = targetSize / textureSize.y;
-    backGround.setScale(scaleX, scaleY);
-
-    // ������� � ������ �������� (���� x � y ��� � ��������)
-    backGround.setPosition(x + 1.f, y + 1.f);
-
-    window.draw(backGround);
-}
 
 
 void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
@@ -263,6 +276,18 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
                     DrawMaterial_sfml(draw_x, draw_y, mainWindow);
 
                 }
+
+                else if (cur->getType() == Entities::INSECT) {
+                    Insect* insect = (Insect*)(cur->getPtr());
+                    if (insect->type == InsectTypes::APHID) {
+                        DrawAphid_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                    }
+                    else if (insect->type == InsectTypes::LADYBUG) {
+                        DrawLadybug_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                    }
+
+                }
+
                 else if (cur->getType() == Entities::MAGGOTS) {
                     Maggot* curMat = (Maggot*)(cur->getPtr());
                     DrawMaggot_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
@@ -333,16 +358,5 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
 }
 
 
-
-bool Window_sfml::isLoaded(sf::Texture scout_texture,   sf::Texture worker_texture,
-                           sf::Texture soldier_texture, sf::Texture queen_texture, 
-                           sf::Texture nurse_texture,   sf::Texture maggot_texture)
-{
-    if (!scout_texture.loadFromFile("images/ant.png") || !worker_texture.loadFromFile("images/ant.png") ||
-        !soldier_texture.loadFromFile("images/ant.png") || !queen_texture.loadFromFile("images/ant.png") ||
-        !nurse_texture.loadFromFile("images/ant.png") || !maggot_texture.loadFromFile("images/ant.png"))
-        return EXIT_FAILURE;
-
-}
 
 
