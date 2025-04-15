@@ -966,6 +966,35 @@ void InfoSpace::RecountAphid()
 }
 
 
+void InfoSpace::attack(int atkr, int defr) {
+	if (atkr == defr) { return; }
+	Entity* attacker = entityList[atkr];
+	Entity* defender = entityList[defr];
+	Ant* atkant = (Ant*)attacker->getPtr();
+	if (defender->getType() == ANT) {
+		Ant* defant = (Ant*)defender->getPtr();
+		defant->HP -= atkant->attack;
+		if (defant->HP <= 0) {
+			DeleteEntity(defr);
+			field->field[defant->pos_x][defant->pos_y]->IDs[0]=0;
+		}
+	}
+	if (defender->getType() == INSECT) {
+		Insect* defant = (Insect*)defender->getPtr();
+		defant->hp -= atkant->attack;
+		if (defant->hp <= 0) {
+			DeleteEntity(defr);
+			field->field[defant->pos_x][defant->pos_y]->IDs[0] = 0;
+		}
+	}
+
+
+}
+
+
+
+
+
 // MOVE
 
 void InfoSpace::MoveEntity(unsigned int id) {
@@ -1205,6 +1234,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 	else if ((ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2)) {
 		//ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
+		int entid = field->field[ant->aim.first][ant->aim.second]->IDs[0];
+		
+		if (entid!=0) {
+			attack(id, entid);
+		}
 		ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 		ant->action = 0;
 	}
@@ -1281,14 +1315,14 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 
 						
-						if (obj->getType() == Entities::FOOD) {
+						if (obj and obj->getType() == Entities::FOOD) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 							//ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 							ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 							ant->action = 1;
 							
 						}
-						if (obj->getType() == Entities::INSECT) {
+						if (obj and obj->getType() == Entities::INSECT) {
 							Insect* smth = (Insect*)obj->getPtr();
 							if (smth->curState == 0 and smth->type==APHID and smth->curState==0) {
 								ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
@@ -1296,19 +1330,25 @@ void InfoSpace::MoveEntity(unsigned int id) {
 								ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 								ant->action = 1;
 							} 
+							if (smth->curState == 0 and smth->type == LADYBUG  and smth->curState == 0) {
+								ant->nearest_En = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
+								//ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
+								ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
+								ant->action = 1;
+							}
 
 						}
-						if (obj->getType() == Entities::MATERIALS) {
+						if (obj and obj->getType() == Entities::MATERIALS) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 							//ant->aim = { rand() % 50 + 1,  rand() % 50 + 1 };
 							ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 							ant->action = 1;
 
 						}
-						else if (obj->getType() == Entities::ANT) {
+						else if (obj and obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if (smth == NULL)continue;
-							if (ant->action == 1 && smth->action <= 1 && ant->clan != smth->clan) {
+							if ( ant->clan != smth->clan) {
 								ant->nearest_En = {smth->pos_x, smth->pos_y};
 								smth->nearest_En = { ant->pos_x, ant->pos_y };
 							}
@@ -1319,6 +1359,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							}
 							if (smth->type == 3 && ant->action == 1 && smth->action <= 1 && ant->clan == smth->clan) {
 								smth->nearest_En = ant->nearest_En;
+								smth->action = 4;
 								smth->aim = ant->nearest_En;
 								
 							}
@@ -1340,7 +1381,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 					if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]) {
 						Entity* obj = entityList[this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->IDs[0]];
 
-						if (obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action < 2) {
+						if (obj and obj->getType() == Entities::MATERIALS && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Mat = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
@@ -1377,7 +1418,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 								ant->action = 2;
 							}
 						}
-						else if (obj->getType() == Entities::FOOD && ant->type == 2 && ant->action < 2) {
+						else if (obj and obj->getType() == Entities::FOOD && ant->type == 2 && ant->action < 2) {
 							ant->nearest_Fd = { (int)(ant->pos_x + i),(int)(ant->pos_y + j) };
 
 							pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
@@ -1410,7 +1451,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							ant->aim = na;
 							ant->action = 2;
 						}
-						else if (obj->getType() == Entities::INSECT && ant->type == 2 && ant->action < 2) {
+						else if (obj and obj->getType() == Entities::INSECT && ant->type == 2 && ant->action < 2) {
 
 							bool transporting_need = false;
 							bool isPrepearing = false;
@@ -1452,14 +1493,14 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							}
 						}
 						
-						else if (obj->getType() == Entities::ANT) {
+						else if (obj and obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
 							if ( ant->clan == smth->clan &&smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
 								
 							}
-							if (smth->action <= 1 && ant->clan != smth->clan) {
+							if (ant->clan != smth->clan) {
 								ant->nearest_En = { smth->pos_x, smth->pos_y };
 								smth->nearest_En = { ant->pos_x, ant->pos_y };
 							}
@@ -1470,6 +1511,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							}
 							if (ant->clan == smth->clan && smth->type == 3  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
 								smth->nearest_En = ant->nearest_En;
+								smth->action = 4;
 								smth->aim = ant->nearest_En;
 								
 

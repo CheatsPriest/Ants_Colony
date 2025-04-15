@@ -46,7 +46,7 @@ void processingEntities() {
 	for (int i = 0; i < 150; i++) {
 		ultimateData->CreateEntityAnt(start_x+20, 2*i+ start_y, 0, 0, 2,1);
 	}
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+30, i+ start_y, 0, 0, 3,1);
 	}
 	for (int i = 0; i < 10; i++) {

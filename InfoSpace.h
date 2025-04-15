@@ -90,7 +90,7 @@ public:
 	void MoveAphid(unsigned int id, Insect* insect);
 	pair<bool, Stockpile*> IndoorsStockpile(pair<int, int> p);
 	void MoveLadybug(unsigned int id, Insect* insect);
-
+	void attack(int atkr, int defr);
 	bool BornNewAnts(Ant* Queen);
 	bool FeedTheQueen(Ant* curAnt);
 	bool CreateEntityMaggot(int x, int y, int z, int clan);
