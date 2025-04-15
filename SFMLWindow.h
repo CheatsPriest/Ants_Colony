@@ -3,21 +3,6 @@
 #include "InfoSpace.h"
 using namespace std;
 
-static sf::Color Green      = sf::Color::Green;
-static sf::Color Blue       = sf::Color(0.4f, 0.4f, 0.9f);
-static sf::Color WhiteBlue  = sf::Color(0.4f, 0.1f, 0.9f);
-
-static sf::Color Yellow     = sf::Color(0.8f, 0.8f, 0.1f);
-
-static sf::Color Pink       = sf::Color(0.9f, 0.2f, 0.9f);
-
-static sf::Color Brown      = sf::Color(0.8f, 0.4f, 0.1f);
-
-static sf::Color Purple     = sf::Color(0.8f, 0.1f, 0.9f);
-
-static sf::Color Black      = sf::Color(0.01f, 0.01f, 0.01f);
-static sf::Color White      = sf::Color::White;
-static sf::Color Red        = sf::Color::Red;
 
 class Window_sfml {
 public:
@@ -53,7 +38,17 @@ private:
     void DrawFood_sfml      (int x, int y, sf::RenderWindow& window);
     void DrawMaterial_sfml  (int x, int y, sf::RenderWindow& window);
 
-
+    sf::Color scoutColor = sf::Color(0, 71, 171);
+    sf::Color aphidColor = sf::Color(33, 66, 30);
+    sf::Color workerColor = sf::Color(245, 245, 245);
+    sf::Color wallColor = sf::Color(76, 60, 24);
+    sf::Color soldierColor = sf::Color(255, 36, 0);
+    sf::Color queenColor = sf::Color(255, 215, 0);
+    sf::Color nurseColor = sf::Color(241, 156, 187);
+    sf::Color maggotColor = sf::Color(139, 0, 255);
+    sf::Color foodColor = sf::Color(0, 255, 127);
+    sf::Color materialColor = sf::Color(152, 118, 84);
+    sf::Color ladybugColor = sf::Color(255, 79, 0);
 
     Field* field = { };
 
