@@ -221,21 +221,20 @@ void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
 
 
 
-void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
+void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect& visibleArea) {
 
     cell_size = data->cell_size;
-    c_x = 0;/*= data->x_cam / cell_size;*/
-    c_y = 0;/* = data->y_cam / cell_size;*/
-    //c_x = c_y = 0;
 
-    //max_x = data->main_window_wide;
-    //max_y = data->main_window_hight;
-    max_x = data->field_size_x;
-    max_y = data->field_size_y;
+    int mapWidth = data->field_size_x; 
+    int mapHeight = data->field_size_y;
 
-        
-    for (int x = 0; x < max_x; x++) {
-        for (int y = 0; y < max_y; y++) {
+    int startX = std::max(0, static_cast<int>(visibleArea.left / cell_size));
+    int endX = std::min(mapWidth, static_cast<int>((visibleArea.left + visibleArea.width) / cell_size) + 1);
+    int startY = std::max(0, static_cast<int>(visibleArea.top / cell_size));
+    int endY = std::min(mapHeight, static_cast<int>((visibleArea.top + visibleArea.height) / cell_size) + 1);
+
+    for (int x = startX; x < endX; x++) {
+        for (int y = startY; y < endY; y++) {
             draw_x = x * cell_size;
             draw_y = y * cell_size;
 

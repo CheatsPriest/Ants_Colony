@@ -23,7 +23,7 @@ class Window_sfml {
 public:
 
     Window_sfml(InfoSpace* data_p);
-    void DrawMainScene_sfml (sf::RenderWindow& mainWindow); 
+    void DrawMainScene_sfml (sf::RenderWindow& mainWindow, sf::FloatRect& visibleArea); 
 
 private:
 

@@ -89,9 +89,9 @@ void processingEntities() {
 	for (auto el : ultimateData->entityList) {
 		break;
 		Entity* curr = el.second;
-		if (curr->getType() == Entities::ANT) {
-			Ant* currAnt = (Ant*)(curr->getPtr());
-			currAnt->info();
+			if (curr->getType() == Entities::ANT) {
+				Ant* currAnt = (Ant*)(curr->getPtr());
+				currAnt->info();
 			
 			
 		}
@@ -101,7 +101,6 @@ void processingEntities() {
 		}
 		else if (curr->getType() == Entities::INSECT) {
 			Insect* currInsect = (Insect*)curr;
-			//currInsect->info();
 		}
 	}
 
@@ -129,8 +128,7 @@ void processingEntities() {
 	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
 
 	view.zoom(1);
-	//view.setCenter(desktopMode.width / 2, desktopMode.height / 2);
-	view.setCenter(start_x, start_y);
+	view.setCenter(start_x * ultimateData->cell_size, start_y * ultimateData->cell_size);
 	// Camera
 	
 	sf::Clock clock;
@@ -208,13 +206,23 @@ void processingEntities() {
 
 				ultimateData->MoveInsect(ent.first);
 
-				//insect->move(ultimateData->entityList, ent.first);
 			}
 
 		}
-		
+
+		sf::Vector2f viewCenter = view.getCenter();
+		sf::Vector2f viewHalfSize = view.getSize() / 2.0f;
+
+		sf::FloatRect visibleArea(
+			(viewCenter.x - viewHalfSize.x),
+			viewCenter.y - viewHalfSize.y,
+			view.getSize().x,
+			view.getSize().y
+		);
+
 		mainWindow.clear();
-		start->DrawMainScene_sfml(mainWindow);
+
+		start->DrawMainScene_sfml(mainWindow, visibleArea);
 		mainWindow.display();
 	}
 
@@ -224,16 +232,8 @@ void processingEntities() {
 
 
 int main() {
-
-	
-	//����� ��������� Entity
 	thread ProcessingEntity(processingEntities);
-	//����� ���������
-	//thread Drow(draw);
-	
-
 
 	ProcessingEntity.join();
-	//Drow.join();
 	return 0;
 }
