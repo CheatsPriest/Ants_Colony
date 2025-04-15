@@ -133,17 +133,27 @@ void processingEntities() {
 	
 	sf::Clock clock;
 
+	bool isPaused = false;
+
 	while (mainWindow.isOpen())
 	{
-
 		sf::Event event;
 
 		while (mainWindow.pollEvent(event))
 		{
 			if ((event.type == sf::Event::Closed) ||
-				(event.type == sf::Event::KeyPressed &&
-					event.key.code == sf::Keyboard::Escape))
+				(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+			{
 				mainWindow.close();
+			}
+
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::Space && isPaused) 
+					isPaused = false;
+				else if (event.key.code == sf::Keyboard::Space && !isPaused) 
+					isPaused = true;
+			}
 
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
@@ -156,13 +166,13 @@ void processingEntities() {
 					view.zoom(1.0f / currentZoom);
 				}
 			}
+
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::B)
 			{
 				view.setCenter(start_x * ultimateData->cell_size, start_y * ultimateData->cell_size);
 			}
-
 		}
-		
+
 		float deltaTime = clock.restart().asSeconds();
 		sf::Vector2f movement(0, 0);
 
@@ -178,41 +188,35 @@ void processingEntities() {
 		view.move(movement / currentZoom);
 		mainWindow.setView(view);
 
-
-		if (tick++ > 200) {
-			tick = 1;
-		}
-		for (auto el : ultimateData->coloniesList) {
-
-			ultimateData->BuildNewStockpile(el.second);
-
-		}
-
-		if (tick % 5 == 0) {
-			ultimateData->RecountAphid();
-		}
-
-
-		for (auto ent : ultimateData->entityList)
+		if (!isPaused)
 		{
-
-			Entity* curr = ent.second;
-			if (curr && curr->getType() == Entities::ANT)
+			if (tick++ > 200) 
 			{
-
-				ultimateData->MoveEntity(ent.first);
-
-
-
-			}
-			else if (curr and curr->getType() == Entities::INSECT)
-			{
-				Insect* insect = (Insect*)curr;
-
-				ultimateData->MoveInsect(ent.first);
-
+				tick = 1;
 			}
 
+			for (auto el : ultimateData->coloniesList) 
+			{
+				ultimateData->BuildNewStockpile(el.second);
+			}
+
+			if (tick % 5 == 0) 
+			{
+				ultimateData->RecountAphid();
+			}
+
+			for (auto ent : ultimateData->entityList)
+			{
+				Entity* curr = ent.second;
+				if (curr && curr->getType() == Entities::ANT) 
+				{
+					ultimateData->MoveEntity(ent.first);
+				}
+				else if (curr && curr->getType() == Entities::INSECT) 
+				{
+					ultimateData->MoveInsect(ent.first);
+				}
+			}
 		}
 
 		sf::Vector2f viewCenter = view.getCenter();
@@ -226,12 +230,9 @@ void processingEntities() {
 		);
 
 		mainWindow.clear();
-
 		start->DrawMainScene_sfml(mainWindow, visibleArea);
 		mainWindow.display();
 	}
-
-
 }
 
 
