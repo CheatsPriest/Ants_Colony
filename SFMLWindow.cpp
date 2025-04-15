@@ -1,3 +1,4 @@
+#include "InfoSpace.h"
 #include "SFMLWindow.h"
 #include "stdlib.h"
 #include <ctime>
@@ -5,8 +6,8 @@
 #include <iostream>
 #include <cstdlib>
 
-int c_x;
-int c_y;
+int c_x = 0;
+int c_y = 0;
 int max_x, max_y;
 int cell_size;
 int draw_x, draw_y;
@@ -17,7 +18,6 @@ Entity* cur;
 Window_sfml::Window_sfml(InfoSpace* data_p)
 {
     data = data_p;
-    
 }
 
 void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow& window)
@@ -77,7 +77,7 @@ void Window_sfml::DrawNurse_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 }
 
-void Window_sfml::DrawAphid_sfml(int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawAphid_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
 {
     sf::RectangleShape rect;
 
@@ -112,7 +112,7 @@ void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow
 
 }
 
-void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawLadybug_sfml  (int x, int y, unsigned id, sf::RenderWindow& window)
 {
     sf::RectangleShape rect;
 
@@ -224,18 +224,20 @@ void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
 void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
 
     cell_size = data->cell_size;
-    c_x = data->x_cam / cell_size;
-    c_y = data->y_cam / cell_size;
+    c_x = 0;/*= data->x_cam / cell_size;*/
+    c_y = 0;/* = data->y_cam / cell_size;*/
+    //c_x = c_y = 0;
 
-    max_x = c_x + data->main_window_wide / data->cell_size;
-    max_y = c_y + data->main_window_hight / data->cell_size;
-
+    //max_x = data->main_window_wide;
+    //max_y = data->main_window_hight;
+    max_x = data->field_size_x;
+    max_y = data->field_size_y;
 
         
-    for (int x = c_x; x < max_x; x++) {
-        for (int y = c_y; y < max_y; y++) {
-            draw_x = (x - c_x) * cell_size;
-            draw_y = (y - c_y) * cell_size;
+    for (int x = 0; x < max_x; x++) {
+        for (int y = 0; y < max_y; y++) {
+            draw_x = x * cell_size;
+            draw_y = y * cell_size;
 
             if (data->field->field[x][y][data->z_cam].cWall != 0) {
                 DrawWall_sfml(draw_x, draw_y, mainWindow);
@@ -252,7 +254,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow) {
                     Ant* curAnt = (Ant*)(cur->getPtr());
 
                     if (curAnt->type == 1) {
-                        DrawScout_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawScout_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);   
                     }
                     else if (curAnt->type == 2) {
                         DrawWorker_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);

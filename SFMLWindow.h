@@ -27,7 +27,7 @@ public:
 
 private:
 
-    int wide, hight;
+    int wide = 0, hight = 0;
     
 
     sf::Texture scout_texture, worker_texture, soldier_texture,
@@ -55,7 +55,7 @@ private:
 
 
 
-    Field* field;
+    Field* field = { };
 
 
 

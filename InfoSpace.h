@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include <map>
 #include "Field.h"
-
+#include "SFML/Graphics.hpp"
 #include "Collector.h"
 #include "Stockpile.h"
 #include "Colony.h"
@@ -49,8 +49,8 @@ public:
 		
 		cell_size = cam_speed;
 
-		main_window_wide = 1000;
-		main_window_hight = 1000;
+		main_window_wide = 2520;
+		main_window_hight = 1680;
 
 		field_size_x = size_x;
 		field_size_y = size_y;

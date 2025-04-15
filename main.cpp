@@ -1,6 +1,7 @@
 
 #include "includes.h"
 //#include "ImGuiTail.h"
+#include "InfoSpace.h"
 #include "SFMLWindow.h"
 #include "Entity.h";
 #include "Collector.h"
@@ -127,8 +128,9 @@ void processingEntities() {
 
 	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
 
-	view.zoom(1.0f / currentZoom);
-	view.setCenter(desktopMode.width / 2, desktopMode.height / 2);
+	view.zoom(1);
+	//view.setCenter(desktopMode.width / 2, desktopMode.height / 2);
+	view.setCenter(start_x, start_y);
 	// Camera
 	
 	sf::Clock clock;
