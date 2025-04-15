@@ -487,7 +487,11 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 			if (field->field[i][j][z].cWall!=0)return false;
 		}
 	}
+
+
+
 	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key, clan);
+	field->field[x][y][z].stockID = free_stockpile_key;
 	cout << free_stockpile_key;
 
 	stockpileList.insert({ free_stockpile_key, new_stock });
