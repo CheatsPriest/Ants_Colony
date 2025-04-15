@@ -24,6 +24,14 @@ void InfoSpace::moveToCeil(pair<int, int> newPos2, unsigned int id, Insect* curr
 	curr->pos_x = newPos2.first;
 	curr->pos_y = newPos2.second;
 }
+
+void InfoSpace::moveToCeilBackBase(pair<int, int> newPos2, unsigned int id, Insect* curr) {
+	//if (field->field[newPos2.first][newPos2.second][0].cWall != 0 or abs(curr->pos_x - newPos2.first) > 2 or abs(curr->pos_y - newPos2.second) > 2)return;
+	field->field[curr->pos_x][curr->pos_y][0].IDs[0] = 0;
+	field->field[newPos2.first][newPos2.second][0].IDs[0] = id;
+	curr->pos_x = newPos2.first;
+	curr->pos_y = newPos2.second;
+}
 void InfoSpace::RandomMove(pair<int, int> newPos2, unsigned int id, Insect* insect) {
 
 
@@ -85,7 +93,8 @@ if (insect->goToBase) {
 	pair<int, int> expectedPoint = { insect->pos_x + direct.first, insect->pos_y + direct.second };
 
 	if (isValidCell(expectedPoint) && isFreeCell(expectedPoint)) {
-		moveToCeil(expectedPoint, id, insect);
+		moveToCeilBackBase(expectedPoint, id, insect);
+		(expectedPoint, id, insect);
 		return;
 	}
 	else {
@@ -95,7 +104,7 @@ if (insect->goToBase) {
 			p.first = insect->pos_x + rand() % 3 - 1;
 			p.second = insect->pos_y + rand() % 3 - 1;
 			if (isValidCell(p) && isFreeCell(p)) {
-				moveToCeil(p, id, insect);
+				moveToCeilBackBase(p, id, insect);
 				break;
 			}
 			k++;
@@ -159,7 +168,7 @@ if (ps.first) {
 		unsigned int id_ = field->field[detectedCoord.first][detectedCoord.second][0].IDs[0];
 		field->field[detectedCoord.first][detectedCoord.second][0].IDs[0] = 0;
 		entityList.erase(id_);
-
+		cout << "KILLED" << "\n";
 		insect->goToBase = true;
 		insect->isTriggered = false;
 		insect->updateBaseCoords(field_size_x, field_size_y);
