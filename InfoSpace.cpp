@@ -1153,7 +1153,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		else if (ant->action == 6 and ant->type == WORKER and ant->stashid != 0 and stockpileList[ant->stashid]->needWalled == false) {
 			TryToDrop(ant);
 			ant->action = 0;
-		}
+		}//ЪЮбвллллллллллллллллллллллллллллллллллллллллллллллллллллЫм 1013
 		
 		else if (ant->inventary == 0 && ant->action == 2) {
 			ant->action = 0;
