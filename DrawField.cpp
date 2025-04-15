@@ -10,6 +10,7 @@ unsigned int work_id;
 
 
 Entity* cur;
+Colony* curColon;
 
 void Window::DrawBase() {
     
@@ -146,6 +147,8 @@ void Window::DrawMainScene() {
                         else if (curAnt->type == 0) {
                             DrawQueen(draw_x, draw_y, field->field[x][y][data->z_cam].IDs[0]);
                         }
+                        curColon = data->coloniesList[curAnt->clan];
+                        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + (float)data->cell_size / 4 - 1.0f, draw_y + (float)data->cell_size/4 - 1.0f), ImColor(curColon->red, curColon->green, curColon->blue), 0.1f, 0);
                         
                     }
                     else if (cur->getType() == Entities::FOOD) {
@@ -181,7 +184,7 @@ void Window::DrawMainScene() {
         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(100, 100), ImVec2(200, 200), Green, 0.f, 0);
 
         Stockpile* curStock;
-        Colony* curColon;
+       
         for (auto el : data->stockpileList) {
             curStock = el.second;
             //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
