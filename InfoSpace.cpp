@@ -1097,10 +1097,15 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	}
 
 	if (ant->action==3) {
-		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2) {
+		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 10) {
 			cout << "EAT" << endl;
 			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
 			ant->action = ant->paction;
+			if (ant->action == 6) {
+				ant->action = 0;
+				TryToDrop(ant);
+				ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
+			}
 			ant->aim = ant->paim;
 		}
 	}
@@ -1155,6 +1160,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		else if (ant->action == 6 and ant->type == WORKER and ant->stashid != 0 and stockpileList[ant->stashid]->needWalled == false) {
 			TryToDrop(ant);
 			ant->action = 0;
+			ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 		}//ЪЮбвллллллллллллллллллллллллллллллллллллллллллллллллллллЫм 1013
 		
 		else if (ant->inventary == 0 && ant->action == 2) {
@@ -1222,12 +1228,14 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							stash->needWalled = false;
 						}
 						ant->action = 0;
+						ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 					}
 
 				}
 				else {
 					TryToDrop(ant);
 					ant->action = 0;
+					ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 				}
 			}
 		
@@ -1486,7 +1494,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							if (smth->type == APHID) {
 								pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 								for (auto stock : stockpileList) {
-									if (stock.second->clan == ant->clan and stock.second->type == 2 and stock.second->needWalled == true) {
+									if (stock.second->clan != ant->clan)continue;
+									if (stock.second->type == 2 and stock.second->needWalled == true) {
 										isPrepearing = true;
 									}
 									if (stock.second->type == 2 and stock.second->needWalled == false && stock.second->food_collected < stock.second->size_x / 2) {

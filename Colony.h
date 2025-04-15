@@ -39,6 +39,10 @@ public:
 	unsigned int closestStockToQueen;
 
 	Ant* Queen;
+
+	float red;
+	float green;
+	float blue;
 	
 	Colony(int _clan, int x, int y, int z) {
 		clan = _clan;
@@ -68,8 +72,9 @@ public:
 		needNewAphidStock = false;
 		needNewMaggotStock = false;
 
-		
-
+		red = (float)(rand() % 100) / 100;
+		green = (float)(rand() % 100) / 100;
+		blue = (float)(rand() % 100) / 100;
 	}
 
 };

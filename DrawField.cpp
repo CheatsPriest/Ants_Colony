@@ -96,8 +96,8 @@ void Window::DrawMainScene() {
             curColony = el.second;
             draw_x = (curColony->base_x - c_x) * cell_size;
             draw_y = (curColony->base_y - c_y) * cell_size;
-            ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(draw_x, draw_y), (float)(curColony->base_radius * cell_size), Red, 0, 1.2f);
-            ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(draw_x, draw_y), (float)(curColony->base_radius * curColony->scouts_courage * cell_size), Red, 0, 1.2f);
+            ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(draw_x, draw_y), (float)(curColony->base_radius * cell_size), ImColor(curColony->red, curColony->green, curColony->blue), 0, 1.2f);
+            ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(draw_x, draw_y), (float)(curColony->base_radius * curColony->scouts_courage * cell_size), ImColor(curColony->red, curColony->green, curColony->blue), 0, 1.2f);
         }
 
 
@@ -181,10 +181,12 @@ void Window::DrawMainScene() {
         //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(100, 100), ImVec2(200, 200), Green, 0.f, 0);
 
         Stockpile* curStock;
+        Colony* curColon;
         for (auto el : data->stockpileList) {
             curStock = el.second;
             //cout << curStock->pos_x << " " << curStock->pos_x + curStock->size_x << endl;
-            ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x)* cell_size - data->x_cam, (curStock->pos_y)* cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x)* cell_size - data->x_cam, (curStock->pos_y + curStock->size_y)* cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
+            curColon = data->coloniesList[curStock->clan];
+            ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x)* cell_size - data->x_cam, (curStock->pos_y)* cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x)* cell_size - data->x_cam, (curStock->pos_y + curStock->size_y)* cell_size - data->y_cam), ImColor(curColon->red, curColon->green, curColon->blue), 0.1f, 0, 2.0f);
             if (curStock->type == FOOD_STOCK) {
                 for (int i = 0; i < curStock->size_y; i++) {
                     for (int j = 0; j < curStock->size_x; j++) {
