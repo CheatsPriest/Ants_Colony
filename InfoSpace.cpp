@@ -915,7 +915,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 
 	}
 
-	if (curColony->needNewAphidStock) {
+	if (curColony->needNewAphidStock and curColony->numWorker>50) {
 
 		int x, y, z;
 		int tries = tri;
@@ -1029,7 +1029,9 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	
 	int wh = 0;
 	int num = this->field->field[ant->pos_x][ant->pos_y]->CutEntity(0);
-	while (this->field->field[(int)(ant->pos_x + dt[wh][2])][(int)(ant->pos_y + dt[wh][3])]->IDs[0] && wh != 9) {
+	while ((this->field->field[(int)(ant->pos_x + dt[wh][2])][(int)(ant->pos_y + dt[wh][3])]->IDs[0]
+		or (this->field->field[(int)(ant->pos_x + dt[wh][2])][(int)(ant->pos_y + dt[wh][3])]->cWall and this->field->field[(int)(ant->pos_x + dt[wh][2])][(int)(ant->pos_y + dt[wh][3])]->cWall->clan!=ant->clan)
+		) && wh != 9) {
 		wh += 1;
 	}
 		
@@ -1041,7 +1043,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 	// hungrys >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	ant->saturation -= 0.01; // randommmmmmmmmmmmm
+	ant->saturation -= 0.02; // randommmmmmmmmmmmm
 
 	if (ant->saturation < 0) {
 		ant->HP -= 0.1;
@@ -1302,7 +1304,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				int source = 0;
 				for (auto stock : stockpileList) {
 					Stockpile* stash = stock.second;
-					if (stash->type == 3) {
+					if (stash->type == 3 and stash->clan==ant->clan) {
 						source = stash->id;
 					}
 				}
