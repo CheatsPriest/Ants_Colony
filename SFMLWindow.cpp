@@ -302,8 +302,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect
     Stockpile* curStock;
     for (auto el : data->stockpileList) {
         curStock = el.second;
-        //ImGui::GetBackgroundDrawList()->AddRect(ImVec2((curStock->pos_x) * cell_size - data->x_cam, (curStock->pos_y) * cell_size - data->y_cam), ImVec2((curStock->pos_x + curStock->size_x) * cell_size - data->x_cam, (curStock->pos_y + curStock->size_y) * cell_size - data->y_cam), Red, 0.1f, 0, 2.0f);
-        // ������� ������
+
         if (curStock->type == FOOD_STOCK) {
             for (int i = 0; i < curStock->size_y; i++) {
                 for (int j = 0; j < curStock->size_x; j++) {

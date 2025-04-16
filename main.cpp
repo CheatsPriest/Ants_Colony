@@ -156,7 +156,7 @@ void processingEntities() {
 
 	view.zoom(1);
 	view.setCenter(start_x * ultimateData->cell_size, start_y * ultimateData->cell_size);
-	view.setSize(desktopMode.width / 4, desktopMode.height / 4);
+	view.setSize(desktopMode.width, desktopMode.height);
 	// Camera
 	
 	sf::Clock clock;
