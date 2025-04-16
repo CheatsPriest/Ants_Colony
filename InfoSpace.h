@@ -118,6 +118,10 @@ public:
 	void BuildNewStockpile(Colony* curColony);
 	void RecountAphid();
 
+	pair<int, int> random_base_pos(int clan);
+	pair<int, int> random_base_pos(Colony* cur);
+	pair<int, int> random_scout_pos(Colony* cur);
+
 	~InfoSpace() {
 		delete field;
 	}
