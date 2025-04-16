@@ -993,18 +993,16 @@ void InfoSpace::attack(int atkr, int defr) {
 		Ant* defant = (Ant*)defender->getPtr();
 		defant->HP -= atkant->attack;
 		if (defant->HP <= 0) {
-			field->field[defant->pos_x][defant->pos_y]->IDs[0] = 0;
 			DeleteEntity(defr);
-			
+			field->field[defant->pos_x][defant->pos_y]->IDs[0]=0;
 		}
 	}
 	if (defender->getType() == INSECT) {
 		Insect* defant = (Insect*)defender->getPtr();
 		defant->hp -= atkant->attack;
 		if (defant->hp <= 0) {
-			field->field[defant->pos_x][defant->pos_y]->IDs[0] = 0;
 			DeleteEntity(defr);
-			
+			field->field[defant->pos_x][defant->pos_y]->IDs[0] = 0;
 		}
 	}
 
