@@ -120,6 +120,7 @@ void processingEntities() {
 	}
 
 	
+	ultimateData->ReCalculateTheColony();
 
 	while (ultimateData->mainLoop) {
 

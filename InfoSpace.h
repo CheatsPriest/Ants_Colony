@@ -109,8 +109,13 @@ public:
 	void spawnEat(pair<int, int> position) {
 		double chaince = 0.001;
 		if ( ((double)(rand() % 10000) / 10000) <= chaince) {
-			cout << (rand() % 10000) / 10000 << "\n";
 			CreateEntityFood(position.first, position.second, 0, 0, 2000, 10);
+		}
+	}
+	void spawnEat1(pair<int, int> position) {
+		double chaince = 0.001;
+		if (((double)(rand() % 10000) / 10000) <= chaince) {
+			CreateEntityFood(position.first+rand()%20-10, position.second+rand()%20-10, 0, 0, 2000, 10);
 		}
 	}
 

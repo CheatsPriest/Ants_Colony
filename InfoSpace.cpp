@@ -253,7 +253,11 @@ void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
 			if (flag) {
 				pair<int, int> lastPos = { insect->pos_x, insect->pos_y };
 				moveToCeil(p, id, insect);
+				if(insect->curState==0)
 				spawnEat(lastPos);
+				else {
+					spawnEat1(lastPos);
+				}
 
 			}
 			p = { insect->pos_x, insect->pos_y };
@@ -328,7 +332,12 @@ void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
 			}
 		}
 		if (hasMoved) {
-			spawnEat(lastPos);
+			if (insect->curState == 0)
+				spawnEat(lastPos);
+			else {
+				spawnEat1(lastPos);
+			}
+
 		}
 
 		float vec = pow(insect->aim_pos.first - insect->pos_x, 2) + pow(insect->aim_pos.second - insect->pos_y, 2);
@@ -599,6 +608,8 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 				Maggot* curMaggot = (Maggot*)entityList[ind]->getPtr();
 				if (curMaggot->release_timer <= 0) {
 
+					Colony* motherColony = coloniesList[curMaggot->clan];
+
 					int whoWillBorn=0;
 					int rock = rand() % 100;
 
@@ -614,10 +625,17 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 					else if (rock >= 55) {
 						whoWillBorn = SCOUT;
 					}
-					if (rand() % 100 < coloniesList[curMaggot->clan]->chanceOfIncreasingRadius) {
-						coloniesList[curMaggot->clan]->base_radius++;
+					if (rand() % 100 < motherColony->chanceOfIncreasingRadius) {
+						
+						motherColony->base_radius++;
+						motherColony->spreading_radius = motherColony->base_radius / 2;
 					}
 					CreateEntityAnt(i + curStock->pos_x, j + curStock->pos_y, curStock->pos_z, 0, whoWillBorn, curMaggot->clan);
+
+					for (int i = 0; i < 2; i++) {
+						CreateEntityAnt(random_base_pos(curMaggot->clan).first, random_base_pos(curMaggot->clan).second, 0, 0, whoWillBorn, curMaggot->clan);
+					}
+					
 
 					curStock->stuff[i][j] = 0;
 
@@ -891,15 +909,30 @@ pair<int, int> InfoSpace::random_base_pos(int clan) {
 }
 
 pair<int, int> InfoSpace::random_base_pos(Colony* cur) {
+	int ans1, ans2;
+	if (rand() % 10 > 7) {
+		ans1= cur->base_x + (rand() % (cur->base_radius)) * ((rand() % 2) * 2 - 1);
+		ans2 = cur->base_y + (rand() % (cur->base_radius)) * ((rand() % 2) * 2 - 1);
+	}
+	else {
+		ans1 = cur->base_x + (rand() % (cur->base_radius)+ cur->spreading_radius) * ((rand() % 2) * 2 - 1);
+		ans2 = cur->base_y + (rand() % (cur->base_radius) + cur->spreading_radius) * ((rand() % 2) * 2 - 1);
+	}
+	
 
-
-	int ans1 = cur->base_x + (rand() % (cur->base_radius )) * ((rand() % 2)*2-1);
-	int ans2 = cur->base_y + (rand() % (cur->base_radius )) * ((rand() % 2)*2-1);
 	return {ans1, ans2};
 }
 pair<int, int> InfoSpace::random_scout_pos(Colony* cur) {
-	int ans1 = cur->base_x + (rand() % (cur->base_radius* cur->scouts_courage)) * ((rand() % 2) * 2 - 1);
-	int ans2 = cur->base_y + (rand() % (cur->base_radius * cur->scouts_courage)) * ((rand() % 2) * 2 - 1);
+	int ans1, ans2;
+	if (rand() % 10 > 5) {
+		ans1 = cur->base_x + (rand() % (cur->base_radius * cur->scouts_courage)) * ((rand() % 2) * 2 - 1);
+		ans2 = cur->base_y + (rand() % (cur->base_radius * cur->scouts_courage)) * ((rand() % 2) * 2 - 1);
+	}
+	else {
+		ans1 = cur->base_x + (rand() % (cur->base_radius * cur->scouts_courage) + cur->spreading_radius) * ((rand() % 2) * 2 - 1);
+		ans2 = cur->base_y + (rand() % (cur->base_radius * cur->scouts_courage) + cur->spreading_radius) * ((rand() % 2) * 2 - 1);
+	}
+	
 	return { ans1, ans2 };
 }
 
@@ -1209,7 +1242,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			// ant->aim = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 		}
 
-		else if ((ant->action == 0 and rand()%10 < 3) or (ant->dest > 0 && ant->dest<stockpileList.size() && stockpileList[ant->dest]->needWalled == false)) {
+		else if ((ant->action == 0 and rand()%curColony->numWorker < 15) or (ant->dest > 0 && ant->dest<stockpileList.size() && stockpileList[ant->dest]->needWalled == false)) {
 			pair<int, int> stocks = searchmat(ant->clan);
 			ant->source = stocks.first;
 			ant->dest = stocks.second;
@@ -1262,7 +1295,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 			}
 			else {
 				Stockpile* stash = stockpileList[ant->dest];
-				if (stash->needWalled == true &&(dist(ant->aim.first, ant->aim.second, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)<= 3*dist(stash->pos_x + stash->size_x + 1, stash->pos_y + stash->size_y+1, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)+8)) {
+				if (stash->needWalled == true &&(dist(ant->aim.first, ant->aim.second, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)<= 3*dist(stash->pos_x + stash->size_x + 1, stash->pos_y + stash->size_y+1, stash->pos_x + stash->size_x / 2, stash->pos_y + stash->size_y / 2)+18)) {
 					if (BuildWall(ant)) {
 						stash->wall_len += 1;
 						if (stash->wall_len == ((stash->size_x + stash->size_y + 2) * 2)) {
@@ -1284,7 +1317,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 		
 		}
 		if (ant->action == 0 and ant->inventary!=0) {
-			TryToDrop(ant);
+			//TryToDrop(ant);
 		}
 		if (ant->action < 4) {
 			//ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы

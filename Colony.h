@@ -14,6 +14,7 @@ public:
 	int chanceOfIncreasingRadius;
 
 	int base_radius;
+	int spreading_radius;
 
 	void NullEverything();
 
@@ -52,6 +53,8 @@ public:
 		base_z = z;
 
 		base_radius = 70;
+		spreading_radius = 10;
+
 		numWorker = 0;
 		numScouts = 0;
 		numSoldier = 0;
@@ -65,7 +68,7 @@ public:
 		//динамические статы
 		scouts_courage = 2;
 		delta_stock = 15;
-		chanceOfIncreasingRadius = 20;
+		chanceOfIncreasingRadius = 35; 
 
 		//флаги
 		needNewFoodStock = false;
