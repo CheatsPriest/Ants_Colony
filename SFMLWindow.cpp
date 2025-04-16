@@ -247,6 +247,7 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
         circle.setRadius(cl.second->base_radius * cell_size);
         circle.setPosition((cl.second->base_x -cl.second->base_radius)*cell_size, (cl.second->base_y - cl.second->base_radius ) * cell_size);
         circle.setFillColor({ (sf::Uint8)cl.second->red, (sf::Uint8)cl.second->green, (sf::Uint8)cl.second->blue });
+        //circle.set
         mainWindow->draw(circle);
 
     }
@@ -361,6 +362,9 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                 }
             }
         }
+        else if (curStock->type == APHID_STOCK) {
+            
+        }
         else if (curStock->type == MAGGOT_STOCK) {
             data->Hatching(curStock);
             for (int i = 0; i < curStock->size_y; i++) {
@@ -371,13 +375,14 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                         cur = data->entityList[work_id];
                         Maggot* curMat = (Maggot*)(cur->getPtr());
 
-                        draw_x = curStock->pos_x + i * cell_size;
-                        draw_y = curStock->pos_y + j * cell_size;
+                        draw_x = (curStock->pos_x + i) * cell_size;
+                        draw_y = (curStock->pos_y + j) * cell_size;
                         DrawMaggot_sfml(draw_x, draw_y, work_id);
                     }
                 }
             }
         }
+
     }
     
 }

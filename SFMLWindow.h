@@ -42,9 +42,9 @@ private:
     void DrawMaterial_sfml(int x, int y, unsigned id);
 
     sf::Color scoutColor    =   sf::Color(0, 71, 171);
-    sf::Color aphidColor    =   sf::Color(33, 66, 30);
+    sf::Color aphidColor    =   sf::Color(93, 96, 90);
     sf::Color workerColor   =   sf::Color(245, 245, 245);
-    sf::Color wallColor     =   sf::Color(76, 60, 24);
+    sf::Color wallColor     =   sf::Color(76, 60, 204);
     sf::Color soldierColor  =   sf::Color(255, 36, 0);
     sf::Color queenColor    =   sf::Color(255, 215, 0);
     sf::Color nurseColor    =   sf::Color(241, 156, 187);
