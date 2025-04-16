@@ -123,9 +123,11 @@ void processingEntities() {
 	
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 	sf::RenderWindow mainWindow(desktopMode, "Ant Colony", sf::Style::Fullscreen);
+	sf::RectangleShape rect;
+
 
 	Window_sfml* start = new Window_sfml(ultimateData, &mainWindow);
-
+	start->rect = rect;
 		
 
 		if (tick++ > 300) {
@@ -162,6 +164,8 @@ void processingEntities() {
 	sf::Clock clock;
 
 	bool isPaused = false;
+
+	
 
 	while (mainWindow.isOpen())
 	{
@@ -264,6 +268,7 @@ void processingEntities() {
 
 		mainWindow.clear();
 		start->DrawMainScene_sfml(visibleArea);
+	
 		mainWindow.display();
 	}
 }

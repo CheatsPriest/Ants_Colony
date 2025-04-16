@@ -5,13 +5,14 @@
 using namespace std;
 
 
+
 class Window_sfml {
 public:
 
     Window_sfml(InfoSpace* data_p, sf::RenderWindow* window);
     
     void DrawMainScene_sfml (sf::FloatRect& visibleArea); 
-
+    sf::RectangleShape rect;
 private:
 
     int wide = 0, hight = 0;
@@ -56,6 +57,9 @@ private:
 
     sf::RenderWindow* mainWindow;
 
+   
+
+    float size;
 };
 
 #endif SFML_H

@@ -12,19 +12,24 @@ int draw_x, draw_y;
 unsigned int work_id;
 Entity* cur;
 
+
+
 Window_sfml::Window_sfml(InfoSpace* data_p, sf::RenderWindow* window)
 {
     data = data_p;
     mainWindow = window;
+   
+    
+
 }
 
 void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned int id)
 {
 
-    sf::RectangleShape rect;
+    
 
     
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
     
 
@@ -41,10 +46,10 @@ void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawQueen_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -59,10 +64,10 @@ void Window_sfml::DrawQueen_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawNurse_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -77,10 +82,10 @@ void Window_sfml::DrawNurse_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawAphid_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -94,10 +99,10 @@ void Window_sfml::DrawAphid_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawScout_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -112,10 +117,10 @@ void Window_sfml::DrawScout_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -129,10 +134,10 @@ void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawWorker_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -147,10 +152,10 @@ void Window_sfml::DrawWorker_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawSoldier_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -165,10 +170,10 @@ void Window_sfml::DrawSoldier_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawFood_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -183,10 +188,10 @@ void Window_sfml::DrawFood_sfml(int x, int y, unsigned int id)
 
 void Window_sfml::DrawMaterial_sfml(int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -197,15 +202,15 @@ void Window_sfml::DrawMaterial_sfml(int x, int y, unsigned int id)
 
     mainWindow->draw(rect);
     
-
+    return;
 }
 
 void Window_sfml::DrawWall_sfml (int x, int y, unsigned int id)
 {
-    sf::RectangleShape rect;
+    
 
 
-    float size = data->cell_size - 2.0f;
+    size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
 
 
@@ -251,6 +256,7 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 
 
                 if (cur == NULL) continue;
+
                 if (cur->getType() == Entities::ANT) {
                     Ant* curAnt = (Ant*)(cur->getPtr());
 
