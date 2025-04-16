@@ -40,7 +40,7 @@ public:
 		size_y = hight;
 		type = cur_type;
 
-		needWalled = false;
+		needWalled = true;
 		
 		if (type == APHID_STOCK) {
 			needWalled = true;

@@ -1,23 +1,28 @@
 
 #include "includes.h"
-#include "ImGuiTail.h"
+//#include "ImGuiTail.h"
+#include "InfoSpace.h"
+#include "SFMLWindow.h"
 #include "Entity.h";
 #include "Collector.h"
 #include "unordered_map"
 #include <thread>
 #include <conio.h>
-#include <Windows.h>
 #include <random>
+#include <Windows.h>
+#include "SFML/Graphics.hpp"
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+#include <iostream>
+#define NOMINMAX
+
+
 
 InfoSpace* ultimateData = new InfoSpace;
 
 
 void processingEntities() {
-	Window* mainWindow = new Window(ultimateData);
-
-
-	srand(time(0));
-
 	
 
 	int start_x = 1000;
@@ -46,17 +51,14 @@ void processingEntities() {
 	ultimateData->CreateEntityAnt(start_x+50, start_y+50, 0, 0, 0, 1);
 	ultimateData->CreateEntityAnt(start_x1 + 50, start_y1 + 50, 0, 0, 0, 2);
 
-	for (int i = 0; i < 200; i++) {
+	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+10, 2 * i+ start_y, 0, 0, 1,1);
 	}
-	for (int i = 0; i < 150; i++) {
+	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+20, 2*i+ start_y, 0, 0, 2,1);
 	}
 	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+30, i+ start_y, 0, 0, 3,1);
-	}
-	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(start_x+40, i+ start_y, 0, 0, 4, 1);
 	}
 
 	for (int i = 0; i < 200; i++) {
@@ -73,22 +75,22 @@ void processingEntities() {
 	}
 
 	//ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
-	// тля внутри загона
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	//for (int i = 0; i < 50; i++) {
 	//	ultimateData->CreateInsect(rand() % wallWidth + wallX, rand() % wallHeight + wallY, 0, InsectTypes::APHID, { wallX, wallY }, { wallWidth , wallHeight }, true);
 	//}
 
-	//// тля вне загона(не рабы пока что)
+	//// пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ)
 	for (int i = 0; i < 500; i++) {
 		ultimateData->CreateInsect(rand() % 50 + 100  + start_x, rand() % 50 + 100 + start_y, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 
 	for (int i = 0; i < 100; i++) {
-		ultimateData->CreateInsect(rand() % 50 + 100 + start_x, rand() % 50 + 100 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
+		//ultimateData->CreateInsect(rand() % 50 + 100 + start_x, rand() % 50 + 100 + start_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
 	}
 
 
-	for (int i = 0; i < 200000; i++) {
+	for (int i = 0; i < 100000; i++) {
 		ultimateData->CreateEntityFood(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 2000, 10);
 		ultimateData->CreateEntityMaterial(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, 0, 10);
 	}
@@ -99,13 +101,13 @@ void processingEntities() {
 	//}
 
 
-	//Приветствие
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	for (auto el : ultimateData->entityList) {
 		break;
 		Entity* curr = el.second;
-		if (curr->getType() == Entities::ANT) {
-			Ant* currAnt = (Ant*)(curr->getPtr());
-			currAnt->info();
+			if (curr->getType() == Entities::ANT) {
+				Ant* currAnt = (Ant*)(curr->getPtr());
+				currAnt->info();
 			
 			
 		}
@@ -115,13 +117,14 @@ void processingEntities() {
 		}
 		else if (curr->getType() == Entities::INSECT) {
 			Insect* currInsect = (Insect*)curr;
-			//currInsect->info();
 		}
 	}
 
 	
+	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+	sf::RenderWindow mainWindow(desktopMode, "Ant Colony", sf::Style::Fullscreen);
 
-	while (ultimateData->mainLoop) {
+	Window_sfml* start = new Window_sfml(ultimateData);
 
 		
 
@@ -131,7 +134,7 @@ void processingEntities() {
 		}
 		for (auto el : ultimateData->coloniesList) {
 
-			ultimateData->BuildNewStockpile(el.second);
+	
 
 		}
 		
@@ -140,176 +143,136 @@ void processingEntities() {
 		}
 		ultimateData->RecountAphid();
 
-		for (auto ent : ultimateData->entityList) {
+	// Camera
+	sf::View view = mainWindow.getDefaultView();
+	float currentZoom = 1.0f;
+	const float zoomSpeed = 0.1f;
+	const float moveSpeed = 500.0f;
 
-			Entity* curr = ent.second;
-			if(curr && curr->getType() == Entities::ANT) {
-				
-				ultimateData->MoveEntity(ent.first);
+	const float minZoom = 0.5f; 
+	const float maxZoom = 10.0f; 
 
-				
+	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
 
-			}
-			else if (curr and curr->getType() == Entities::INSECT) {
-				Insect* insect = (Insect*)curr;
-				
-				ultimateData->MoveInsect(ent.first);
-				
-				//insect->move(ultimateData->entityList, ent.first);
-			}
-		}
+	view.zoom(1);
+	view.setCenter(start_x * ultimateData->cell_size, start_y * ultimateData->cell_size);
+	view.setSize(desktopMode.width / 4, desktopMode.height / 4);
+	// Camera
+	
+	sf::Clock clock;
 
+	bool isPaused = false;
 
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
+	while (mainWindow.isOpen())
+	{
+		sf::Event event;
+
+		while (mainWindow.pollEvent(event))
 		{
-			ultimateData->MoveCam(-5, 0);
-			/*for (int i = 0; i < 25; i++) {
-				ultimateData->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 20000, 10);
-			}*/
-			
-		}
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(5, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -5);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 5);
-		}
-		else if (GetAsyncKeyState(VK_SPACE) & 0x8000 != 0) { 
-			ultimateData->ReCalculateTheColony();
-    			ultimateData->coloniesList[1];
-		}
-		else if (GetAsyncKeyState(VK_F1) & 0x8000 != 0) {
-			if (ultimateData->cell_size > 2) {
-				float new_x, new_y;
-
-				ultimateData->x_cam /= ultimateData->cell_size;
-				ultimateData->y_cam /= ultimateData->cell_size;
-				ultimateData->cell_size--;
-				ultimateData->x_cam *= ultimateData->cell_size;
-				ultimateData->y_cam *= ultimateData->cell_size;
+			if ((event.type == sf::Event::Closed) ||
+				(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+			{
+				mainWindow.close();
 			}
-		}
-		else if (GetAsyncKeyState(VK_F2) & 0x8000 != 0) {
-			if (ultimateData->cell_size < 50) {
-				ultimateData->x_cam /= ultimateData->cell_size;
-				ultimateData->y_cam /= ultimateData->cell_size;
-				ultimateData->cell_size++;
-				ultimateData->x_cam *= ultimateData->cell_size;
-				ultimateData->y_cam *= ultimateData->cell_size;
-			}
-		}
-		else if (GetAsyncKeyState(VK_F3) & 0x8000 != 0) {
-			if (!ultimateData->isSpectating) {
 
-				vector<unsigned int> targets;
-				for (auto ent : ultimateData->entityList) {
-					if (ent.second and ent.second->getType() == ANT) {
-						targets.push_back(ent.first);
-					}
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::Space && isPaused) 
+					isPaused = false;
+				else if (event.key.code == sf::Keyboard::Space && !isPaused) 
+					isPaused = true;
+			}
+
+			if (event.type == sf::Event::MouseWheelScrolled)
+			{
+				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+				{
+					float delta = event.mouseWheelScroll.delta;
+					currentZoom *= (1.0f - delta * zoomSpeed);
+					currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
+					view.setSize(desktopMode.width, desktopMode.height);
+					view.zoom(1.0f / currentZoom);
 				}
-				ultimateData->objectOfInterest=ultimateData->entityList[targets[rand() % (targets.size() - 1)]];
-				targets.clear();
-				ultimateData->isSpectating = true;
-			
 			}
-			else {
-				ultimateData->isSpectating = false;
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::B)
+			{
+				view.setCenter(start_x * ultimateData->cell_size + 100, start_y * ultimateData->cell_size + 100);
+			}
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::N)
+			{
+				view.setCenter(start_x1 * ultimateData->cell_size + 100, start_y1 * ultimateData->cell_size + 100);
 			}
 		}
-		else if (GetAsyncKeyState(VK_F4) & 0x8000 != 0) {
-			if (!ultimateData->isSpectating) {
 
-				vector<unsigned int> targets;
-				for (auto ent : ultimateData->entityList) {
-					if (ent.second and ent.second->getType() == INSECT) {
-						targets.push_back(ent.first);
-					}
+		float deltaTime = clock.restart().asSeconds();
+		sf::Vector2f movement(0, 0);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			movement.y -= moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			movement.y += moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			movement.x -= moveSpeed * deltaTime;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			movement.x += moveSpeed * deltaTime;
+
+		view.move(movement / currentZoom);
+		mainWindow.setView(view);
+
+		if (!isPaused)
+		{
+			if (tick++ > 200) 
+			{
+				tick = 1;
+			}
+
+			for (auto el : ultimateData->coloniesList) 
+			{
+				ultimateData->BuildNewStockpile(el.second);
+			}
+
+			if (tick % 5 == 0) 
+			{
+				ultimateData->RecountAphid();
+			}
+
+			for (auto ent : ultimateData->entityList)
+			{
+				Entity* curr = ent.second;
+				if (curr && curr->getType() == Entities::ANT) 
+				{
+					ultimateData->MoveEntity(ent.first);
 				}
-				ultimateData->objectOfInterest = ultimateData->entityList[targets[rand() % (targets.size() - 1)]];
-				targets.clear();
-				ultimateData->isSpectating = true;
-
-			}
-			else {
-				ultimateData->isSpectating = false;
+				else if (curr && curr->getType() == Entities::INSECT) 
+				{
+					ultimateData->MoveInsect(ent.first);
+				}
 			}
 		}
 
-		if (ultimateData->isSpectating) {
-			if (ultimateData->objectOfInterest == 0) {
-				ultimateData->isSpectating = false;
-			}
-			if (ultimateData->objectOfInterest->getType() == ANT) {
-				Ant* spec = (Ant*)ultimateData->objectOfInterest->getPtr();
-				ultimateData->x_cam = ultimateData->cell_size * (spec->pos_x ) - ultimateData->main_window_wide/2;
-				ultimateData->y_cam = ultimateData->cell_size * (spec->pos_y ) - ultimateData->main_window_hight / 2;
-			}
-			else if (ultimateData->objectOfInterest->getType() == INSECT) {
-				Insect* spec = (Insect*)ultimateData->objectOfInterest->getPtr();
-				ultimateData->x_cam = ultimateData->cell_size * (spec->pos_x) - ultimateData->main_window_wide / 2;
-				ultimateData->y_cam = ultimateData->cell_size * (spec->pos_y) - ultimateData->main_window_hight / 2;
-			}
-		}
+		sf::Vector2f viewCenter = view.getCenter();
+		sf::Vector2f viewHalfSize = view.getSize() / 2.0f;
 
-		
-		mainWindow->NewFrame();
+		sf::FloatRect visibleArea(
+			viewCenter.x - viewHalfSize.x,
+			viewCenter.y - viewHalfSize.y,
+			view.getSize().x,
+			view.getSize().y
+		);
 
-		mainWindow->EndFrame();
-		
-		
-
-
+		mainWindow.clear();
+		start->DrawMainScene_sfml(mainWindow, visibleArea);
+		mainWindow.display();
 	}
-	delete mainWindow;
 }
 
-void draw() {
-	
-	Window* mainWindow = new Window(ultimateData);
-
-	
 
 
-	
-
-	while (ultimateData->mainLoop) {
-		
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 != 0)
-		{
-			ultimateData->MoveCam(-1, 0);
-		}
-		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 != 0) {
-			ultimateData->MoveCam(1, 0);
-		}
-		else if (GetAsyncKeyState(VK_UP) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, -1);
-		}
-		else if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0) {
-			ultimateData->MoveCam(0, 1);
-		}
-		
-		mainWindow->NewFrame();
-
-		mainWindow->EndFrame();
-	}
-
-	mainWindow->Cleanup();
-	delete mainWindow;
-}
 int main() {
-
-	
-	//поток обработки Entity
 	thread ProcessingEntity(processingEntities);
-	//поток отрисовки
-	//thread Drow(draw);
-	
-
 
 	ProcessingEntity.join();
-	//Drow.join();
 	return 0;
 }

@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include <map>
 #include "Field.h"
-
+#include "SFML/Graphics.hpp"
 #include "Collector.h"
 #include "Stockpile.h"
 #include "Colony.h"
@@ -51,8 +51,8 @@ public:
 		
 		cell_size = cam_speed;
 
-		main_window_wide = 1700;
-		main_window_hight = 900;
+		main_window_wide = sf::VideoMode::getDesktopMode().width;
+		main_window_hight = sf::VideoMode::getDesktopMode().height;
 
 		field_size_x = size_x;
 		field_size_y = size_y;
@@ -68,10 +68,10 @@ public:
 
 	}
 
-	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
+	//type - 1 = пїЅпїЅпїЅпїЅпїЅпїЅпїЅ; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen
 	bool CreateEntityAnt(int x, int y, int z, int type, int under_class, int clan);
 	bool CreateEntityFood(int x, int y, int z, int type, float food_value, int weight);
-	bool CreateEntity(int x, int y, int t); // костыль дениса
+	bool CreateEntity(int x, int y, int t); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	bool CreateStockpile(int x, int y, int z, int wide, int hight, int type, int clan);
 	bool CreateEntityMaterial(int x, int y, int z, int type, int weight);
 
