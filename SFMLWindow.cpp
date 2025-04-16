@@ -12,12 +12,13 @@ int draw_x, draw_y;
 unsigned int work_id;
 Entity* cur;
 
-Window_sfml::Window_sfml(InfoSpace* data_p)
+Window_sfml::Window_sfml(InfoSpace* data_p, sf::RenderWindow* window)
 {
     data = data_p;
+    mainWindow = window;
 }
 
-void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned int id)
 {
 
     sf::RectangleShape rect;
@@ -32,13 +33,13 @@ void Window_sfml::DrawMaggot_sfml   (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(maggotColor); 
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
     
     
 }
 
-void Window_sfml::DrawQueen_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawQueen_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -52,11 +53,11 @@ void Window_sfml::DrawQueen_sfml    (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(queenColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
 }
 
-void Window_sfml::DrawNurse_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawNurse_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -70,11 +71,11 @@ void Window_sfml::DrawNurse_sfml    (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(nurseColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
 }
 
-void Window_sfml::DrawAphid_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawAphid_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -88,10 +89,10 @@ void Window_sfml::DrawAphid_sfml    (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(aphidColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 }
 
-void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawScout_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -105,11 +106,11 @@ void Window_sfml::DrawScout_sfml    (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(scoutColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
 }
 
-void Window_sfml::DrawLadybug_sfml  (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -123,10 +124,10 @@ void Window_sfml::DrawLadybug_sfml  (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(ladybugColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 }
 
-void Window_sfml::DrawWorker_sfml   (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawWorker_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -140,11 +141,11 @@ void Window_sfml::DrawWorker_sfml   (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(workerColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
 }
 
-void Window_sfml::DrawSoldier_sfml  (int x, int y, unsigned id, sf::RenderWindow& window)
+void Window_sfml::DrawSoldier_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -158,11 +159,11 @@ void Window_sfml::DrawSoldier_sfml  (int x, int y, unsigned id, sf::RenderWindow
     rect.setFillColor(soldierColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
 }
 
-void Window_sfml::DrawFood_sfml     (int x, int y, sf::RenderWindow& window)
+void Window_sfml::DrawFood_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -176,11 +177,11 @@ void Window_sfml::DrawFood_sfml     (int x, int y, sf::RenderWindow& window)
     rect.setFillColor(foodColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
 }
 
-void Window_sfml::DrawMaterial_sfml (int x, int y, sf::RenderWindow& window)
+void Window_sfml::DrawMaterial_sfml(int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -194,11 +195,12 @@ void Window_sfml::DrawMaterial_sfml (int x, int y, sf::RenderWindow& window)
     rect.setFillColor(materialColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
+    
 
 }
 
-void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
+void Window_sfml::DrawWall_sfml (int x, int y, unsigned int id)
 {
     sf::RectangleShape rect;
 
@@ -212,13 +214,13 @@ void Window_sfml::DrawWall_sfml     (int x, int y, sf::RenderWindow& window)
     rect.setFillColor(wallColor);
 
 
-    window.draw(rect);
+    mainWindow->draw(rect);
 
 }
 
 
 
-void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect& visibleArea) {
+void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 
     cell_size = data->cell_size;
 
@@ -235,8 +237,11 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect
             draw_x = x * cell_size;
             draw_y = y * cell_size;
 
+
+
+
             if (data->field->field[x][y][data->z_cam].cWall != 0) {
-                DrawWall_sfml(draw_x, draw_y, mainWindow);
+                DrawWall_sfml(draw_x, draw_y, 0);
             }
 
             if (data->field->field[x][y][data->z_cam].IDs[0] != 0)
@@ -250,47 +255,47 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect
                     Ant* curAnt = (Ant*)(cur->getPtr());
 
                     if (curAnt->type == 1) {
-                        DrawScout_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);   
+                        DrawScout_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);   
                     }
                     else if (curAnt->type == 2) {
-                        DrawWorker_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawWorker_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
                     }
                     else if (curAnt->type == 3) {
-                        DrawSoldier_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawSoldier_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
                     }
                     else if (curAnt->type == 4) {
-                        DrawNurse_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawNurse_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
                     }
                     else if (curAnt->type == 0) {
-                        DrawQueen_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawQueen_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
                     }
 
                 }
                 else if (cur->getType() == Entities::FOOD) {
                     Food* curFood = (Food*)(cur->getPtr());
-                    DrawFood_sfml(draw_x, draw_y, mainWindow);
+                    DrawFood_sfml(draw_x, draw_y, 0);
 
                 }
                 else if (cur->getType() == Entities::MATERIALS) {
                     Materials* curMat = (Materials*)(cur->getPtr());
-                    DrawMaterial_sfml(draw_x, draw_y, mainWindow);
+                    DrawMaterial_sfml(draw_x, draw_y, 0);
 
                 }
 
                 else if (cur->getType() == Entities::INSECT) {
                     Insect* insect = (Insect*)(cur->getPtr());
                     if (insect->type == InsectTypes::APHID) {
-                        DrawAphid_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawAphid_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
                     }
                     else if (insect->type == InsectTypes::LADYBUG) {
-                        DrawLadybug_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                        DrawLadybug_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
                     }
 
                 }
 
                 else if (cur->getType() == Entities::MAGGOTS) {
                     Maggot* curMat = (Maggot*)(cur->getPtr());
-                    DrawMaggot_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0], mainWindow);
+                    DrawMaggot_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
                 }
 
             }
@@ -314,7 +319,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect
 
                         draw_x = curFood->pos_x * cell_size;
                         draw_y = curFood->pos_y * cell_size;
-                        DrawFood_sfml(draw_x, draw_y, mainWindow); 
+                        DrawFood_sfml(draw_x, draw_y, 0); 
                     }
                 }
             }
@@ -330,7 +335,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect
 
                         draw_x = curMat->pos_x * cell_size;
                         draw_y = curMat->pos_y * cell_size;
-                        DrawMaterial_sfml(draw_x, draw_y, mainWindow); 
+                        DrawMaterial_sfml(draw_x, draw_y, 0); 
                     }
                 }
             }
@@ -347,7 +352,7 @@ void Window_sfml::DrawMainScene_sfml(sf::RenderWindow& mainWindow, sf::FloatRect
 
                         draw_x = curStock->pos_x + i * cell_size;
                         draw_y = curStock->pos_y + j * cell_size;
-                        DrawMaggot_sfml(draw_x, draw_y, work_id, mainWindow);
+                        DrawMaggot_sfml(draw_x, draw_y, work_id);
                     }
                 }
             }

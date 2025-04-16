@@ -124,7 +124,7 @@ void processingEntities() {
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 	sf::RenderWindow mainWindow(desktopMode, "Ant Colony", sf::Style::Fullscreen);
 
-	Window_sfml* start = new Window_sfml(ultimateData);
+	Window_sfml* start = new Window_sfml(ultimateData, &mainWindow);
 
 		
 
@@ -263,7 +263,7 @@ void processingEntities() {
 		);
 
 		mainWindow.clear();
-		start->DrawMainScene_sfml(mainWindow, visibleArea);
+		start->DrawMainScene_sfml(visibleArea);
 		mainWindow.display();
 	}
 }

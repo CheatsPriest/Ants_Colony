@@ -8,8 +8,9 @@ using namespace std;
 class Window_sfml {
 public:
 
-    Window_sfml(InfoSpace* data_p);
-    void DrawMainScene_sfml (sf::RenderWindow& mainWindow, sf::FloatRect& visibleArea); 
+    Window_sfml(InfoSpace* data_p, sf::RenderWindow* window);
+    
+    void DrawMainScene_sfml (sf::FloatRect& visibleArea); 
 
 private:
 
@@ -26,18 +27,18 @@ private:
     InfoSpace* data;
    
 
-    void DrawScout_sfml     (int x, int y, unsigned id, sf::RenderWindow& window);
-    void DrawWorker_sfml    (int x, int y, unsigned id, sf::RenderWindow& window);
-    void DrawSoldier_sfml   (int x, int y, unsigned id, sf::RenderWindow& window);
-    void DrawQueen_sfml     (int x, int y, unsigned id, sf::RenderWindow& window);
-    void DrawNurse_sfml     (int x, int y, unsigned id, sf::RenderWindow& window);
-    void DrawMaggot_sfml    (int x, int y, unsigned id, sf::RenderWindow& window);
-    void DrawAphid_sfml     (int x, int y, unsigned id, sf::RenderWindow& window);
-    void DrawLadybug_sfml   (int x, int y, unsigned id, sf::RenderWindow& window);
+    void DrawScout_sfml     (int x, int y, unsigned id);
+    void DrawWorker_sfml    (int x, int y, unsigned id);
+    void DrawSoldier_sfml(int x, int y, unsigned id);
+    void DrawQueen_sfml(int x, int y, unsigned id);
+    void DrawNurse_sfml(int x, int y, unsigned id);
+    void DrawMaggot_sfml(int x, int y, unsigned id);
+    void DrawAphid_sfml(int x, int y, unsigned id);
+    void DrawLadybug_sfml(int x, int y, unsigned id);
 
-    void DrawWall_sfml      (int x, int y, sf::RenderWindow& window);
-    void DrawFood_sfml      (int x, int y, sf::RenderWindow& window);
-    void DrawMaterial_sfml  (int x, int y, sf::RenderWindow& window);
+    void DrawWall_sfml(int x, int y, unsigned id);
+    void DrawFood_sfml(int x, int y, unsigned id);
+    void DrawMaterial_sfml(int x, int y, unsigned id);
 
     sf::Color scoutColor    =   sf::Color(0, 71, 171);
     sf::Color aphidColor    =   sf::Color(33, 66, 30);
@@ -53,7 +54,7 @@ private:
 
     Field* field = { };
 
-
+    sf::RenderWindow* mainWindow;
 
 };
 
