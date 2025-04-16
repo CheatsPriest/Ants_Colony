@@ -23,8 +23,8 @@ void processingEntities() {
 	int start_x = 1000;
 	int start_y = 1000;
 
-	int start_x1 = 1200;
-	int start_y1 = 1000;
+	int start_x1 = 2000;
+	int start_y1 = 2000;
 
 	long long tick = 0;
 
@@ -136,9 +136,9 @@ void processingEntities() {
 		}
 		
 		if (tick % 5 == 0) {
-			ultimateData->RecountAphid();
+			
 		}
-		
+		ultimateData->RecountAphid();
 
 		for (auto ent : ultimateData->entityList) {
 
@@ -180,6 +180,78 @@ void processingEntities() {
 		else if (GetAsyncKeyState(VK_SPACE) & 0x8000 != 0) { 
 			ultimateData->ReCalculateTheColony();
     			ultimateData->coloniesList[1];
+		}
+		else if (GetAsyncKeyState(VK_F1) & 0x8000 != 0) {
+			if (ultimateData->cell_size > 2) {
+				float new_x, new_y;
+
+				ultimateData->x_cam /= ultimateData->cell_size;
+				ultimateData->y_cam /= ultimateData->cell_size;
+				ultimateData->cell_size--;
+				ultimateData->x_cam *= ultimateData->cell_size;
+				ultimateData->y_cam *= ultimateData->cell_size;
+			}
+		}
+		else if (GetAsyncKeyState(VK_F2) & 0x8000 != 0) {
+			if (ultimateData->cell_size < 50) {
+				ultimateData->x_cam /= ultimateData->cell_size;
+				ultimateData->y_cam /= ultimateData->cell_size;
+				ultimateData->cell_size++;
+				ultimateData->x_cam *= ultimateData->cell_size;
+				ultimateData->y_cam *= ultimateData->cell_size;
+			}
+		}
+		else if (GetAsyncKeyState(VK_F3) & 0x8000 != 0) {
+			if (!ultimateData->isSpectating) {
+
+				vector<unsigned int> targets;
+				for (auto ent : ultimateData->entityList) {
+					if (ent.second and ent.second->getType() == ANT) {
+						targets.push_back(ent.first);
+					}
+				}
+				ultimateData->objectOfInterest=ultimateData->entityList[targets[rand() % (targets.size() - 1)]];
+				targets.clear();
+				ultimateData->isSpectating = true;
+			
+			}
+			else {
+				ultimateData->isSpectating = false;
+			}
+		}
+		else if (GetAsyncKeyState(VK_F4) & 0x8000 != 0) {
+			if (!ultimateData->isSpectating) {
+
+				vector<unsigned int> targets;
+				for (auto ent : ultimateData->entityList) {
+					if (ent.second and ent.second->getType() == INSECT) {
+						targets.push_back(ent.first);
+					}
+				}
+				ultimateData->objectOfInterest = ultimateData->entityList[targets[rand() % (targets.size() - 1)]];
+				targets.clear();
+				ultimateData->isSpectating = true;
+
+			}
+			else {
+				ultimateData->isSpectating = false;
+			}
+		}
+
+		if (ultimateData->isSpectating) {
+			if (ultimateData->objectOfInterest == 0) {
+				ultimateData->isSpectating = false;
+			}
+			if (ultimateData->objectOfInterest->getType() == ANT) {
+				Ant* spec = (Ant*)ultimateData->objectOfInterest->getPtr();
+				ultimateData->x_cam = ultimateData->cell_size * (spec->pos_x ) - ultimateData->main_window_wide/2;
+				ultimateData->y_cam = ultimateData->cell_size * (spec->pos_y ) - ultimateData->main_window_hight / 2;
+			}
+			else if (ultimateData->objectOfInterest->getType() == INSECT) {
+				Insect* spec = (Insect*)ultimateData->objectOfInterest->getPtr();
+				ultimateData->x_cam = ultimateData->cell_size * (spec->pos_x) - ultimateData->main_window_wide / 2;
+				ultimateData->y_cam = ultimateData->cell_size * (spec->pos_y) - ultimateData->main_window_hight / 2;
+			}
 		}
 
 		

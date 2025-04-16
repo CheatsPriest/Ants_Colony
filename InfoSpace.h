@@ -36,11 +36,13 @@ public:
 
 	bool draw_debug_move_lines;
 
+	bool isSpectating;
+	Entity* objectOfInterest;
 	
 	InfoSpace() {
 
 
-		cam_speed = 25;
+		cam_speed = 5;
 
 		x_cam = 1000 * cam_speed;
 		y_cam = 1000 * cam_speed;
@@ -49,8 +51,8 @@ public:
 		
 		cell_size = cam_speed;
 
-		main_window_wide = 1000;
-		main_window_hight = 1000;
+		main_window_wide = 1700;
+		main_window_hight = 900;
 
 		field_size_x = size_x;
 		field_size_y = size_y;
@@ -61,6 +63,9 @@ public:
 		field = new Field;
 
 		draw_debug_move_lines = false;
+
+		isSpectating = false;
+
 	}
 
 	//type - 1 = муравей; under_class: 1 = Scout, 2 = Worker, 3 = Soldier, 0 = Queen

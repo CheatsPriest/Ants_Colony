@@ -2,8 +2,8 @@
 #include "walls.h"
 
 const int levels = 1;
-const int size_x = 2000;
-const int size_y = 2000;
+const int size_x = 3000;
+const int size_y = 3000;
 const int max_unit_per_cell_cap = 1;
 
 class Cell {

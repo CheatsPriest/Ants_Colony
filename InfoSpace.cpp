@@ -955,6 +955,7 @@ void InfoSpace::RecountAphid()
 {
 	Stockpile* curStock;
 	unsigned int id;
+	Entity* ent;
 	for (auto el : stockpileList) {
 		curStock = el.second;
 
@@ -965,8 +966,11 @@ void InfoSpace::RecountAphid()
 				for (int y = curStock->pos_y; y < curStock->pos_y + curStock->size_y; y++) {
 					bool fl = false;
 					id = field->field[x][y][curStock->pos_z].IDs[0];
+					
 					if (id != 0 and entityList[id]->getType() == INSECT) {
 						curStock->food_collected+=1;
+						ent = entityList[id];
+						((Insect*)ent->getPtr())->curState = 2;
 						
 					}
 					
@@ -1156,8 +1160,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 					ant->aim = { rand() % curColony->base_radius - curColony->base_radius/2  + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius /2 + curColony->base_y };
 
-					return;
-					break;
+					
 				}
 				else if(ant->inventary != 0 && stash->type == 0 && entityList[ant->inventary]->getType() == Entities::FOOD and isValidStock) {
 					ant->aim = { stash->pos_x + stash->food_collected % stash->size_x,stash->pos_y + stash->food_collected / stash->size_y };
@@ -1222,8 +1225,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				}
 			}
 			if (ch == 0) {
-				//TryToDrop(ant);
-				//ant->action = 0;
+				TryToDrop(ant);
+				ant->action = 0;
 			}
 			
 		}
@@ -1504,7 +1507,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							bool isPrepearing = false;
 
 							Insect* smth = (Insect*)obj->getPtr();
-							if (smth->type == APHID) {
+							if (smth->type == APHID and smth->curState==0) {
 								pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 								for (auto stock : stockpileList) {
 									if (stock.second->clan != ant->clan)continue;
@@ -1525,11 +1528,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									if (ant->inventary == 0 && smth->curState == 0) {
 										ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 										Picked(ant->inventary);
+										ant->action = 2;
 										//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 									}
 
 
-									ant->action = 2;
+									
 								}
 								else {
 									ant->action = 0;
