@@ -152,7 +152,7 @@ void processingEntities() {
 	const float moveSpeed = 500.0f;
 
 	const float minZoom = 0.5f; 
-	const float maxZoom = 10.0f; 
+	const float maxZoom = 50.0f; 
 
 	currentZoom = std::max(minZoom, std::min(currentZoom, maxZoom));
 
@@ -199,12 +199,12 @@ void processingEntities() {
 				}
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::B)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1)
 			{
 				view.setCenter(start_x * ultimateData->cell_size + 100, start_y * ultimateData->cell_size + 100);
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::N)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2)
 			{
 				view.setCenter(start_x1 * ultimateData->cell_size + 100, start_y1 * ultimateData->cell_size + 100);
 			}
