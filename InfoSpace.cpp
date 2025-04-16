@@ -928,11 +928,11 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 
 	}
 
-	if (curColony->needNewAphidStock and curColony->numWorker>50) {
+	if (curColony->needNewAphidStock and curColony->numWorker>50 and curColony->curMaterialAmount>120) {
 
 		int x, y, z;
 		int tries = tri;
-		int sz = rand() % 40 + 20;
+		int sz = rand() % 20 + 10;
 		for (; tries > 0; tries--) {
 
 			x = curColony->base_x + rand() % (curColony->base_radius) - curColony->base_radius / 2;
