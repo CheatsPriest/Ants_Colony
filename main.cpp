@@ -111,7 +111,7 @@ void processingEntities() {
 		}
 		else if (curr->getType() == Entities::FOOD) {
 			Food* currFood = (Food*)(curr->getPtr());
-			currFood->info();
+			currFood->info(); 
 		}
 		else if (curr->getType() == Entities::INSECT) {
 			Insect* currInsect = (Insect*)curr;
@@ -180,7 +180,7 @@ void processingEntities() {
 		}
 		else if (GetAsyncKeyState(VK_SPACE) & 0x8000 != 0) { 
 			ultimateData->ReCalculateTheColony();
-    			ultimateData->coloniesList[1];
+    		ultimateData->coloniesList[1];
 		}
 		else if (GetAsyncKeyState(VK_F1) & 0x8000 != 0) {
 			if (ultimateData->cell_size > 2) {

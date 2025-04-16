@@ -943,7 +943,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 
 		int x, y, z;
 		int tries = tri;
-		int sz = rand() % 20 + 12;
+		int sz = rand() % 18 + 12;
 		for (; tries > 0; tries--) {
 			
 			x = random_base_pos(curColony).first;
@@ -964,7 +964,7 @@ void InfoSpace::BuildNewStockpile(Colony* curColony) {
 
 		int x, y, z;
 		int tries = tri;
-		int sz = rand() % 20 + 12;
+		int sz = rand() % 18 + 12;
 		for (; tries > 0; tries--) {
 
 			x = random_base_pos(curColony).first;
@@ -1504,7 +1504,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							bool transporting_need = false;
 
 							for (auto stock : stockpileList) {
-								if (stock.second->clan==ant->clan and stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y) {
+								if (stock.second->clan==ant->clan and stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y and dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y) < 45000) {
 									
 									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
 										if (stock.second->food_collected < 0) {
@@ -1540,7 +1540,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							//pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 							bool transporting_need = false;
 							for (auto stock : stockpileList) {
-								if (stock.second->clan == ant->clan and stock.second->type == 0 && stock.second->food_collected != stock.second->size_x * stock.second->size_y) {
+								if (stock.second->clan == ant->clan and stock.second->type == 0 && stock.second->food_collected != stock.second->size_x * stock.second->size_y and dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)<45000) {
 									
 									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
 										if (stock.second->food_collected < 0) {
