@@ -356,8 +356,8 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                         cur = data->entityList[work_id];
                         Maggot* curMat = (Maggot*)(cur->getPtr());
 
-                        draw_x = curStock->pos_x + i * cell_size;
-                        draw_y = curStock->pos_y + j * cell_size;
+                        draw_x = (curStock->pos_x + i) * cell_size;
+                        draw_y = (curStock->pos_y + j) * cell_size;
                         DrawMaggot_sfml(draw_x, draw_y, work_id);
                     }
                 }
