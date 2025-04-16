@@ -4,7 +4,7 @@
 #include "InfoSpace.h"
 using namespace std;
 
-static sf::RectangleShape rect;
+
 
 class Window_sfml {
 public:

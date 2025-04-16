@@ -1,10 +1,14 @@
-
+#include "InfoSpace.h"
 #include "SFMLWindow.h"
 #include "stdlib.h"
 #include <ctime>
 #include <cmath>
 #include <iostream>
 #include <cstdlib>
+
+
+static sf::RectangleShape rect;
+//static sf::CircleShape circle;
 
 int cell_size;
 int draw_x, draw_y;
@@ -237,12 +241,23 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
     int startY = std::max(0, static_cast<int>(visibleArea.top / cell_size));
     int endY = std::min(mapHeight, static_cast<int>((visibleArea.top + visibleArea.height) / cell_size) + 1);
 
+    static sf::CircleShape circle;
+    for (auto cl : data->coloniesList) {
+        
+        circle.setRadius(cl.second->base_radius * cell_size);
+        circle.setPosition((cl.second->base_x -cl.second->base_radius)*cell_size, (cl.second->base_y - cl.second->base_radius ) * cell_size);
+        circle.setFillColor({ (sf::Uint8)cl.second->red, (sf::Uint8)cl.second->green, (sf::Uint8)cl.second->blue });
+        mainWindow->draw(circle);
+
+    }
+
+
     for (int x = startX; x < endX; x++) {
         for (int y = startY; y < endY; y++) {
             draw_x = x * cell_size;
             draw_y = y * cell_size;
 
-
+            
 
 
             if (data->field->field[x][y][data->z_cam].cWall != 0) {
