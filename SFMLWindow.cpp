@@ -1,4 +1,4 @@
-#include "InfoSpace.h"
+
 #include "SFMLWindow.h"
 #include "stdlib.h"
 #include <ctime>

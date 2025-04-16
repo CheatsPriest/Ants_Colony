@@ -123,11 +123,11 @@ void processingEntities() {
 	
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 	sf::RenderWindow mainWindow(desktopMode, "Ant Colony", sf::Style::Fullscreen);
-	sf::RectangleShape rect;
+	
 
 
 	Window_sfml* start = new Window_sfml(ultimateData, &mainWindow);
-	start->rect = rect;
+	//start->rect = rect;
 		
 
 		if (tick++ > 300) {

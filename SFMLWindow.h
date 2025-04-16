@@ -4,7 +4,7 @@
 #include "InfoSpace.h"
 using namespace std;
 
-
+static sf::RectangleShape rect;
 
 class Window_sfml {
 public:
@@ -12,7 +12,7 @@ public:
     Window_sfml(InfoSpace* data_p, sf::RenderWindow* window);
     
     void DrawMainScene_sfml (sf::FloatRect& visibleArea); 
-    sf::RectangleShape rect;
+    //sf::RectangleShape rect;
 private:
 
     int wide = 0, hight = 0;
