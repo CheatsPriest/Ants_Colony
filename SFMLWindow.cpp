@@ -6,9 +6,8 @@
 #include <iostream>
 #include <cstdlib>
 
-
+#define PI 3.14159265f
 static sf::RectangleShape rect;
-//static sf::CircleShape circle;
 
 int cell_size;
 int draw_x, draw_y;
@@ -22,12 +21,9 @@ Window_sfml::Window_sfml(InfoSpace* data_p, sf::RenderWindow* window)
 {
     data = data_p;
     mainWindow = window;
-   
-    
-
 }
 
-void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned id)
 {
 
     
@@ -48,7 +44,7 @@ void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned int id)
     
 }
 
-void Window_sfml::DrawQueen_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawQueen_sfml(int x, int y, unsigned id)
 {
     
 
@@ -66,7 +62,7 @@ void Window_sfml::DrawQueen_sfml(int x, int y, unsigned int id)
 
 }
 
-void Window_sfml::DrawNurse_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawNurse_sfml(int x, int y, unsigned id)
 {
     
 
@@ -84,7 +80,7 @@ void Window_sfml::DrawNurse_sfml(int x, int y, unsigned int id)
 
 }
 
-void Window_sfml::DrawAphid_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawAphid_sfml(int x, int y, unsigned id)
 {
     
 
@@ -101,25 +97,51 @@ void Window_sfml::DrawAphid_sfml(int x, int y, unsigned int id)
     mainWindow->draw(rect);
 }
 
-void Window_sfml::DrawScout_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawScout_sfml(int x, int y)
 {
-    
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
 
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/scout.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+    if (isTextureLoaded)
+    {
+        // Убираем static для спрайта! Важно для индивидуального вращения
 
+        sprite.setTexture(texture);
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
 
-    rect.setFillColor(scoutColor);
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
 
-
-    mainWindow->draw(rect);
+        mainWindow->draw(sprite);
+    }
+    else 
+    {
+        const float size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+        rect.setFillColor(maggotColor);
+        mainWindow->draw(rect);
+    }
 
 }
 
-void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned id)
 {
     
 
@@ -136,7 +158,7 @@ void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned int id)
     mainWindow->draw(rect);
 }
 
-void Window_sfml::DrawWorker_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawWorker_sfml(int x, int y, unsigned id)
 {
     
 
@@ -154,7 +176,7 @@ void Window_sfml::DrawWorker_sfml(int x, int y, unsigned int id)
 
 }
 
-void Window_sfml::DrawSoldier_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawSoldier_sfml(int x, int y, unsigned id)
 {
     
 
@@ -172,7 +194,7 @@ void Window_sfml::DrawSoldier_sfml(int x, int y, unsigned int id)
 
 }
 
-void Window_sfml::DrawFood_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawFood_sfml(int x, int y)
 {
     
 
@@ -190,7 +212,7 @@ void Window_sfml::DrawFood_sfml(int x, int y, unsigned int id)
 
 }
 
-void Window_sfml::DrawMaterial_sfml(int x, int y, unsigned int id)
+void Window_sfml::DrawMaterial_sfml(int x, int y)
 {
     
 
@@ -209,7 +231,7 @@ void Window_sfml::DrawMaterial_sfml(int x, int y, unsigned int id)
     return;
 }
 
-void Window_sfml::DrawWall_sfml (int x, int y, unsigned int id)
+void Window_sfml::DrawWall_sfml (int x, int y)
 {
     
 
@@ -262,7 +284,7 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 
 
             if (data->field->field[x][y][data->z_cam].cWall != 0) {
-                DrawWall_sfml(draw_x, draw_y, 0);
+                DrawWall_sfml(draw_x, draw_y);
             }
 
             if (data->field->field[x][y][data->z_cam].IDs[0] != 0)
@@ -277,7 +299,7 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                     Ant* curAnt = (Ant*)(cur->getPtr());
 
                     if (curAnt->type == 1) {
-                        DrawScout_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);   
+                        DrawScout_sfml(draw_x, draw_y);   
                     }
                     else if (curAnt->type == 2) {
                         DrawWorker_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
@@ -293,14 +315,15 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                     }
 
                 }
+                
                 else if (cur->getType() == Entities::FOOD) {
                     Food* curFood = (Food*)(cur->getPtr());
-                    DrawFood_sfml(draw_x, draw_y, 0);
+                    DrawFood_sfml(draw_x, draw_y);
 
                 }
                 else if (cur->getType() == Entities::MATERIALS) {
                     Materials* curMat = (Materials*)(cur->getPtr());
-                    DrawMaterial_sfml(draw_x, draw_y, 0);
+                    DrawMaterial_sfml(draw_x, draw_y);
 
                 }
 
@@ -341,7 +364,7 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 
                         draw_x = curFood->pos_x * cell_size;
                         draw_y = curFood->pos_y * cell_size;
-                        DrawFood_sfml(draw_x, draw_y, 0); 
+                        DrawFood_sfml(draw_x, draw_y); 
                     }
                 }
             }
@@ -357,7 +380,7 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 
                         draw_x = curMat->pos_x * cell_size;
                         draw_y = curMat->pos_y * cell_size;
-                        DrawMaterial_sfml(draw_x, draw_y, 0); 
+                        DrawMaterial_sfml(draw_x, draw_y); 
                     }
                 }
             }

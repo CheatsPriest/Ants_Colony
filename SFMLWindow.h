@@ -28,7 +28,7 @@ private:
     InfoSpace* data;
    
 
-    void DrawScout_sfml     (int x, int y, unsigned id);
+    void DrawScout_sfml     (int x, int y);
     void DrawWorker_sfml    (int x, int y, unsigned id);
     void DrawSoldier_sfml(int x, int y, unsigned id);
     void DrawQueen_sfml(int x, int y, unsigned id);
@@ -37,9 +37,9 @@ private:
     void DrawAphid_sfml(int x, int y, unsigned id);
     void DrawLadybug_sfml(int x, int y, unsigned id);
 
-    void DrawWall_sfml(int x, int y, unsigned id);
-    void DrawFood_sfml(int x, int y, unsigned id);
-    void DrawMaterial_sfml(int x, int y, unsigned id);
+    void DrawWall_sfml(int x, int y);
+    void DrawFood_sfml(int x, int y);
+    void DrawMaterial_sfml(int x, int y);
 
     sf::Color scoutColor    =   sf::Color(0, 71, 171);
     sf::Color aphidColor    =   sf::Color(93, 96, 90);
