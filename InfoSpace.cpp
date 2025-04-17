@@ -145,7 +145,7 @@ if (ps.first) {
 			for (int j = -1; j <= 1; j++) {
 				if (j == i && j == 0) continue;
 				unsigned int currEntityId = field->field[insect->pos_x + i][insect->pos_y + j][0].IDs[0];
-				if (currEntityId != 0 && entityList[currEntityId]->getType() == Entities::INSECT
+				if (entityList[currEntityId] && entityList[currEntityId]->getType() == Entities::INSECT
 					&& (aphid = (Insect*)entityList[currEntityId]->getPtr())->type == InsectTypes::APHID) {
 					detectedAphid= true;
 					detectedCoord = { insect->pos_x + i, insect->pos_y + j };
@@ -272,7 +272,7 @@ void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
 
 					}
 					if ((i == j && i == 0) || !insect->isIndoors(prob.second.first, prob.second.second, field) || isFreeCell(prob.second)) continue;
-					if (entityList[field->field[prob.second.first][prob.second.second][0].IDs[0]]->getType() == Entities::MATERIALS) {
+					if (entityList[field->field[prob.second.first][prob.second.second][0].IDs[0]] && entityList[field->field[prob.second.first][prob.second.second][0].IDs[0]]->getType() == Entities::MATERIALS) {
 						//cout << prob.second.first << " : " << prob.second.second << "\n";
 						insect->nearlest.first = field->field[prob.second.first][prob.second.second][0].IDs[0];
 						insect->nearlest.second = { prob.second.first, prob.second.second };
@@ -1020,7 +1020,7 @@ void InfoSpace::RecountAphid()
 					bool fl = false;
 					id = field->field[x][y][curStock->pos_z].IDs[0];
 					
-					if (id != 0 and entityList[id]->getType() == INSECT) {
+					if (entityList[id] and entityList[id]->getType() == INSECT) {
 						curStock->food_collected+=1;
 						ent = entityList[id];
 						((Insect*)ent->getPtr())->curState = 2;
@@ -1038,14 +1038,21 @@ void InfoSpace::RecountAphid()
 
 
 void InfoSpace::attack(int atkr, int defr) {
-	if (atkr == defr) { return; }
+	if (atkr == defr or !atkr or !defr) { return; }
 	Entity* attacker = entityList[atkr];
 	Entity* defender = entityList[defr];
 	Ant* atkant = (Ant*)attacker->getPtr();
+	if (attacker==nullptr or defender==nullptr) { return; }
 	if (defender->getType() == ANT) {
 		Ant* defant = (Ant*)defender->getPtr();
+		if (atkant->clan == defant->clan) { return; }
+		if (rand() % 10 >= 5) {
+			swap(atkant, defant);
+			cout << "haha" << endl;
+		}
 		defant->HP -= atkant->attack;
 		if (defant->HP <= 0) {
+			cout << "KILL" << atkant->clan<< defant->clan<< endl;
 			DeleteEntity(defr);
 			field->field[defant->pos_x][defant->pos_y]->IDs[0]=0;
 		}
@@ -1504,8 +1511,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							bool transporting_need = false;
 
 							for (auto stock : stockpileList) {
-								if (stock.second->clan==ant->clan and stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y and dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y) < 45000) {
-									
+								if (stock.second->clan == ant->clan and stock.second->type == 1 && stock.second->food_collected < stock.second->size_x * stock.second->size_y and dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y) < 45000) {
+
 									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
 										if (stock.second->food_collected < 0) {
 											na = { stock.second->pos_x ,stock.second->pos_y };
@@ -1527,7 +1534,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							else if (transporting_need == false) {
 								curColony->needNewMatStock = true;
 							}
-							
+
 
 							if (ant->action != 6) {
 								ant->aim = na;
@@ -1540,8 +1547,8 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							//pair<int, int> na = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 							bool transporting_need = false;
 							for (auto stock : stockpileList) {
-								if (stock.second->clan == ant->clan and stock.second->type == 0 && stock.second->food_collected != stock.second->size_x * stock.second->size_y and dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)<45000) {
-									
+								if (stock.second->clan == ant->clan and stock.second->type == 0 && stock.second->food_collected != stock.second->size_x * stock.second->size_y and dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y) < 45000) {
+
 									if (!transporting_need or dist(na.first, na.second, ant->pos_x, ant->pos_y) > dist(stock.second->pos_x, stock.second->pos_y, ant->pos_x, ant->pos_y)) {
 										if (stock.second->food_collected < 0) {
 											na = { stock.second->pos_x ,stock.second->pos_y };
@@ -1555,15 +1562,15 @@ void InfoSpace::MoveEntity(unsigned int id) {
 								}
 							}
 
-							if (ant->inventary == 0 and transporting_need==true) {
+							if (ant->inventary == 0 and transporting_need == true) {
 								ant->inventary = this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->CutEntity(0);
 								//this->CreateEntityFood(rand() % 100 + 50, rand() % 100 + 50, 0, 0, 10, 10);
 							}
-							else if(transporting_need==false){
+							else if (transporting_need == false) {
 								curColony->needNewFoodStock = true;
 							}
 							//pair<int, int> na = { rand() % 20 + 1,  rand() % 20 + 1 };
-							
+
 							ant->aim = na;
 							ant->action = 2;
 						}
@@ -1573,7 +1580,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 							bool isPrepearing = false;
 
 							Insect* smth = (Insect*)obj->getPtr();
-							if (smth->type == APHID and smth->curState==0) {
+							if (smth->type == APHID and smth->curState == 0) {
 								pair<int, int> na = random_base_pos(curColony);
 								// = { rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_x,  rand() % curColony->base_radius - curColony->base_radius / 2 + curColony->base_y };
 								for (auto stock : stockpileList) {
@@ -1600,7 +1607,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 									}
 
 
-									
+
 								}
 								else {
 									ant->action = 0;
@@ -1611,32 +1618,39 @@ void InfoSpace::MoveEntity(unsigned int id) {
 								ant->aim = na;
 							}
 						}
-						
+
 						else if (obj and obj->getType() == Entities::ANT) {
 							Ant* smth = (Ant*)obj->getPtr();
-							if ( ant->clan == smth->clan &&smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
+							if (ant->clan == smth->clan && smth->type == 2 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Fd.first, ant->nearest_Fd.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Fd.first, smth->nearest_Fd.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Fd;
-								
+
 							}
 							if (ant->clan != smth->clan) {
 								ant->nearest_En = { smth->pos_x, smth->pos_y };
 								smth->nearest_En = { ant->pos_x, ant->pos_y };
 							}
-							if (ant->clan == smth->clan && smth->type == 2  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
+							if (ant->clan == smth->clan && smth->type == 2 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_Mat.first, ant->nearest_Mat.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_Mat.first, smth->nearest_Mat.second))) {
 								smth->nearest_Fd = ant->nearest_Fd;
 								smth->aim = ant->nearest_Mat;
-								
+
 							}
-							if (ant->clan == smth->clan && smth->type == 3  && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
+							if (ant->clan == smth->clan && ant->type != 2 && smth->type == 3 && smth->action == 0 && (dist(smth->pos_x, smth->pos_y, ant->nearest_En.first, ant->nearest_En.second) < dist(smth->pos_x, smth->pos_y, smth->nearest_En.first, smth->nearest_En.second))) {
 								smth->nearest_En = ant->nearest_En;
 								smth->action = 4;
 								smth->aim = ant->nearest_En;
-								
+
 
 							}
 						}
 					}
+					else if (ant->type==3 &&(this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall)&& this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall->clan!=ant->clan){
+						this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall->hp -= ant->attack;
+						if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall->hp < 0) {
+							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->DeleteWall();
+						}
+					}
+					
 				}
 			}
 		}
