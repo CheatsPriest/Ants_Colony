@@ -30,7 +30,7 @@ void processingEntities()
 
 	sf::RenderWindow window(sf::VideoMode(1920, 1440), "Zoom with Texture Switch");
 	sf::Texture antTexture;
-	if (!antTexture.loadFromFile("images/ant.png"))
+	if (!antTexture.loadFromFile("X://ant.png"))
 	{
 		std::cout << "Trash" << "\n";
 		window.close();
