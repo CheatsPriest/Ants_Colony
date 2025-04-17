@@ -111,7 +111,7 @@ void Window::DrawMainScene() {
 
                 //ImGui::GetBackgroundDrawList()->AddRect(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0, 1.0f);
                 //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x, draw_y), ImVec2(draw_x + cell_size, draw_y + cell_size), Green, 0.1f, 0);
-                if (data->field->field[x][y][data->z_cam].cWall != 0) {
+                if (data->field->field[x][y][data->z_cam].cWall && data->field->field[x][y][data->z_cam].cWall != 0) {
                     //cout << 1 << endl;
                     ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(draw_x + 1.f, draw_y + 1.f), ImVec2(draw_x + cell_size - 1.0f, draw_y + cell_size - 1.0f), Purple, 0.1f, 0);
                 }

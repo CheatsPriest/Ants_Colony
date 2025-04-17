@@ -1397,7 +1397,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				int source = 0;
 				for (auto stock : stockpileList) {
 					Stockpile* stash = stock.second;
-					if (stash->type == 3 and stash->clan==ant->clan) {
+					if (stash and stash->type == 3 and stash->clan==ant->clan) {
 						source = stash->id;
 					}
 				}
@@ -1489,6 +1489,12 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 						
 						
+					}
+					else if ((this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall) && this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall->clan != ant->clan) {
+						ant->nearest_En = { ant->pos_x + i, ant->pos_y + j };
+					}
+					else if ((this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID) && stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->clan != ant->clan) {
+						ant->nearest_En = { ant->pos_x + i, ant->pos_y + j };
 					}
 				}
 			}
@@ -1648,6 +1654,11 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall->hp -= ant->attack;
 						if (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->cWall->hp < 0) {
 							this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->DeleteWall();
+						}
+					}
+					else if (ant->type == 3 && (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID) && stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->clan != ant->clan) {
+						if (stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->type != MAGGOTS) {
+							stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->clan = ant->clan;
 						}
 					}
 					
