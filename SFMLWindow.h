@@ -29,17 +29,17 @@ private:
    
 
     void DrawScout_sfml     (int x, int y);
-    void DrawWorker_sfml    (int x, int y, unsigned id);
-    void DrawSoldier_sfml(int x, int y, unsigned id);
-    void DrawQueen_sfml(int x, int y, unsigned id);
-    void DrawNurse_sfml(int x, int y, unsigned id);
-    void DrawMaggot_sfml(int x, int y, unsigned id);
-    void DrawAphid_sfml(int x, int y, unsigned id);
-    void DrawLadybug_sfml(int x, int y, unsigned id);
+    void DrawWorker_sfml    (int x, int y);
+    void DrawSoldier_sfml   (int x, int y);
+    void DrawQueen_sfml     (int x, int y);
+    void DrawNurse_sfml     (int x, int y);
+    void DrawMaggot_sfml    (int x, int y);
+    void DrawAphid_sfml     (int x, int y);
+    void DrawLadybug_sfml   (int x, int y);
 
-    void DrawWall_sfml(int x, int y);
-    void DrawFood_sfml(int x, int y);
-    void DrawMaterial_sfml(int x, int y);
+    void DrawWall_sfml      (int x, int y);
+    void DrawFood_sfml      (int x, int y);
+    void DrawMaterial_sfml  (int x, int y);
 
     sf::Color scoutColor    =   sf::Color(0, 71, 171);
     sf::Color aphidColor    =   sf::Color(93, 96, 90);

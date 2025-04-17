@@ -23,78 +23,197 @@ Window_sfml::Window_sfml(InfoSpace* data_p, sf::RenderWindow* window)
     mainWindow = window;
 }
 
-void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned id)
+void Window_sfml::DrawMaggot_sfml(int x, int y)
 {
 
     
 
-    
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
-    
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
 
-    rect.setPosition(x + 1.f, y + 1.f); 
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/maggot.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
 
-    rect.setFillColor(maggotColor); 
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2, size / texSize.y * 2);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    mainWindow->draw(rect);
+        rect.setPosition(x + 1.f, y + 1.f);
 
-    
-    
+        rect.setFillColor(maggotColor);
+
+
+        mainWindow->draw(rect);
+
+    }
 }
 
-void Window_sfml::DrawQueen_sfml(int x, int y, unsigned id)
+void Window_sfml::DrawQueen_sfml(int x, int y)
 {
     
 
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/queen.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        rect.setPosition(x + 1.f, y + 1.f);
 
-    rect.setFillColor(queenColor);
+        rect.setFillColor(queenColor);
 
 
-    mainWindow->draw(rect);
-
+        mainWindow->draw(rect);
+    }
 }
 
-void Window_sfml::DrawNurse_sfml(int x, int y, unsigned id)
+void Window_sfml::DrawNurse_sfml(int x, int y)
 {
     
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
+
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/nurse.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(nurseColor);
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
-
-    rect.setFillColor(nurseColor);
-
-
-    mainWindow->draw(rect);
-
+        mainWindow->draw(rect);
+    }
 }
 
-void Window_sfml::DrawAphid_sfml(int x, int y, unsigned id)
+void Window_sfml::DrawAphid_sfml(int x, int y)
 {
     
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
+
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/aphid.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(aphidColor);
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        mainWindow->draw(rect);
+    }
 
-    rect.setFillColor(aphidColor);
-
-
-    mainWindow->draw(rect);
 }
 
 void Window_sfml::DrawScout_sfml(int x, int y)
@@ -141,56 +260,146 @@ void Window_sfml::DrawScout_sfml(int x, int y)
 
 }
 
-void Window_sfml::DrawLadybug_sfml(int x, int y, unsigned id)
+void Window_sfml::DrawLadybug_sfml(int x, int y)
 {
-    
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
+
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/ladybug.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(ladybugColor);
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        mainWindow->draw(rect);
+    }
 
-    rect.setFillColor(ladybugColor);
-
-
-    mainWindow->draw(rect);
 }
 
-void Window_sfml::DrawWorker_sfml(int x, int y, unsigned id)
+void Window_sfml::DrawWorker_sfml(int x, int y)
 {
     
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
+
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/worker.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(workerColor);
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
-
-    rect.setFillColor(workerColor);
-
-
-    mainWindow->draw(rect);
+        mainWindow->draw(rect);
+    }
 
 }
 
-void Window_sfml::DrawSoldier_sfml(int x, int y, unsigned id)
+void Window_sfml::DrawSoldier_sfml(int x, int y)
 {
     
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
+
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/soldier.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(soldierColor);
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
-
-    rect.setFillColor(soldierColor);
-
-
-    mainWindow->draw(rect);
+        mainWindow->draw(rect);
+    }
 
 }
 
@@ -302,16 +511,16 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                         DrawScout_sfml(draw_x, draw_y);   
                     }
                     else if (curAnt->type == 2) {
-                        DrawWorker_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                        DrawWorker_sfml(draw_x, draw_y);
                     }
                     else if (curAnt->type == 3) {
-                        DrawSoldier_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                        DrawSoldier_sfml(draw_x, draw_y);
                     }
                     else if (curAnt->type == 4) {
-                        DrawNurse_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                        DrawNurse_sfml(draw_x, draw_y);
                     }
                     else if (curAnt->type == 0) {
-                        DrawQueen_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                        DrawQueen_sfml(draw_x, draw_y);
                     }
 
                 }
@@ -330,17 +539,17 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                 else if (cur->getType() == Entities::INSECT) {
                     Insect* insect = (Insect*)(cur->getPtr());
                     if (insect->type == InsectTypes::APHID) {
-                        DrawAphid_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                        DrawAphid_sfml(draw_x, draw_y);
                     }
                     else if (insect->type == InsectTypes::LADYBUG) {
-                        DrawLadybug_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                        DrawLadybug_sfml(draw_x, draw_y);
                     }
 
                 }
 
                 else if (cur->getType() == Entities::MAGGOTS) {
                     Maggot* curMat = (Maggot*)(cur->getPtr());
-                    DrawMaggot_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                    DrawMaggot_sfml(draw_x, draw_y);
                 }
 
             }
@@ -400,7 +609,7 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 
                         draw_x = (curStock->pos_x + i) * cell_size;
                         draw_y = (curStock->pos_y + j) * cell_size;
-                        DrawMaggot_sfml(draw_x, draw_y, work_id);
+                        DrawMaggot_sfml(draw_x, draw_y);
                     }
                 }
             }
