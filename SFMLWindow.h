@@ -18,17 +18,18 @@ private:
     int wide = 0, hight = 0;
     
 
-    sf::Texture scout_texture, worker_texture, soldier_texture,
+    static sf::Texture scout_texture, worker_texture, soldier_texture,
         queen_texture, nurse_texture, maggot_texture,
         aphid_texture, ladybug_texutre;
-    sf::Texture wall_texture, food_texture, material_texture;
 
+    static sf::Texture wall_texture, food_texture, material_texture;
 
+    bool loadTextures();
 
     InfoSpace* data;
    
 
-    void DrawScout_sfml     (int x, int y, unsigned id);
+    bool DrawScout_sfml     (int x, int y, unsigned id);
     void DrawWorker_sfml    (int x, int y, unsigned id);
     void DrawSoldier_sfml(int x, int y, unsigned id);
     void DrawQueen_sfml(int x, int y, unsigned id);

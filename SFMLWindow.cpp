@@ -8,7 +8,9 @@
 
 
 static sf::RectangleShape rect;
-//static sf::CircleShape circle;
+
+
+
 
 int cell_size;
 int draw_x, draw_y;
@@ -17,6 +19,12 @@ unsigned int work_id;
 Entity* cur;
 
 
+
+//bool Window_sfml::loadTextures()
+//{
+//    if (!scout_texture.loadFromFile("images/ant.png"))
+//        return EXIT_FAILURE;
+//}
 
 Window_sfml::Window_sfml(InfoSpace* data_p, sf::RenderWindow* window)
 {
@@ -27,25 +35,34 @@ Window_sfml::Window_sfml(InfoSpace* data_p, sf::RenderWindow* window)
 
 }
 
+//void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned int id)
+//{
+//
+//    
+//
+//    
+//    size = data->cell_size - 2.0f;
+//    rect.setSize(sf::Vector2f(size, size));
+//    
+//
+//    rect.setPosition(x + 1.f, y + 1.f); 
+//
+//    rect.setFillColor(maggotColor); 
+//
+//
+//    mainWindow->draw(rect);
+//
+//    
+//    
+//}
+
 void Window_sfml::DrawMaggot_sfml(int x, int y, unsigned int id)
 {
-
-    
-
-    
-    size = data->cell_size - 2.0f;
+    const float size = data->cell_size - 2.0f;
     rect.setSize(sf::Vector2f(size, size));
-    
-
-    rect.setPosition(x + 1.f, y + 1.f); 
-
-    rect.setFillColor(maggotColor); 
-
-
+    rect.setPosition(x + 1.f, y + 1.f);
+    rect.setFillColor(maggotColor);
     mainWindow->draw(rect);
-
-    
-    
 }
 
 void Window_sfml::DrawQueen_sfml(int x, int y, unsigned int id)
@@ -101,21 +118,55 @@ void Window_sfml::DrawAphid_sfml(int x, int y, unsigned int id)
     mainWindow->draw(rect);
 }
 
-void Window_sfml::DrawScout_sfml(int x, int y, unsigned int id)
+bool Window_sfml::DrawScout_sfml(int x, int y, unsigned int id)
 {
     
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("X://ant.png"))
+        {
+            textureLoadFailed = true;
+            return EXIT_FAILURE;
+        }
+        else
+        {
+            isTextureLoaded = true;
+        }
+    }
+
+    if (isTextureLoaded)
+    {
+        static sf::Sprite sprite;
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        if (texSize.x > 0 && texSize.y > 0)
+        {
+            sprite.setScale(size / texSize.x, size / texSize.y);
+        }
+
+        sprite.setPosition(x + 1.f, y + 1.f);
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(scoutColor);
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        mainWindow->draw(rect);
+    }
 
-    rect.setFillColor(scoutColor);
-
-
-    mainWindow->draw(rect);
 
 }
 
@@ -386,7 +437,4 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
     }
     
 }
-
-
-
 
