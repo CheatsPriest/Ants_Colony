@@ -1335,7 +1335,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 	}
 	// warriors >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	else if ((ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 2)) {
+	else if ((ant->type == 3 && dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 9)) {
 		//ant->aim = { rand() % 20 + 1,  rand() % 20 + 1 }; // коорды базы
 		int entid = field->field[ant->aim.first][ant->aim.second]->IDs[0];
 		

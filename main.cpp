@@ -23,7 +23,7 @@ void processingEntities() {
 	int start_x = 1000;
 	int start_y = 1000;
 
-	int start_x1 = 1200;
+	int start_x1 = 1500;
 	int start_y1 = 1000;
 
 	long long tick = 0;
