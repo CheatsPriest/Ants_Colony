@@ -168,7 +168,7 @@ if (ps.first) {
 		unsigned int id_ = field->field[detectedCoord.first][detectedCoord.second][0].IDs[0];
 		field->field[detectedCoord.first][detectedCoord.second][0].IDs[0] = 0;
 		entityList.erase(id_);
-		cout << "KILLED" << "\n";
+		//cout << "KILLED" << "\n";
 		insect->goToBase = true;
 		insect->isTriggered = false;
 		insect->updateBaseCoords(field_size_x, field_size_y);
@@ -501,7 +501,7 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 
 	Stockpile* new_stock = new Stockpile(x, y, z, wide, hight, type, free_stockpile_key, clan);
 	field->field[x][y][z].stockID = free_stockpile_key;
-	cout << free_stockpile_key;
+	//cout << free_stockpile_key;
 
 	stockpileList.insert({ free_stockpile_key, new_stock });
 
@@ -1104,7 +1104,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 				if (stash->type == 0 and (!relevant or dist(ant->aim.first, ant->aim.second, ant->pos_x, ant->pos_y)> dist(aim_x, aim_y, ant->pos_x, ant->pos_y))) {
 					
 					ant->stashid = stash->id;
-					cout << stash->id;
+					//cout << stash->id;
 
 					ant->aim = { aim_x,aim_y };
 					
@@ -1117,7 +1117,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 
 	if (ant->action==3) {
 		if (dist(ant->pos_x, ant->pos_y, ant->aim.first, ant->aim.second) <= 10) {
-			cout << "EAT" << endl;
+			//cout << "EAT" << endl;
 			DeleteEntity(stockpileList[ant->stashid]->AntIslEating(ant, &entityList));
 			ant->action = ant->paction;
 			if (ant->action == 6) {

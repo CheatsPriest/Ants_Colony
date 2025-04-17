@@ -6,7 +6,7 @@ unsigned int Stockpile::AntIslEating(Ant* curAnt, map<unsigned int, Entity*>* en
 
 	unsigned int food_ind;
 	int x, y;
-	cout <<endl<<"FOOD "<< food_collected << endl;
+	//cout <<endl<<"FOOD "<< food_collected << endl;
 
 	if (food_collected < size_x * size_y-1) {
 		x = food_collected % size_x;
@@ -132,7 +132,7 @@ bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pa
 	unsigned int carry_id = stuff[x][y];
 	Entity* curCarried = (*entityList)[carry_id];
 	//food_collected++;
-	cout << 1;
+	//cout << 1;
 	if (curCarried->getType() == Entities::ANT) {
 		Ant* carriedAnt = (Ant*)(curCarried->getPtr());
 		
