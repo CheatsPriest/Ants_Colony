@@ -495,6 +495,8 @@ bool InfoSpace::CreateStockpile(int x, int y, int z, int wide, int hight, int ty
 
 	Stockpile* target;
 
+	if (x<10 or y<10 or x>field_size_x - 10 or y>field_size_y - 10)return false;
+
 	for (auto el : stockpileList) {
 		target = el.second;
 		if (abs(target->pos_x-x)<max(wide, target->size_x)+2 and abs(target->pos_y - y) < max(hight, target->size_y)+2)return false;
