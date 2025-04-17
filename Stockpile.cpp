@@ -122,7 +122,7 @@ unsigned int Stockpile::PickUp(Ant* curAnt, map<unsigned int, Entity*>* entityLi
 
 }
 bool Stockpile::TryToPut(Ant* curAnt, map<unsigned int, Entity*>* entityList, pair<int, int> where) {
-	if (food_collected == size_x * size_y) { return false; }
+	if (!this or food_collected == size_x * size_y) { return false; }
 	int x, y;
 	food_collected++;
 	x = food_collected%size_x;
