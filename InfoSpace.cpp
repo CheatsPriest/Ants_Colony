@@ -1657,7 +1657,7 @@ void InfoSpace::MoveEntity(unsigned int id) {
 						}
 					}
 					else if (ant->type == 3 && (this->field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID) && stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->clan != ant->clan) {
-						if (stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->type != MAGGOTS) {
+						if (stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->type != MAGGOT_STOCK) {
 							stockpileList[field->field[(int)(ant->pos_x + i)][(int)(ant->pos_y + j)]->stockID]->clan = ant->clan;
 						}
 					}
