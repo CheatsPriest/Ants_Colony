@@ -1046,7 +1046,7 @@ void InfoSpace::attack(int atkr, int defr) {
 	if (defender->getType() == ANT) {
 		Ant* defant = (Ant*)defender->getPtr();
 		if (atkant->clan == defant->clan) { return; }
-		if (rand() % 10 >= 5) {
+		if (rand() % 10 >= 7) {
 			swap(atkant, defant);
 			cout << "haha" << endl;
 		}
