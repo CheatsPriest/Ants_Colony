@@ -225,7 +225,7 @@ void Window_sfml::DrawScout_sfml(int x, int y)
 
     if (!isTextureLoaded && !textureLoadFailed)
     {
-        if (!texture.loadFromFile("images/scout.png"))
+        if (!texture.loadFromFile("images/scoutOMG.png"))
             textureLoadFailed = true;
         else
             isTextureLoaded = true;
@@ -233,7 +233,6 @@ void Window_sfml::DrawScout_sfml(int x, int y)
 
     if (isTextureLoaded)
     {
-        // Убираем static для спрайта! Важно для индивидуального вращения
 
         sprite.setTexture(texture);
 
@@ -423,38 +422,100 @@ void Window_sfml::DrawFood_sfml(int x, int y)
 
 void Window_sfml::DrawMaterial_sfml(int x, int y)
 {
-    
+
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
+
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/material.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 3.f, size / texSize.y * 3.f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(materialColor);
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        mainWindow->draw(rect);
 
-    rect.setFillColor(materialColor);
-
-
-    mainWindow->draw(rect);
-    
-    return;
+    }
 }
 
 void Window_sfml::DrawWall_sfml (int x, int y)
 {
     
 
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/wall.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        rect.setPosition(x + 1.f, y + 1.f);
 
-    rect.setFillColor(wallColor);
+        rect.setFillColor(wallColor);
 
 
-    mainWindow->draw(rect);
+        mainWindow->draw(rect);
+    }
+ 
 
 }
 
