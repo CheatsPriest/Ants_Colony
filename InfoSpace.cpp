@@ -613,16 +613,16 @@ void InfoSpace::Hatching(Stockpile* curStock) {
 					int whoWillBorn=0;
 					int rock = rand() % 100;
 
-					if (rock < 3) {
+					if (motherColony->numNurses < 10) {
 						whoWillBorn = NURSE;
 					}
-					else if (rock >= 3 and rock < 15) {
+					else if (rock < 33) {
+						whoWillBorn = SOLDIER;
+					}
+					else if (rock >= 33 and rock < 66) {
 						whoWillBorn = WORKER;
 					}
-					else if (rock >= 15 and rock < 55) {
-						whoWillBorn = WORKER;
-					}
-					else if (rock >= 55) {
+					else if (rock >= 66) {
 						whoWillBorn = SCOUT;
 					}
 					if (rand() % 100 < motherColony->chanceOfIncreasingRadius) {
