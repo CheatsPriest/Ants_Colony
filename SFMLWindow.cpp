@@ -402,10 +402,8 @@ void Window_sfml::DrawSoldier_sfml(int x, int y)
 
 }
 
-void Window_sfml::DrawFood_sfml(int x, int y, unsigned type)
+void Window_sfml::DrawFood_sfml(int x, int y)
 {
-    
-
     static sf::Texture texture;
     static bool isTextureLoaded = false;
     static bool textureLoadFailed = false;
@@ -413,20 +411,10 @@ void Window_sfml::DrawFood_sfml(int x, int y, unsigned type)
 
     if (!isTextureLoaded && !textureLoadFailed)
     {
-        if (type == 0)
-        {
             if (!texture.loadFromFile("images/food.png"))
                 textureLoadFailed = true;
             else
                 isTextureLoaded = true;
-        }
-        else if (type == 1)
-        {
-            if (!texture.loadFromFile("images/beer.png"))
-                textureLoadFailed = true;
-            else
-                isTextureLoaded = true;
-        }
     }
 
     if (isTextureLoaded)
@@ -459,6 +447,55 @@ void Window_sfml::DrawFood_sfml(int x, int y, unsigned type)
         mainWindow->draw(rect);
     }
 
+
+}
+
+void Window_sfml::DrawBeer_sfml(int x, int y)
+{
+
+
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
+
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/beer.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.f, size / texSize.y * 2.f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
+
+
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(sf::Color::White);
+
+
+        mainWindow->draw(rect);
+    }
 
 }
 
@@ -627,7 +664,10 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
                 
                 else if (cur->getType() == Entities::FOOD) {
                     Food* curFood = (Food*)(cur->getPtr());
-                    DrawFood_sfml(draw_x, draw_y, data->field->field[x][y][data->z_cam].IDs[0]);
+                    if (!curFood->type)
+                        DrawFood_sfml(draw_x, draw_y);
+                    else
+                        DrawBeer_sfml(draw_x, draw_y);
 
                 }
                 else if (cur->getType() == Entities::MATERIALS) {
@@ -673,7 +713,10 @@ void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 
                         draw_x = curFood->pos_x * cell_size;
                         draw_y = curFood->pos_y * cell_size;
-                        DrawFood_sfml(draw_x, draw_y, data->field->field[i][j][data->z_cam].IDs[0]);
+                        if (!curFood->type)
+                            DrawFood_sfml(draw_x, draw_y);
+                        else
+                            DrawBeer_sfml(draw_x, draw_y);
                     }
                 }
             }
