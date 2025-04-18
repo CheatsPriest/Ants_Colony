@@ -11,9 +11,10 @@ public:
 	
 	int scouts_courage;
 	int delta_stock;
-
+	int chanceOfIncreasingRadius;
 
 	int base_radius;
+	int spreading_radius;
 
 	void NullEverything();
 
@@ -51,7 +52,9 @@ public:
 		base_y = y;
 		base_z = z;
 
-		base_radius = 50;
+		base_radius = 70;
+		spreading_radius = 10;
+
 		numWorker = 0;
 		numScouts = 0;
 		numSoldier = 0;
@@ -65,6 +68,7 @@ public:
 		//динамические статы
 		scouts_courage = 2;
 		delta_stock = 15;
+		chanceOfIncreasingRadius = 35; 
 
 		//флаги
 		needNewFoodStock = false;
@@ -75,6 +79,7 @@ public:
 		red = (int)(rand() % 100) ;
 		green = (int)(rand() % 100) ;
 		blue = (int)(rand() % 100) ;
+
 	}
 
 };

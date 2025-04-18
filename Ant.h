@@ -16,7 +16,7 @@ public:
 	Ant() {};
 	Ant(int x, int y, int z, int type, float max_HP, int smell_Rad, float defense, float max_Saturation, int clan);
 	void info() {
-		cout << "I AM A SURGEON\n";
+		//cout << "I AM A SURGEON\n";
 	}
 	bool isAlive();
 	void Eat(int id_food_in_entity);

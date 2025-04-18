@@ -28,8 +28,8 @@ void processingEntities() {
 	int start_x = 1000;
 	int start_y = 1000;
 
-	int start_x1 = 2000;
-	int start_y1 = 2000;
+	int start_x1 = 1500;
+	int start_y1 = 1000;
 
 	long long tick = 0;
 
@@ -57,7 +57,7 @@ void processingEntities() {
 	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+20, 2*i+ start_y, 0, 0, 2,1);
 	}
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 500; i++) {
 		ultimateData->CreateEntityAnt(start_x+30, i+ start_y, 0, 0, 3,1);
 	}
 
@@ -67,7 +67,7 @@ void processingEntities() {
 	for (int i = 0; i < 150; i++) {
 		ultimateData->CreateEntityAnt(start_x1 + 20, 2 * i + start_y1, 0, 0, 2, 2);
 	}
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 500; i++) {
 		ultimateData->CreateEntityAnt(start_x1 + 30, i + start_y1, 0, 0, 3, 2);
 	}
 	for (int i = 0; i < 10; i++) {
@@ -113,7 +113,7 @@ void processingEntities() {
 		}
 		else if (curr->getType() == Entities::FOOD) {
 			Food* currFood = (Food*)(curr->getPtr());
-			currFood->info();
+			currFood->info(); 
 		}
 		else if (curr->getType() == Entities::INSECT) {
 			Insect* currInsect = (Insect*)curr;
