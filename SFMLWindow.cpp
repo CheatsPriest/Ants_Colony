@@ -6,7 +6,6 @@
 #include <iostream>
 #include <cstdlib>
 
-#define PI 3.14159265f
 static sf::RectangleShape rect;
 
 int cell_size;
