@@ -11,6 +11,8 @@ enum Stockpiles {
 
 class Stockpile {
 public:
+	bool stealed;
+
 	int pos_x;
 	int pos_y;
 	int pos_z;
@@ -29,7 +31,7 @@ public:
 	
 	Stockpile(int x, int y, int z, int wide, int hight, int cur_type, unsigned int cr_id, int cr_clan) {
 		wall_len = 0;
-
+		stealed = false;
 		pos_x = x;
 		pos_y = y;
 		pos_z = z;
@@ -42,7 +44,7 @@ public:
 
 		needWalled = false;
 		
-		if (type == APHID_STOCK) {
+		if (type == APHID_STOCK or type == MAGGOT_STOCK) {
 			needWalled = true;
 		}
 		food_collected = -1;

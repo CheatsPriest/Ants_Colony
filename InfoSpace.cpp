@@ -126,6 +126,11 @@ pair<int, int> detectedCoord = { 0, 0 };
 if (ps.first) {
 	if (ps.second->type == 0) {
 		ps.second->PickUpWithoutAnt();
+		
+		if (rand() % 10 > 7) {
+			ps.second->needWalled = true;
+		}
+
 		insect->goToBase = true;
 		insect->isTriggered = false;
 		insect->updateBaseCoords(field_size_x, field_size_y);
@@ -231,7 +236,7 @@ void InfoSpace::MoveAphid(unsigned int id, Insect* insect) {
 	if (!insect->isTriggered) {
 
 		if (insect->nearlest.first != 0 && (insect->isSlaveZone == insect->isSlaver) 
-			&& (pow(insect->pos_x - insect->nearlest.second.first, 2) + pow(insect->pos_y - insect->nearlest.second.second, 2) <= 700 )) {
+			&& (pow(insect->pos_x - insect->nearlest.second.first, 2) + pow(insect->pos_y - insect->nearlest.second.second, 2) <= 1400 )) {
 			insect->aim_id = insect->nearlest.first;
 			insect->aim_pos = insect->nearlest.second;
 			insect->isTriggered = true;
