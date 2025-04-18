@@ -28,7 +28,7 @@ private:
     void DrawMaggot_sfml    (int x, int y);
     void DrawAphid_sfml     (int x, int y);
     void DrawLadybug_sfml   (int x, int y);
-
+    void DrawBeer           (int x, int y);
     void DrawWall_sfml      (int x, int y);
     void DrawFood_sfml      (int x, int y);
     void DrawMaterial_sfml  (int x, int y);
