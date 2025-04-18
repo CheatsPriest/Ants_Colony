@@ -28,9 +28,8 @@ private:
     void DrawMaggot_sfml    (int x, int y);
     void DrawAphid_sfml     (int x, int y);
     void DrawLadybug_sfml   (int x, int y);
-    void DrawBeer           (int x, int y);
     void DrawWall_sfml      (int x, int y);
-    void DrawFood_sfml      (int x, int y);
+    void DrawFood_sfml      (int x, int y, unsigned type);
     void DrawMaterial_sfml  (int x, int y);
 
     sf::Color scoutColor    =   sf::Color(0, 71, 171);
