@@ -157,13 +157,6 @@
     <ClCompile Include="SFMLWindow.h" />
     <ClCompile Include="Soldier.cpp" />
     <ClCompile Include="Stockpile.cpp" />
-    <ClCompile Include="vendor\ImGui\backends\imgui_impl_dx9.cpp" />
-    <ClCompile Include="vendor\ImGui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_demo.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_draw.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_tables.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="walls.cpp" />
     <ClCompile Include="Worker.cpp" />
   </ItemGroup>
@@ -215,14 +208,6 @@
     <ClInclude Include="SFML-2.6.2\include\SFML\Graphics\View.hpp" />
     <ClInclude Include="Soldier.h" />
     <ClInclude Include="Stockpile.h" />
-    <ClInclude Include="vendor\ImGui\backends\imgui_impl_dx9.h" />
-    <ClInclude Include="vendor\ImGui\backends\imgui_impl_win32.h" />
-    <ClInclude Include="vendor\ImGui\imconfig.h" />
-    <ClInclude Include="vendor\ImGui\imgui.h" />
-    <ClInclude Include="vendor\ImGui\imgui_internal.h" />
-    <ClInclude Include="vendor\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="vendor\ImGui\imstb_textedit.h" />
-    <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
     <ClInclude Include="walls.h" />
     <ClInclude Include="Worker.h" />
   </ItemGroup>

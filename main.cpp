@@ -36,7 +36,7 @@ void processingEntities() {
 	ultimateData->coloniesList[1] = new Colony(1, start_x+20, start_y+20, 0);
 
 	ultimateData->coloniesList[2] = new Colony(2, start_x1 + 20, start_y1 + 20, 0);
-
+	
 	//ultimateData->CreateStockpile(start_x, start_y, 0, 30, 30, 2, 1);
 
 	ultimateData->CreateStockpile(start_x+40, start_y+40, 0, 17, 17, 3, 1);
@@ -57,8 +57,11 @@ void processingEntities() {
 	for (int i = 0; i < 100; i++) {
 		ultimateData->CreateEntityAnt(start_x+20, 2*i+ start_y, 0, 0, 2,1);
 	}
-	for (int i = 0; i < 500; i++) {
+	for (int i = 0; i < 50; i++) {
 		ultimateData->CreateEntityAnt(start_x+30, i+ start_y, 0, 0, 3,1);
+	}
+	for (int i = 0; i < 10; i++) {
+		ultimateData->CreateEntityAnt(start_x + 40, i + start_y, 0, 0, 4, 1);
 	}
 
 	for (int i = 0; i < 200; i++) {
@@ -67,7 +70,7 @@ void processingEntities() {
 	for (int i = 0; i < 150; i++) {
 		ultimateData->CreateEntityAnt(start_x1 + 20, 2 * i + start_y1, 0, 0, 2, 2);
 	}
-	for (int i = 0; i < 500; i++) {
+	for (int i = 0; i < 50; i++) {
 		ultimateData->CreateEntityAnt(start_x1 + 30, i + start_y1, 0, 0, 3, 2);
 	}
 	for (int i = 0; i < 10; i++) {
@@ -166,6 +169,7 @@ void processingEntities() {
 	bool isPaused = false;
 
 	
+	ultimateData->ReCalculateTheColony();
 
 	while (mainWindow.isOpen())
 	{
@@ -230,6 +234,7 @@ void processingEntities() {
 			if (tick++ > 200) 
 			{
 				tick = 1;
+				ultimateData->ReCalculateTheColony();
 			}
 
 			for (auto el : ultimateData->coloniesList) 

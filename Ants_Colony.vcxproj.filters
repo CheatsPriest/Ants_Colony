@@ -19,9 +19,6 @@
     <Filter Include="Муравьи">
       <UniqueIdentifier>{645ce3c6-cc1c-4000-8235-b800d37071bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{40d7ff05-0f58-4e17-9dc8-0bcd404e4f3d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Рисовальщик">
       <UniqueIdentifier>{ecc0fb0d-c39d-42c3-80cc-245386796a5f}</UniqueIdentifier>
     </Filter>
@@ -53,27 +50,6 @@
     </ClCompile>
     <ClCompile Include="Worker.cpp">
       <Filter>Муравьи</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGui\imgui.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGui\imgui_tables.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGui\backends\imgui_impl_dx9.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\ImGui\backends\imgui_impl_win32.cpp">
-      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="myfont.cpp">
       <Filter>Рисовальщик</Filter>
@@ -139,30 +115,6 @@
     </ClInclude>
     <ClInclude Include="Worker.h">
       <Filter>Муравьи</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imconfig.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imgui.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imgui_internal.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imstb_rectpack.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imstb_textedit.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\imstb_truetype.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\backends\imgui_impl_dx9.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\ImGui\backends\imgui_impl_win32.h">
-      <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="myfont.h">
       <Filter>Рисовальщик</Filter>
