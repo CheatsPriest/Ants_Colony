@@ -406,17 +406,49 @@ void Window_sfml::DrawFood_sfml(int x, int y)
 {
     
 
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
 
-    size = data->cell_size - 2.0f;
-    rect.setSize(sf::Vector2f(size, size));
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/food.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 3.f, size / texSize.y * 3.f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
 
 
-    rect.setPosition(x + 1.f, y + 1.f);
+        rect.setPosition(x + 1.f, y + 1.f);
 
-    rect.setFillColor(foodColor);
+        rect.setFillColor(foodColor);
 
 
-    mainWindow->draw(rect);
+        mainWindow->draw(rect);
+    }
+
 
 }
 
@@ -519,7 +551,52 @@ void Window_sfml::DrawWall_sfml (int x, int y)
 
 }
 
+void Window_sfml::DrawBeer(int x, int y)
+{
+    static sf::Texture texture;
+    static bool isTextureLoaded = false;
+    static bool textureLoadFailed = false;
+    static sf::Sprite sprite;
 
+    if (!isTextureLoaded && !textureLoadFailed)
+    {
+        if (!texture.loadFromFile("images/beer.png"))
+            textureLoadFailed = true;
+        else
+            isTextureLoaded = true;
+    }
+
+    if (isTextureLoaded)
+    {
+
+        sprite.setTexture(texture);
+
+        const float size = data->cell_size - 2.0f;
+        const sf::Vector2u texSize = texture.getSize();
+
+        sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+        sprite.setScale(size / texSize.x * 2.5f, size / texSize.y * 2.5f);
+        sprite.setPosition(
+            x + 1.f + size / 2.f,
+            y + 1.f + size / 2.f
+        );
+
+        mainWindow->draw(sprite);
+    }
+    else
+    {
+        size = data->cell_size - 2.0f;
+        rect.setSize(sf::Vector2f(size, size));
+
+
+        rect.setPosition(x + 1.f, y + 1.f);
+
+        rect.setFillColor(sf::Color::White);
+
+
+        mainWindow->draw(rect);
+    }
+}
 
 void Window_sfml::DrawMainScene_sfml(sf::FloatRect& visibleArea) {
 

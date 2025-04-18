@@ -12,19 +12,11 @@ public:
     Window_sfml(InfoSpace* data_p, sf::RenderWindow* window);
     
     void DrawMainScene_sfml (sf::FloatRect& visibleArea); 
-    //sf::RectangleShape rect;
+
 private:
 
     int wide = 0, hight = 0;
     
-
-    sf::Texture scout_texture, worker_texture, soldier_texture,
-        queen_texture, nurse_texture, maggot_texture,
-        aphid_texture, ladybug_texutre;
-    sf::Texture wall_texture, food_texture, material_texture;
-
-
-
     InfoSpace* data;
    
 
@@ -36,7 +28,7 @@ private:
     void DrawMaggot_sfml    (int x, int y);
     void DrawAphid_sfml     (int x, int y);
     void DrawLadybug_sfml   (int x, int y);
-
+    void DrawBeer           (int x, int y);
     void DrawWall_sfml      (int x, int y);
     void DrawFood_sfml      (int x, int y);
     void DrawMaterial_sfml  (int x, int y);
