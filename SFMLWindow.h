@@ -12,19 +12,11 @@ public:
     Window_sfml(InfoSpace* data_p, sf::RenderWindow* window);
     
     void DrawMainScene_sfml (sf::FloatRect& visibleArea); 
-    //sf::RectangleShape rect;
+
 private:
 
     int wide = 0, hight = 0;
     
-
-    sf::Texture scout_texture, worker_texture, soldier_texture,
-        queen_texture, nurse_texture, maggot_texture,
-        aphid_texture, ladybug_texutre;
-    sf::Texture wall_texture, food_texture, material_texture;
-
-
-
     InfoSpace* data;
    
 
