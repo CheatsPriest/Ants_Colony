@@ -30,13 +30,13 @@ void processingEntities() {
 
 	ultimateData->coloniesList[1] = new Colony(1, start_x+20, start_y+20, 0);
 
-	ultimateData->coloniesList[2] = new Colony(2, start_x1 + 20, start_y1 + 20, 0);
+	
 
 	//ultimateData->CreateStockpile(start_x, start_y, 0, 30, 30, 2, 1);
 
 	ultimateData->CreateStockpile(start_x+40, start_y+40, 0, 17, 17, 3, 1);
 	
-	ultimateData->CreateStockpile(start_x1 + 40, start_y1 + 40, 0, 17, 17, 3, 2);
+	
 
 	//ultimateData->CreateStockpile(start_x+40, start_y, 0, 17, 17, 0, 1);
 	//ultimateData->CreateStockpile(start_x+30, start_y+40, 0, 17, 17, 1, 1);
@@ -44,7 +44,7 @@ void processingEntities() {
 
 
 	ultimateData->CreateEntityAnt(start_x+50, start_y+50, 0, 0, 0, 1);
-	ultimateData->CreateEntityAnt(start_x1 + 50, start_y1 + 50, 0, 0, 0, 2);
+	
 
 	for (int i = 0; i < 200; i++) {
 		ultimateData->CreateEntityAnt(start_x+10, 2 * i+ start_y, 0, 0, 1,1);
@@ -58,19 +58,23 @@ void processingEntities() {
 	for (int i = 0; i < 10; i++) {
 		ultimateData->CreateEntityAnt(start_x+40, i+ start_y, 0, 0, 4, 1);
 	}
+	
 
-	for (int i = 0; i < 200; i++) {
-		ultimateData->CreateEntityAnt(start_x1 + 10, 2 * i + start_y1, 0, 0, 1, 2);
-	}
-	for (int i = 0; i < 150; i++) {
-		ultimateData->CreateEntityAnt(start_x1 + 20, 2 * i + start_y1, 0, 0, 2, 2);
-	}
-	for (int i = 0; i < 500; i++) {
-		ultimateData->CreateEntityAnt(start_x1 + 30, i + start_y1, 0, 0, 3, 2);
-	}
-	for (int i = 0; i < 10; i++) {
-		ultimateData->CreateEntityAnt(start_x1 + 40, i + start_y1, 0, 0, 4, 2);
-	}
+	//ultimateData->coloniesList[2] = new Colony(2, start_x1 + 20, start_y1 + 20, 0);
+	//ultimateData->CreateStockpile(start_x1 + 40, start_y1 + 40, 0, 17, 17, 3, 2);
+	//ultimateData->CreateEntityAnt(start_x1 + 50, start_y1 + 50, 0, 0, 0, 2);
+	//for (int i = 0; i < 200; i++) {
+	//	ultimateData->CreateEntityAnt(start_x1 + 10, 2 * i + start_y1, 0, 0, 1, 2);
+	//}
+	//for (int i = 0; i < 150; i++) {
+	//	ultimateData->CreateEntityAnt(start_x1 + 20, 2 * i + start_y1, 0, 0, 2, 2);
+	//}
+	//for (int i = 0; i < 500; i++) {
+	//	ultimateData->CreateEntityAnt(start_x1 + 30, i + start_y1, 0, 0, 3, 2);
+	//}
+	//for (int i = 0; i < 10; i++) {
+	//	ultimateData->CreateEntityAnt(start_x1 + 40, i + start_y1, 0, 0, 4, 2);
+	//}
 
 	//ultimateData->CreateInsect(22, 22, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	// тля внутри загона
