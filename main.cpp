@@ -15,6 +15,8 @@
 #include <ctime>
 #include <cmath>
 #include <iostream>
+#include <chrono>
+
 #define NOMINMAX
 
 
@@ -95,7 +97,7 @@ void processingEntities() {
 		ultimateData->CreateInsect(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, InsectTypes::APHID, { 0, 0 }, { 0 , 0 }, false);
 	}
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 10000; i++) {
 		ultimateData->CreateInsect(rand() % ultimateData->field_size_x, rand() % ultimateData->field_size_y, 0, InsectTypes::LADYBUG, { 0, 0 }, { 0 , 0 }, false);
 	}
 
@@ -133,7 +135,7 @@ void processingEntities() {
 	
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 	sf::RenderWindow mainWindow(desktopMode, "Ant Colony", sf::Style::Fullscreen);
-	
+	mainWindow.setFramerateLimit(30);
 
 
 	Window_sfml* start = new Window_sfml(ultimateData, &mainWindow);
@@ -282,6 +284,7 @@ void processingEntities() {
 		start->DrawMainScene_sfml(visibleArea);
 	
 		mainWindow.display();
+		
 	}
 }
 
